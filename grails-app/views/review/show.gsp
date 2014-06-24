@@ -35,13 +35,11 @@
 
                     <g:if test="${reviewInstance?.author?.id == session.user.id}">
                         <div class="btn-group">
-                            <g:link action="edit" resource="${reviewInstance}" class="btn btn-info btn-xs">
+                            <g:link action="edit" resource="${reviewInstance}" class="btn btn-default btn-xs">
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </g:link>
 
-                            <g:link action="delete" resource="${reviewInstance}" class="btn btn-danger btn-xs">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </g:link>
+                            <g:render template="/layouts/deleteButton" />
                         </div>
                     </g:if>
 
@@ -63,65 +61,67 @@
                 </g:if>
                        
                 <div class="row">        
-                    <div class="col-md-2">
+                    <div class="col-md-9">
 
-                        <g:if test="${reviewInstance?.author?.image}">
-                            <img height="64" width="64" class="avatar img-rounded" src="${createLink(controller:'user', action:'avatar_image', id:reviewInstance?.author?.ident())}" />
-                        </g:if>
-                            
-                        
-                    </div>   
+                        <div class="row"> 
+                            <div class="col-md-2">
 
-                    <div class="col-md-7">
-                        <dl class="dl-horizontal">
+                                <g:if test="${reviewInstance?.author?.image}">
+                                    <img height="64" width="64" class="avatar img-rounded" src="${createLink(controller:'user', action:'avatar_image', id:reviewInstance?.author?.ident())}" />
+                                </g:if>
+                                    
+                                
+                            </div>   
 
-                            <g:if test="${reviewInstance?.status}">
-                            
-                                <dt>
-                                    <span id="status-label" class="property-label"><g:message code="review.status.label" default="Status" /></span>
-                                </dt>
-                                <dd>                            
-                                    <span id="${Id.REVIEW_STATUS}" class="property-value" aria-labelledby="status-label">
-                                        <g:message code="${reviewInstance?.status.value()}" default="Status" />
-                                    </span>
-                                </dd>
-                            </g:if>
-                        
-                            <g:if test="${reviewInstance?.repository}">
-                                <dt>
-                                    <span id="repository-label" class="property-label"><g:message code="review.repository.label" default="Repository" /></span>
-                                </dt>
-                                <dd>    
-                                    <span class="property-value" aria-labelledby="repository-label">${reviewInstance?.repository?.title}</span>
-                                </dd>
-                            </g:if>
-                        
-                            <g:if test="${reviewInstance?.author}">
-                            
-                                <dt>
-                                    <span id="author-label" class="property-label"><g:message code="review.author.label" default="Author" /></span>
-                                </dt>
-                                <dd>                            
-                                    <span class="property-value" aria-labelledby="author-label">${reviewInstance?.author?.username}</span>
-                                </dd>
-                            </g:if>
-                        
-                            <g:if test="${reviewInstance?.commits}">
-                                <dt>Commit count</dt>
-                                <dd>    
-                                    <span id="commits-label" class="property-label">${reviewInstance?.commits.length}</span>                
-                                </dd>
-                            </g:if>
-                        
-                            <g:if test="${reviewInstance?.description}">
-                                <dt class="form-group">
-                                    <span id="description-label" class="property-label"><g:message code="review.description.label" default="Description" /></span>
-                                </dt>
-                                <dd>    
-                                    <span class="property-value" aria-labelledby="description-label"><g:fieldValue bean="${reviewInstance}" field="description"/></span>
-                                </dd>
-                            </g:if>
-                        </dl>
+                            <div class="col-md-10">
+                                <dl class="dl-horizontal">
+
+                                    <g:if test="${reviewInstance?.status}">
+                                    
+                                        <dt>
+                                            <span id="status-label" class="property-label"><g:message code="review.status.label" default="Status" /></span>
+                                        </dt>
+                                        <dd>                            
+                                            <span id="${Id.REVIEW_STATUS}" class="property-value" aria-labelledby="status-label">
+                                                <g:message code="${reviewInstance?.status.value()}" default="Status" />
+                                            </span>
+                                        </dd>
+                                    </g:if>
+                                
+                                    <g:if test="${reviewInstance?.repository}">
+                                        <dt>
+                                            <span id="repository-label" class="property-label"><g:message code="review.repository.label" default="Repository" /></span>
+                                        </dt>
+                                        <dd>    
+                                            <span class="property-value" aria-labelledby="repository-label">${reviewInstance?.repository?.title}</span>
+                                        </dd>
+                                    </g:if>
+                                
+                                    <g:if test="${reviewInstance?.author}">
+                                    
+                                        <dt>
+                                            <span id="author-label" class="property-label"><g:message code="review.author.label" default="Author" /></span>
+                                        </dt>
+                                        <dd>                            
+                                            <span class="property-value" aria-labelledby="author-label">${reviewInstance?.author?.username}</span>
+                                        </dd>
+                                    </g:if>
+                                
+                                    <g:if test="${reviewInstance?.commits}">
+                                        <dt>Commit count</dt>
+                                        <dd>    
+                                            <span id="commits-label" class="property-label">${reviewInstance?.commits.length}</span>                
+                                        </dd>
+                                    </g:if>
+                                
+                                </dl>
+                            </div>
+
+                            <div class="row">
+                                <h3><g:message code="review.description.label" default="Description" /></h3>
+                                <g:fieldValue bean="${reviewInstance}" field="description"/>
+                            </div>
+                        </div>
                     </div>                 
                     <div class="col-md-3">
 

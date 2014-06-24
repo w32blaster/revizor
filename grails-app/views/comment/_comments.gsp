@@ -6,7 +6,7 @@
 --%>
 <g:set var="comments" value="${Comment.findAllByReviewAndType(reviewInstance, CommentType.REVIEW)}" />
 
-<h1><g:message code="review.comments.header" default="Comments" /></h1>
+<h3><g:message code="review.comments.header" default="Comments" /></h3>
 		
 <g:each var="comment" in="${comments}">
     <g:render template="/comment/comment" model="['comment' : comment]" />

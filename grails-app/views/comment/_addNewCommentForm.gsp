@@ -6,10 +6,10 @@
 <div class="form-group" style="width: 800px;">
 
 	<g:if test="${commentType == CommentType.LINE_OF_CODE.name()}">
-		<h2><g:message code="review.comments.form.line.code" default="Your comment to this line of code" /></h2>
+		<h3><g:message code="review.comments.form.line.code" default="Your comment to this line of code" /></h3>
 	</g:if>
 	<g:else>
-		<h2><g:message code="review.comments.form.title" default="Your comment to this review" /></h2>
+		<h3><g:message code="review.comments.form.title" default="Your comment to this review" /></h3>
 	</g:else>
 
 	<textarea name="text" class="form-control" rows="3"></textarea>
