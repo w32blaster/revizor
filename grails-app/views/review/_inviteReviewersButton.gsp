@@ -16,6 +16,7 @@
           function selectUser(id) {
               if (-1 == lastChecked) {
                   $('#invite-reviewer-btn-id').removeAttr("disabled");
+                  $('#invite-reviewer-caret-id').removeAttr("disabled");
               }
               lastChecked = id;
           }
@@ -43,7 +44,7 @@
         <button id="invite-reviewer-btn-id" class="btn btn-default btn-info" disabled="disabled">
               <span class="glyphicon glyphicon-plus"></span> <g:message code="review.invite.reviwer"/>
         </button>
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <button id="invite-reviewer-caret-id" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" disabled="disabled">
           <span class="caret"></span>
           <span class="sr-only">Toggle Dropdown</span>
         </button>

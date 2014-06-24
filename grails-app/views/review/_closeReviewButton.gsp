@@ -29,7 +29,7 @@
 		</g:javascript>
 	</g:if>
 
-	<button id="close-review-id" class="btn btn-default btn-primary" <%= isAlreadyClosed ? 'disabled="disabled"' : '' %>>
+	<button id="close-review-id" class="btn btn-default btn-primary btn-block" <%= isAlreadyClosed ? 'disabled="disabled"' : '' %>>
 		<span class="glyphicon glyphicon-ok"></span> 
 		<g:message code="review.close" default="Close review" />
 	</button>
