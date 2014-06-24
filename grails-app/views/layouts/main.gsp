@@ -31,7 +31,7 @@
 
 			<div id="header" class="row" role="header">
 				<div class="col-md-12">
-					<a href="http://grails.org" class="inline-block">
+					<a href="${createLink(uri: '/')}" class="inline-block">
 						<img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/>
 					</a>
 

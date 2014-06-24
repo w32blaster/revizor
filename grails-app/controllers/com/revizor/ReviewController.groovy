@@ -43,7 +43,8 @@ class ReviewController {
                 break;                
         }
 
-        respond list, model:[reviewInstanceCount: Review.count(), reviewFilter: reviewFilter]
+        def repos = Repository.list()
+        respond list, model:[reviewInstanceCount: Review.count(), reviewFilter: reviewFilter, repos: repos]
     }
 
     def show(Review reviewInstance) {

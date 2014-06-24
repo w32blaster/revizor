@@ -30,10 +30,11 @@
 }
 
 #repository-header {
-    height: 68px; 
-    border: 1px solid grey;
+    height: 68px;
 }
-
+#repository-header H3 {
+    margin-left: 5px;
+}
 #switch-to-btn {
     float: right;
     padding-top: 15px;

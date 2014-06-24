@@ -9,14 +9,6 @@
 	</head>
 	<body>
 		
-		<nav class="navbar navbar-default" role="navigation">
-			<ul class="nav navbar-nav">
-				<li><a href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li class="active"><g:link action="index"><g:message code="${reviewFilter.value()}"  args="[session.user.username]" /></g:link></li>
-			</ul>
-		</nav>
-		
 		<div id="list-review" class="content scaffold-list" role="main">
 			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
 			
@@ -36,20 +28,43 @@
 				<!-- My reviews, where I am as an author -->
 				<% def cssClassMy = (params.filter == ReviewFilter.ONLY_MINE.toString()) ? 'active' : '' %>
 				<g:link controller="review" action="index" params="[filter: ReviewFilter.ONLY_MINE]" class="btn btn-default btn-primary ${cssClassMy}">
-					<span class="glyphicon glyphicon-pencil"></span> My reviews
+					<span class="glyphicon glyphicon-pencil"></span> 
+					<g:message code="reviews.only.mine" default="My reviews" />
 				</g:link>
 
 				<!-- My invitations and reviews where I am a reviewer -->
 				<% def cssClassInv = (params.filter == ReviewFilter.WHERE_I_AM_REVIEWER.toString()) ? 'active' : '' %>
 				<g:link controller="review" action="index" params="[filter: ReviewFilter.WHERE_I_AM_REVIEWER]" class="btn btn-default btn-primary ${cssClassInv}">
-					<span class="glyphicon glyphicon-thumbs-up"></span> My inspections
+					<span class="glyphicon glyphicon-thumbs-up"></span> 
+					<g:message code="reviews.where.i.reviewer" default="My inspections" />
 				</g:link>
 
 				<!-- Finished (archived) reviews -->
 				<% def cssClassArch = (params.filter == ReviewFilter.ARCHIVED.toString()) ? 'active' : '' %>
 				<g:link controller="review" action="index" params="[filter: ReviewFilter.ARCHIVED]" class="btn btn-default btn-primary ${cssClassArch}">
-					<span class="glyphicon glyphicon-inbox"></span> Archived
+					<span class="glyphicon glyphicon-inbox"></span> 
+					<g:message code="reviews.archived" default="My reviews" />
 				</g:link>
+
+				<!-- All reviews -->
+				<% def cssClassAll = (params.filter == ReviewFilter.ALL.toString()) ? 'active' : '' %>
+				<g:link controller="review" action="index" params="[filter: ReviewFilter.ALL]" class="btn btn-default btn-primary ${cssClassAll}">
+					<g:message code="reviews.all" default="All reviews" />
+				</g:link>
+
+			</div>
+
+			<!-- Create new review -->
+			<div class="btn-group" style="float: right;">
+			  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+			  	<g:message code="reviews.create.new" default="Create new" /> 
+			  	<span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu" role="menu">
+			  	<g:each var="repo" in="${repos}">
+			    	<li><a href="${createLink(controller: 'review', action: 'create', id: repo.ident())}">${repo.title}</a></li>
+			    </g:each>
+			  </ul>
 			</div>
 
 			<table class="table">
@@ -71,7 +86,12 @@
 						
 							<td><g:link action="show" id="${reviewInstance.id}">${fieldValue(bean: reviewInstance, field: "title")}</g:link></td>
 						
-							<td>${fieldValue(bean: reviewInstance, field: "repository")}</td>
+							<td class="reviewer">
+							    <g:if test="${reviewInstance?.repository.image}">
+							        <img height="32" width="32" class="avatar img-rounded" src="${createLink(controller:'repository', action: 'logo_image', id: reviewInstance?.repository.ident())}" />
+							    </g:if>
+								<span class="property-value" aria-labelledby="reviewers-label">${reviewInstance.repository.title}</span>
+							</td>
 						
 							<td><g:render template="reviewer" model="['reviewer' : reviewInstance.author]" /></td>					
 							
