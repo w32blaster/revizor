@@ -1,0 +1,40 @@
+#content-container
+{
+    position: absolute;
+    top: 88px;
+    bottom:0;
+    left:0;
+    right:0;
+}
+
+#page
+{
+    min-height: 100%;      
+}
+
+.full-height {
+    height: 100%;
+}
+
+#repo-tree-id {
+    position: absolute;
+    top: 88px;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+#notification-feed-container {
+    height: 100%;
+    overflow: auto;
+}
+
+#repository-header {
+    height: 68px; 
+    border: 1px solid grey;
+}
+
+#switch-to-btn {
+    float: right;
+    padding-top: 15px;
+}

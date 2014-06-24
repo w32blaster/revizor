@@ -1,0 +1,143 @@
+
+.inline-block {
+    display: inline-block;
+}
+
+html, body
+{
+     height: 100%;
+     margin: 0px;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row {
+    margin-bottom: 20px;
+}
+.tree-context-button {
+    position: absolute;
+    right: 5px;
+}
+
+#login-container {
+	width: 500px;
+}
+
+#header {
+    /*width: 100%;
+    height: 68px;*/
+    background: grey;
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#current-account-block {
+    float: right;
+}
+
+/* modified file tree */
+
+.tree-leaf .added {
+    color: green;
+} 
+
+.tree-leaf .deleted {
+    color: grey;
+    text-decoration:line-through;
+}
+
+.tree-leaf .modified {
+      
+}
+.tree-leaf .new {
+    text-weight: bold;
+}
+.tree-node .ico {
+    font-size: 0.8em;
+}
+
+.line {
+	color: #3F3F3F;
+	background: none;
+}
+.line-deleted {
+	background-color: rgb(255, 239, 239);
+	color: red;
+}
+.line-added {
+	background-color: rgb(209, 255, 187);
+	color: green;
+}
+
+#diff-panel-id .btn-comment {
+    visibility: hidden;
+    margin-right: 10px;
+}
+#diff-panel-id tr:hover .btn-comment {
+    visibility: visible;
+}
+
+.btn-comment-reply {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+}
+
+.comment-container {
+    border: 1px solid grey;
+    min-height: 74px;
+    width: 100%;
+    position: relative;
+    display: block;
+    background: rgb(255, 255, 203) !important;
+    border: 1px rgb(226, 226, 159) solid !important;
+    padding: 5px;
+}
+
+.code-table TD {
+    vertical-align: top;
+}
+
+#reviewers-container-id {
+    margin-bottom: 10px; 
+}
+ 
+.reviewer {
+    margin: 3px;
+}
+.reviewer SPAN{
+    margin-left: 3px;
+}
+.reviewer .accepted {
+    color: green;
+}
+.reviewer .disaccepted {
+    color: red;
+}
+.notification-link {
+    font-weight: bold;
+}
+.comment-container I A {
+    font-weight: normal;
+}
+
+.notification {
+    padding: 5px;
+    border-bottom: 1px solid #E7E6E7;
+}
+
+.notification .glyphicon-thumbs-up {
+    color: green;
+}
+
+.notification .glyphicon-thumbs-down {
+    color: red;
+}
+
+#load-more-btn {
+    margin-top: 10px;
+}

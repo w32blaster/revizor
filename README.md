@@ -1,4 +1,4 @@
 revizor
 =======
 
-Revizor - code review tool
+Revizor is a code review tool written using Groovy on Grails
