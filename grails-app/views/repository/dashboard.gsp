@@ -45,6 +45,10 @@
 						  	<g:each var="repo" in="${repos}">
 						    	<li><a href="${createLink(controller: 'repository', action: 'dashboard', id: repo.ident())}">${repo.title}</a></li>
 						    </g:each>
+
+						    <li role="presentation" class="divider"></li>
+    						<li role="presentation"><a role="menuitem" tabindex="-1" href="${createLink(controller: 'repository', action: 'create')}">
+    							<g:message code="repository.create.new" /></a></li>
 						  </ul>
 						</div>
 
