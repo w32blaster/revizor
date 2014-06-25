@@ -11,7 +11,7 @@ class DiffTagLib {
 	
     static namespace = "sc"
 	private static final int SYMBOLS_TO_SKIP = "--- a/".length()
-	private static final int INDENT_TREE = 20; 
+	private static final int INDENT_TREE = 10; 
 
 	/**
 	 * Prints the tree of modified files belonging to a given commit

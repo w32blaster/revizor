@@ -9,13 +9,6 @@
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<nav class="navbar navbar-default" role="navigation">
-			<ul class="nav navbar-nav">
-				<li><a href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li class="active"><g:link action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</nav>
-		
 		
 		<div class="row">
 		
@@ -41,8 +34,16 @@
 				  <div class="panel-body">
 				  	
 				  	<a href="${createLink(controller: 'review', action: 'show', id: reviewInstance.id)}" class="btn btn-info"><i class="icon-white icon-arrow-left"></i> Back</a>
+                    
+                    <%-- 
+                    
+                    Is not implemented yet.
+                    Issue: https://github.com/w32blaster/revizor/issues/8
+
 				  	<g:render template="viewTypeButtons"></g:render>
-				  		
+				  	
+                    --%>
+
 				  </div>
 				</div>
 				

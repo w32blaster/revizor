@@ -56,6 +56,9 @@ html, body
 .tree-leaf .new {
     text-weight: bold;
 }
+.tree-node {
+    font-size: 0.8em;
+}
 .tree-node .ico {
     font-size: 0.8em;
 }
