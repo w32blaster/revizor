@@ -1,4 +1,5 @@
 <%@ page import="com.revizor.ReviewFilter" %>
+<%@ page import="com.revizor.CommentsFilter" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -31,7 +32,7 @@
 						</g:link>
 
 						<!-- Comments -->
-						<g:link controller="comment" action="index" class="btn btn-default btn-primary">
+						<g:link controller="comment" action="index" params="[filter: CommentsFilter.ONLY_MINE]" class="btn btn-default btn-primary">
 							<span class="glyphicon glyphicon-comment"></span> Comments
 						</g:link>
 

@@ -1,5 +1,6 @@
 
 <%@ page import="com.revizor.Comment" %>
+<%@ page import="com.revizor.CommentsFilter" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -8,59 +9,55 @@
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<nav class="navbar navbar-default" role="navigation">
-			<ul class="nav navbar-nav">
-				<li><a href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li class="active"><g:link action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</nav>
-		
+
 		<div id="list-comment" class="content scaffold-list" role="main">
 			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
+
 			<g:if test="${flash.message}">
-				<div class="message" role="status">${flash.message}</div>
+				<div class="alert alert-info">${flash.message}</div>
 			</g:if>
-			<table>
-			<thead>
-					<tr>
-					
-						<th><g:message code="comment.author.label" default="Author" /></th>
-					
-						<g:sortableColumn property="text" title="${message(code: 'comment.text.label', default: 'Text')}" />
-					
-						<g:sortableColumn property="commit" title="${message(code: 'comment.commit.label', default: 'Commit')}" />
-					
-						<g:sortableColumn property="fileName" title="${message(code: 'comment.fileName.label', default: 'File Name')}" />
-					
-						<g:sortableColumn property="lineOfCode" title="${message(code: 'comment.lineOfCode.label', default: 'Line Of Code')}" />
-					
-						<th><g:message code="comment.review.label" default="Review" /></th>
-					
-					</tr>
-				</thead>
-				<tbody>
-				<g:each in="${commentInstanceList}" status="i" var="commentInstance">
-					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
-						<td><g:link action="show" id="${commentInstance.id}">${fieldValue(bean: commentInstance, field: "author")}</g:link></td>
-					
-						<td>${fieldValue(bean: commentInstance, field: "text")}</td>
-					
-						<td>${fieldValue(bean: commentInstance, field: "commit")}</td>
-					
-						<td>${fieldValue(bean: commentInstance, field: "fileName")}</td>
-					
-						<td>${fieldValue(bean: commentInstance, field: "lineOfCode")}</td>
-					
-						<td>${fieldValue(bean: commentInstance, field: "review")}</td>
-					
-					</tr>
-				</g:each>
-				</tbody>
-			</table>
-			<div class="pagination">
-				<g:paginate total="${commentInstanceCount ?: 0}" />
+
+			<div class="container">
+				<div class="row">
+					<div class="btn-group">
+
+						<!-- My comments -->
+						<% def cssClassMy = (params.filter == CommentsFilter.ONLY_MINE.toString()) ? 'active' : '' %>
+						<g:link action="index" params="[filter: CommentsFilter.ONLY_MINE]" class="btn btn-default btn-primary ${cssClassMy}">
+							<span class="glyphicon glyphicon-pencil"></span> 
+							<g:message code="CommentsFilter.ONLY_MINE.value()" default="My comments" />
+						</g:link>
+
+						<!-- replies to me -->
+						<% def cssClassReplies = (params.filter == CommentsFilter.REPLIES_TO_ME.toString()) ? 'active' : '' %>
+						<g:link action="index" params="[filter: CommentsFilter.REPLIES_TO_ME]" class="btn btn-default btn-primary ${cssClassReplies}">
+							<span class="glyphicon glyphicon-thumbs-up"></span> 
+							<g:message code="CommentsFilter.REPLIES_TO_ME.value()" default="Replies to me" />
+						</g:link>
+
+						<!-- All comments -->
+						<% def cssClassAll = (params.filter == CommentsFilter.ALL.toString()) ? 'active' : '' %>
+						<g:link action="index" params="[filter: CommentsFilter.ALL]" class="btn btn-default btn-primary ${cssClassAll}">
+							<g:message code="CommentsFilter.ALL.value()" default="All comments" />
+						</g:link>
+
+					</div>
+				</div>
+
+				<div class="row">
+					<g:each var="comment" in="${commentInstanceList}">
+						
+						<g:link controller="review" action="show" id="${comment.review.id}" class="btn btn-default btn-xs">
+							${comment.review.title}
+						</g:link>
+					    <g:render template="/comment/comment" model="['comment' : comment]" />
+					    </br>
+					</g:each>
+				</div>
+
+				<div class="pagination">
+					<g:paginate total="${commentInstanceCount ?: 0}" />
+				</div>
 			</div>
 		</div>
 	</body>

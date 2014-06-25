@@ -17,7 +17,30 @@ class CommentController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Comment.list(params), model:[commentInstanceCount: Comment.count()]
+
+        def list
+        def commentsFilter = params.filter as CommentsFilter
+        switch(commentsFilter) {
+            
+            case CommentsFilter.ALL:
+                list = Comment.list(params);
+                break;
+
+            case CommentsFilter.ONLY_MINE:
+                list = Comment.findAllByAuthor(session.user);
+                break;
+
+            case CommentsFilter.REPLIES_TO_ME:
+                // to be implemented: https://github.com/w32blaster/revizor/issues/7
+                list = Comment.list(params);
+                break;
+
+            default:
+                list = Comment.list(params);
+                break;                
+        }
+
+        respond list, model:[commentInstanceCount: Comment.count()]
     }
 
     def show(Comment commentInstance) {
@@ -124,4 +147,15 @@ class CommentController {
             notificationService.create(session.user, Action.CREATE_COMMENT_TO_LINE_OF_CODE, [comment.author, comment.fileName, comment.review, comment])
         }
     }
+}
+
+enum CommentsFilter {
+    ALL("comments.all"),
+    ONLY_MINE("comments.mine"),
+    REPLIES_TO_ME("comments.replies"),
+
+    CommentsFilter(String value) { this.value = value }
+
+    private final String value
+    public String value() { return value }
 }
