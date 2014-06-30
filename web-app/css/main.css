@@ -144,3 +144,9 @@ html, body
 #load-more-btn {
     margin-top: 10px;
 }
+
+.listOfCommits {
+    height: 400px;
+    overflow-y: auto;
+    max-width: 800px;
+}

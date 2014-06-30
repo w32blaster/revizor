@@ -11,50 +11,24 @@
 
 </div>
 
-<div class="form-group ${hasErrors(bean: reviewInstance, field: 'author', 'error')} required">
-	<label for="author">
-		<g:message code="review.author.label" default="Author" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:select id="author" name="author.id" from="${com.revizor.User.list()}" optionKey="id" required="" value="${reviewInstance?.author?.id}" class="many-to-one"/>
-
+<div class="form-group">
+    <label for="author">
+        <g:message code="review.author.label" default="Author" />
+    </label>
+    <g:render template="reviewer" model="['reviewer' : session.user]" />
 </div>
 
-<div class="form-group ${hasErrors(bean: reviewInstance, field: 'author', 'error')} required">
-	<sc:selectCommitsForReview repo="${repository}" />
-</div>
 
-<div class="form-group ${hasErrors(bean: reviewInstance, field: 'comments', 'error')} ">
-	<label for="comments">
-		<g:message code="review.comments.label" default="Comments" />
-		
-	</label>
-	
-<ul class="one-to-many">
-<g:each in="${reviewInstance?.comments?}" var="c">
-    <li><g:link controller="comment" action="show" id="${c.id}">${c?.encodeAsHTML()}</g:link></li>
-</g:each>
-<li class="add">
-<g:link controller="comment" action="create" params="['review.id': reviewInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'comment.label', default: 'Comment')])}</g:link>
-</li>
-</ul>
-
-
-</div>
-
-<div class="form-group ${hasErrors(bean: reviewInstance, field: 'commits', 'error')} required">
-	<label for="commits">
-		<g:message code="review.commits.label" default="Commits" />
-		<span class="required-indicator">*</span>
-	</label>
-	
-
+<div class="form-group required listOfCommits">
+    <label for="commits">
+        <g:message code="review.commits.label" default="Commits" />
+    </label>
+    <sc:selectCommitsForReview repo="${repository}" selected="${params.selected}" />
 </div>
 
 <div class="form-group ${hasErrors(bean: reviewInstance, field: 'description', 'error')} ">
 	<label for="description">
 		<g:message code="review.description.label" default="Description" />
-		
 	</label>
 	<g:textField class="form-control" name="description" value="${reviewInstance?.description}"/>
 
@@ -65,8 +39,8 @@
 		<g:message code="review.reviewers.label" default="Reviewers" />
 		
 	</label>
-	<g:select name="reviewers" from="${com.revizor.User.list()}" multiple="multiple" optionKey="id" size="5" value="${reviewInstance?.reviewers*.id}" class="many-to-many"/>
 
+	<g:select name="reviewers" from="${com.revizor.User.list()}" multiple="multiple" optionKey="id" size="5" value="${reviewInstance?.reviewers*.id}" class="many-to-many"/>
 </div>
 
 

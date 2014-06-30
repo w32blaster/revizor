@@ -15,15 +15,18 @@ class CommitSelectorTagLib {
         _printCommits(attrs, { list ->
             
             int count = 0;
-            out << "<table>"
+            def isChecked = "";
+            out << "<ul class='list-group'>"
             for (RevCommit rev : list) {
-                out << "<tr><td width='20'><input type='checkbox' name='commits' value='${rev.name()}'></td>"
-                out << "<td class='truncate'> ${rev.name().subSequence(0, 7)} ${rev.getShortMessage() }</td>"
-                out << "<td>by ${rev.getAuthorIdent().getName()}</td></tr>" /* rev.getId().getName() */
+                isChecked = (rev.name().equals(attrs.selected)) ? "checked" : ""
+                out << "<li class='list-group-item'><input type='checkbox' name='commits' value='${rev.name()}' $isChecked />"
+                out << "<span class='truncate'> ${rev.name().subSequence(0, 7)} ${rev.getShortMessage() }</span> "
+                out << "<span class='label label-default'>${rev.getAuthorIdent().getName()}</span></li>" /* rev.getId().getName() */
                 count++;
+                isChecked = ""
             }
+            out << "</ul>"
             out << "<tr><td colspan='2'>Had " + count + " commits overall on current branch</td></tr>"
-            out << "</table>"
 
         })
     }
@@ -37,7 +40,7 @@ class CommitSelectorTagLib {
                         <li class="list-group-item truncate" title="${rev.name().subSequence(0, 7)}">
                             ${rev.getShortMessage() } 
                             <span class="label label-default">${rev.getAuthorIdent().getName()}</span>
-                            <a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident())}" class="btn btn-default btn-xs tree-context-button">
+                            <a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.name()])}" class="btn btn-default btn-xs tree-context-button">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </a>
                          </li>

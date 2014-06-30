@@ -1,5 +1,5 @@
 
-<%@ page import="com.revizor.Review" %>
+<%@ page import="com.revizor.ReviewFilter; com.revizor.Review" %>
 <%@ page import="com.revizor.CommentType" %>
 <%@ page import="com.revizor.ReviwerStatus" %>
 <%@ page import="com.revizor.utils.Id" %>
@@ -45,7 +45,7 @@
 
                     <h1>                    
                         <small>
-                            <g:link action="index" class="btn btn-default btn-success btn-xs">
+                            <g:link action="index" params="[filter: ReviewFilter.ONLY_MINE]" class="btn btn-default btn-success btn-xs">
                                 <span class="glyphicon glyphicon-arrow-left"></span>  
                                 <g:message code="default.list.label" args="[entityName]" />
                             </g:link>
