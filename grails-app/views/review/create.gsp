@@ -30,6 +30,7 @@
 
 				<g:hiddenField name="repository" value="${repository?.id}" />
 				<g:hiddenField name="status" value="${ReviewStatus.OPEN}" />
+				<g:hiddenField name="author.id" value="${session.user.id}" />
 
 				<fieldset class="buttons">
 					<g:submitButton class="btn btn-default btn-success" name="create" value="${message(code: 'default.button.create.label', default: 'Create')}" />

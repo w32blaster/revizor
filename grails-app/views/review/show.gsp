@@ -142,13 +142,11 @@
                     
                      
                 </div>
-                
-                <div class="row">   
-                    <g:render template="/comment/comments" model="['commentType': CommentType.REVIEW]" />
-                </div>
-                
             </div>
             
+            <div class="row">   
+                <g:render template="/comment/comments" model="['commentType': CommentType.REVIEW]" />
+            </div>
             
         </div>
     </body>

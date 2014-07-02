@@ -74,9 +74,6 @@ class ReviewController {
             redirect(action: "index")
         }
         else {
-            //respond new Review(params)
-            //def reviewInstance = new Review(params)
-            //reviewInstance.properties = params
             respond new Review(params), model:[repository: Repository.read(params.id)]
         }
     }

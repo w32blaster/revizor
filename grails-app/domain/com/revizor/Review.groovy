@@ -26,7 +26,7 @@ class Review implements INotifiable {
     static constraints = {
         title(nullable: false)
         repository(nullable: false)
-        author(nullable: true)
+        author(nullable: false)
         reviewers(nullable: true)
     }
 

@@ -13,16 +13,28 @@
       <g:javascript>
           var lastChecked = -1;
 
+          var _changeStatusOfButtonGroup = function(areEnabled) {
+            if (areEnabled) {
+              $('#invite-reviewer-btn-id').removeAttr("disabled");
+              $('#invite-reviewer-caret-id').removeAttr("disabled");
+            }
+            else {
+              $('#invite-reviewer-btn-id').attr("disabled", "disabled");
+              $('#invite-reviewer-caret-id').attr("disabled", "disabled");
+            }
+          };
+
           function selectUser(id) {
               if (-1 == lastChecked) {
-                  $('#invite-reviewer-btn-id').removeAttr("disabled");
-                  $('#invite-reviewer-caret-id').removeAttr("disabled");
+                  _changeStatusOfButtonGroup(true);
               }
               lastChecked = id;
           }
 
           $('#invite-reviewer-btn-id').click(function(){
               if (-1 != lastChecked) {
+                  _changeStatusOfButtonGroup(false);
+                  
                   var jqxhr = $.post( "${createLink(controller: 'review', action: 'inviteReviewer')}", { user: lastChecked, review: ${reviewInstance.id} })
                         .done(function(data) {
                           $('#${Id.REVIEWER_CONTAINER}').append(data);
@@ -31,7 +43,7 @@
                           alert(data.statusText + ": " + data.responseText);
                         })
                         .always(function() {
-                          _changeStatusOfButtonGroup(resolution === "${ReviwerStatus.DISAPPROVE}");
+                          _changeStatusOfButtonGroup(true);
                       });
 
               }
@@ -44,7 +56,7 @@
         <button id="invite-reviewer-btn-id" class="btn btn-default btn-info" disabled="disabled">
               <span class="glyphicon glyphicon-plus"></span> <g:message code="review.invite.reviwer"/>
         </button>
-        <button id="invite-reviewer-caret-id" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" disabled="disabled">
+        <button id="invite-reviewer-caret-id" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
           <span class="caret"></span>
           <span class="sr-only">Toggle Dropdown</span>
         </button>

@@ -6,11 +6,13 @@
 --%>
 <g:set var="comments" value="${Comment.findAllByReviewAndType(reviewInstance, CommentType.REVIEW)}" />
 
-<h3><g:message code="review.comments.header" default="Comments" /></h3>
-		
-<g:each var="comment" in="${comments}">
-    <g:render template="/comment/comment" model="['comment' : comment]" />
-</g:each>
+<g:if test="${comments}">
+    <h3><g:message code="review.comments.header" default="Comments" /></h3>
+            
+    <g:each var="comment" in="${comments}">
+        <g:render template="/comment/comment" model="['comment' : comment]" />
+    </g:each>
+</g:if>
 
 <g:form id='add-new-comment-form-id' role="form" url="[controller: 'comment', action:'save', format: 'html']">
     
