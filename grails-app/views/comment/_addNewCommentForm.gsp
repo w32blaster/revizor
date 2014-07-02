@@ -12,7 +12,7 @@
 		<h3><g:message code="review.comments.form.title" default="Your comment to this review" /></h3>
 	</g:else>
 
-	<textarea name="text" class="form-control" rows="3"></textarea>
+	<textarea data-provide="markdown" name="text" class="form-control" rows="5"></textarea>
 </div>
 
 <div class="form-group" style="width: 800px;">

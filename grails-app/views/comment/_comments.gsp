@@ -4,6 +4,8 @@
 <%-- 
 	The set of comments with the form to post new one
 --%>
+<g:javascript library="markdown"/>
+
 <g:set var="comments" value="${Comment.findAllByReviewAndType(reviewInstance, CommentType.REVIEW)}" />
 
 <g:if test="${comments}">

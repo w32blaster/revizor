@@ -10,7 +10,8 @@
   </a>
   <div class="media-body">
     <h4 class="media-heading">${comment.author?.username}</h4>
-    ${comment.text}
+    
+    <markdown:renderHtml>${comment.text}</markdown:renderHtml>
 
     <button class="btn btn-default btn-xs btn-comment-reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</button>
   </div>
