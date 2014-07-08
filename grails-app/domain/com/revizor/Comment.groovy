@@ -1,11 +1,13 @@
 package com.revizor
 
 import grails.util.GrailsNameUtils
+import org.springframework.context.i18n.LocaleContextHolder as LCH
 
 /**
  * One comment. Could be comment to a line of code or to the whole review
  */
 class Comment implements INotifiable {
+
 
     String text
     // in case the current comment is for a specific commit, this field should be specified (SHA value)
@@ -35,15 +37,20 @@ class Comment implements INotifiable {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String getNotificationLink() {
-		return g.createLink(controller: GrailsNameUtils.getShortName(this.class).toLowerCase(), action: 'show', id: this.ident());
+	public String getDetailsAsHtml() {
+		def grailsApplication = this.domainClass.grailsApplication
+        def ctx = grailsApplication.mainContext
+        def markdown = ctx.getBean('com.naleid.grails.MarkdownTagLib')
+        return markdown.renderHtml(text: this.text);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	public String getNotificationName() {
-		return this.text;
+        def grailsApplication = this.domainClass.grailsApplication
+        def ctx = grailsApplication.mainContext
+        return ctx.getMessage("comments.one", null, LCH.getLocale())
 	}
 }
 

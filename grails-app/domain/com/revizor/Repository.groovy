@@ -41,8 +41,8 @@ class Repository extends HasImage implements INotifiable {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String getNotificationLink() {
-		return g.createLink(controller: GrailsNameUtils.getShortName(this.class).toLowerCase(), action: 'show', id: this.ident());
+	public String getDetailsAsHtml() {
+		return null;
 	}
 	
 	/**

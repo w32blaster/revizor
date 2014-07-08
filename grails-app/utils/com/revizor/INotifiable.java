@@ -11,11 +11,16 @@ package com.revizor;
 public interface INotifiable {
 
 	/**
-	 * Returns an URL-link that could be used to navigate to this object directly
+	 * At the end of the notification message, the actor may present detailed view. 
+	 *
+	 * For example, comments. A notification said that "user A left a comment" and after that goes
+	 * formatted comment itself.
 	 * 
-	 * @return
+	 * Optional.
+	 *
+	 * @return html detailed view 
 	 */
-	String getNotificationLink();
+	String getDetailsAsHtml();
 	
 	/**
 	 * Returns human readable name for the current object

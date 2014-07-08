@@ -10,6 +10,11 @@
   </a>
 
   <div class="media-body">
-        ${message.decodeHTML()}
+        ${message.decodeHTML()} 
+        <br />
+        
+        <g:if test="${details}">
+            <blockquote>${details}</blockquote>
+        </g:if>
   </div>
 </div>

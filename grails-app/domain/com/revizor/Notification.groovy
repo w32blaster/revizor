@@ -5,7 +5,7 @@ import com.revizor.User
 
 class Notification {
 
-    // main actor, who performed an action
+    // who performed an action (main actor)
     User object
 
     // when it happened
@@ -13,6 +13,9 @@ class Notification {
 
     // what happened
     Action action
+
+    // which actor is used for details (this actor should inplement getDetailsAsHtml() method)
+    int detailedActorIndex = -1
 
     // with whom/what (could be any object with any type)
     static hasMany = [

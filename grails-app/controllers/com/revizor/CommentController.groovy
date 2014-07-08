@@ -138,13 +138,13 @@ class CommentController {
 
     def saveNotification(comment) {
         if (comment.replyTo) {
-            notificationService.create(session.user, Action.CREATE_COMMENT_REPLY_TO, [comment.author, comment.replyTo.author, comment])
+            notificationService.create(session.user, Action.CREATE_COMMENT_REPLY_TO, [comment.author, comment.replyTo.author, comment], 2)
         }
         else if (comment.type == CommentType.REVIEW) {
-            notificationService.create(session.user, Action.CREATE_COMMENT_TO_REVIEW, [comment.author, comment.review, comment])
+            notificationService.create(session.user, Action.CREATE_COMMENT_TO_REVIEW, [comment.author, comment, comment.review], 1)
         }
         else if (comment.type == CommentType.LINE_OF_CODE) {
-            notificationService.create(session.user, Action.CREATE_COMMENT_TO_LINE_OF_CODE, [comment.author, comment.fileName, comment.review, comment])
+            notificationService.create(session.user, Action.CREATE_COMMENT_TO_LINE_OF_CODE, [comment.author, comment, comment.fileName, comment.review], 1)
         }
     }
 }

@@ -19,14 +19,32 @@ class NotificationTagLib {
         def offset = attrs.offset ?: 0
         def notifications = notificationService.feed(Constants.MAX_PER_REQUEST, offset)
 
+        /*
+         * Build each message. Please refer to the JavaDocs in the file NotificaionObject.groovy
+         * for details.
+         */
         notifications.each { notification ->
 
-            def messageParams = notification.actors.sort { it.idx }.collect { getHtmlMessage(it) }
-            def msg = g.message(code: notification.action.value(), args: messageParams, encodeAs: 'None')
+            def actors = notification.actors.sort { it.idx }
 
-            out << g.render(template: "/notification/notification", model: ['mainActor': notification.object, 'message': msg])
+            def messageParams = actors.collect { getHtmlMessage(it) }
+            def msg = g.message(code: notification.action.value(), args: messageParams, encodeAs: 'None')
+            def details = (notification.detailedActorIndex > -1) ? getDetailedHtmlBlock(actors.get(notification.detailedActorIndex)) : null
+
+            out << g.render(template: "/notification/notification", model: [
+                'mainActor': notification.object, 
+                'message': msg,
+                'details': details])
         }
 
+    }
+
+    /**
+     * Returns the HTML for the detailes. Some actors need to be added to the notification as detailed view
+     */
+    private String getDetailedHtmlBlock(object) {
+        def actorObject = object.resoreInstance();
+        return actorObject.getDetailsAsHtml()
     }
 
     private String getHtmlMessage(object) {
