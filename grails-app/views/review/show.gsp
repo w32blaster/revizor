@@ -119,7 +119,7 @@
 
                             <div class="row">
                                 <h3><g:message code="review.description.label" default="Description" /></h3>
-                                <g:fieldValue bean="${reviewInstance}" field="description"/>
+                                <markdown:renderHtml>${reviewInstance.description}</markdown:renderHtml>
                             </div>
                         </div>
                     </div>                 

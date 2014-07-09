@@ -1,6 +1,7 @@
 <%@ page import="com.revizor.Review" %>
 
 
+<g:javascript library="markdown"/>
 
 <div class="form-group ${hasErrors(bean: reviewInstance, field: 'title', 'error')} ">
 	<label for="title">
@@ -30,8 +31,8 @@
 	<label for="description">
 		<g:message code="review.description.label" default="Description" />
 	</label>
-	<g:textField class="form-control" name="description" value="${reviewInstance?.description}"/>
-
+    <textarea data-provide="markdown" name="description" class="form-control" rows="5">${reviewInstance?.description}</textarea>
+	
 </div>
 
 <div class="form-group ${hasErrors(bean: reviewInstance, field: 'reviewers', 'error')} ">
