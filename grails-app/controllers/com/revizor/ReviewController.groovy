@@ -166,7 +166,7 @@ class ReviewController {
         }
 
         def reviewerObj = review.findReviewerByUser(session.user) ?: new Reviewer(reviewer: session.user);
-        def isFirstResolution = (null == reviewerObj.status)
+        def isFirstResolution = (null == reviewerObj.status || reviewerObj.status == ReviwerStatus.INVITED)
         def oldStatus = isFirstResolution ? ReviwerStatus.INVITED : reviewerObj.status;
 
         reviewerObj.status = reviewStatus;
