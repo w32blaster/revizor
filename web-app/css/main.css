@@ -103,6 +103,7 @@ html, body
 
 .code-table TD {
     vertical-align: top;
+    padding: 0 3px;
 }
 
 #reviewers-container-id {
