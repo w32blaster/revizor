@@ -64,6 +64,7 @@ class CommentController {
             return
         }
 
+        commentInstance.text = commentInstance.text.encodeAsHTML()
         commentInstance.save flush:true
 
         saveNotification(commentInstance)

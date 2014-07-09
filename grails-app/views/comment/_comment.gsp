@@ -11,7 +11,7 @@
   <div class="media-body">
     <h4 class="media-heading">${comment.author?.username}</h4>
     
-    <markdown:renderHtml>${comment.text}</markdown:renderHtml>
+    <markdown:renderHtml>${comment.text.decodeHTML()}</markdown:renderHtml>
 
     <button class="btn btn-default btn-xs btn-comment-reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</button>
   </div>

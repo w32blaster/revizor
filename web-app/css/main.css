@@ -141,6 +141,10 @@ html, body
     color: red;
 }
 
+.notification BLOCKQUOTE{
+    font-size: 14px;
+}
+
 #load-more-btn {
     margin-top: 10px;
 }
