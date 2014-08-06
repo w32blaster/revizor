@@ -18,7 +18,7 @@ environments {
     development {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop','update'
-            url = "jdbc:mysql://localhost/stickyCapes"
+            url = "jdbc:mysql://localhost/revizor"
             driverClassName = "com.mysql.jdbc.Driver"
             username = "root"
             password = ""
