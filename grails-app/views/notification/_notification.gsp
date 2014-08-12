@@ -14,7 +14,7 @@
         <br />
         
         <g:if test="${details}">
-            <blockquote>${details}</blockquote>
+            <blockquote><emoji:toHtml size="22">${details}</emoji:toHtml></blockquote>
         </g:if>
   </div>
 </div>

@@ -10,12 +10,12 @@
 	<body>
 		
 		<g:set var="notificationContainerID" value="notification-feed-container" />
-		<div id="${notificationContainerID}" class="col-md-6 full-height">
+		<div id="${notificationContainerID}" class="col-md-4 full-height">
 			
 			<g:render template="/notification/notificationFeed" />
 
 		</div>
-		<div class="col-md-6 full-height">
+		<div class="col-md-8 full-height">
 			<div class="row">
 				<div id="repository-header" class="col-md-12">
 
