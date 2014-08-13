@@ -1,10 +1,6 @@
 package revizor
 
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder
-import org.eclipse.jgit.lib.Repository
-import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.revwalk.RevCommit
-import org.eclipse.jgit.internal.storage.file.FileRepository
+import com.revizor.repos.Commit
 
 class CommitSelectorTagLib {
 
@@ -17,11 +13,11 @@ class CommitSelectorTagLib {
             int count = 0;
             def isChecked = "";
             out << "<ul class='list-group'>"
-            for (RevCommit rev : list) {
-                isChecked = (rev.name().equals(attrs.selected)) ? "checked" : ""
-                out << "<li class='list-group-item'><input type='checkbox' name='commits' value='${rev.name()}' $isChecked />"
-                out << "<span class='truncate'> ${rev.name().subSequence(0, 7)} ${rev.getShortMessage() }</span> "
-                out << "<span class='label label-default'>${rev.getAuthorIdent().getName()}</span></li>" /* rev.getId().getName() */
+            for (Commit rev : list) {
+                isChecked = (rev.id.equals(attrs.selected)) ? "checked" : ""
+                out << "<li class='list-group-item'><input type='checkbox' name='commits' value='${rev.id}' $isChecked />"
+                out << "<span class='truncate'> ${rev.id.subSequence(0, 7)} ${rev.message }</span> "
+                out << "<span class='label label-default'>${rev.author.getName()}</span></li>" /* rev.getId().getName() */
                 count++;
                 isChecked = ""
             }
@@ -35,12 +31,12 @@ class CommitSelectorTagLib {
         _printCommits(attrs, { list ->
 
             out << "<ul class='list-group'>"
-            for (RevCommit rev : list) {
+            for (Commit rev : list) {
                 out << """
-                        <li class="list-group-item truncate" title="${rev.name().subSequence(0, 7)}">
-                            ${rev.getShortMessage() } 
-                            <span class="label label-default">${rev.getAuthorIdent().getName()}</span>
-                            <a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.name()])}" class="btn btn-default btn-xs tree-context-button">
+                        <li class="list-group-item truncate" title="${rev.id.subSequence(0, 7)}">
+                            ${rev.message } 
+                            <span class="label label-default">${rev.author}</span>
+                            <a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.id])}" class="btn btn-default btn-xs tree-context-button">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </a>
                          </li>

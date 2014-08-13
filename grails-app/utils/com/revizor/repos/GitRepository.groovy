@@ -10,6 +10,8 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser
 import org.eclipse.jgit.lib.ObjectReader
 import org.eclipse.jgit.diff.DiffFormatter
 
+import com.revizor.repos.Commit
+
 /**
  * Implementation for the GIT repositories
  */
@@ -54,7 +56,13 @@ class GitRepository implements IRepository {
                 .all()
                 .call()
 
-        return logs
+        return logs.collect { 
+            new Commit(
+                id: it.name(),
+                parents: it.getParents(),
+                author: it.getAuthorIdent().getName(),
+                message: it.getShortMessage()
+            )}
     }
 
     /**

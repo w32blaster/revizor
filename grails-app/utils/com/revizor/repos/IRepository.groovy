@@ -19,6 +19,8 @@ public interface IRepository {
 
     /**
      * Returns the list of last commits
+     *
+     * @return list of commits (com.revizor.repos.Commit)
      */
     def getListOfCommits();
 	
