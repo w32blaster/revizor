@@ -23,7 +23,22 @@ public interface IRepository {
      * @return list of commits (com.revizor.repos.Commit)
      */
     def getListOfCommits();
-	
+
+    /**
+     * Builds the map "reference key" <=> "branch name list"
+     *
+     * @return map of lists <code>Map<String, List<String>></code>
+     */  
+    def getMapBranchesReferences();
+
+    /**
+     * Returns list of those commits, that belongs to the master/default branch.
+     * List contains only SHA keys. It is used to build the history graph
+     *
+     * @return list of SHA keys
+     */  
+	def getListOfMasterCommits();
+
     /**
      * Returns DIFF between a commit and its parent
      *

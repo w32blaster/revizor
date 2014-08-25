@@ -11,14 +11,13 @@ class Commit {
     String id;
     
     // list of children and parent SHA's
-    List<String> children;
-    List<String> parents;
+    List<String> parents = new ArrayList<String>();
 
     String author
     String message
 
     // used to draw a graph
-    int curveTypes
-    String color
-    String hoverText
+    // curves - the set of short line types, that will be drawin in current line to the parents
+    List<Byte> curves = new ArrayList<Byte>();
+    String labelText
 }
