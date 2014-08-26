@@ -20,7 +20,10 @@ public interface Constants {
     String PARAM_FILE_NAME = "fileName";
     int MAX_PER_REQUEST = 5;
 
-    byte CURVE_VERTICAL = 1;
-    byte CURVE_SLASH = 2;
-    byte CURVE_BACK_SLASH = 3;
+    byte CURVE_VERTICAL = 1;      // "|"
+    byte CURVE_SLASH = 2;         // "/"
+    byte CURVE_BACK_SLASH = 3;    // "\"
+    byte CURVE_VERTICAL_ACT = 4;      
+    byte CURVE_SLASH_ACT = 5;         
+    byte CURVE_BACK_SLASH_ACT = 6; 
 }

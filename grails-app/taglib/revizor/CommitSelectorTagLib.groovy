@@ -75,10 +75,18 @@ class CommitSelectorTagLib {
         }
 
         lstCommits.reverseEach { commit ->
-            if(commit.parents.size() > 0) {
-                commit.parents.each { parentId ->
-                    _addLinesBetweenTwoNodes(mapIds.get(parentId), mapIds.get(commit.id), lstCommits);
-                }
+            if (commit.parents.size() == 1) {
+                def currentNodeIndex = mapIds.get(commit.id)
+                def parentNodeIndex = mapIds.get(commit.parents[0])
+
+                // add current node to the children list of its parent node
+                lstCommits[parentNodeIndex].children.add(commit.id);
+
+                // draw a line (edge) between current node and its parent
+                _addLinesBetweenTwoNodes(parentNodeIndex, currentNodeIndex, lstCommits);
+            }
+            else if (commit.parents.size() > 1) {
+                // when a node has more than one parents, this is a merging of two branches/revisions
             }
         }
 
@@ -87,6 +95,7 @@ class CommitSelectorTagLib {
 
     /**
      * "Draws" the path (edge) between two nodes in the graph.
+     * Function fills the array "curves" with curve types. Later we will display it with SVG.
      * The idea is a path should repeat "shape"
      * of already existing graph.
      *
@@ -95,7 +104,20 @@ class CommitSelectorTagLib {
      */
     def _addLinesBetweenTwoNodes(from, to, lstCommits) {
         for (i in from+1..to) {
-            lstCommits[i].curves.add(Constants.CURVE_VERTICAL);
+            if (lstCommits[i-1].children.size() > 1) {
+                // if parent has more than one children, here come(s) new branch(es)
+                if (lstCommits[i].curves.size() == 0) {
+                    // the very first branch should be vertical.
+                    lstCommits[i].curves.add( (i == to) ? Constants.CURVE_VERTICAL_ACT : Constants.CURVE_VERTICAL);
+                }
+                else {
+                    // others branchs should be curve, because here new branch "goes to the right" away of basic line
+                    lstCommits[i].curves.add( (i == to) ? Constants.CURVE_SLASH_ACT : Constants.CURVE_SLASH);
+                }
+            }
+            else {
+                lstCommits[i].curves.add( (i == to) ? Constants.CURVE_VERTICAL_ACT : Constants.CURVE_VERTICAL);
+            }
         }
     }
 

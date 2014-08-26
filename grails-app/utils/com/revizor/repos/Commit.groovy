@@ -12,6 +12,7 @@ class Commit {
     
     // list of children and parent SHA's
     List<String> parents = new ArrayList<String>();
+    List<String> children = new ArrayList<String>();
 
     String author
     String message
