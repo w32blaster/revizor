@@ -81,17 +81,20 @@ class CommitSelectorTagLib {
      */
     def prepareHistoryGraph(lstCommits, lstMaster) {
           
+        // prepare list of commits: build map "SHA key" <=> "index" and fill "children" collection for each commit
         def mapIds = [:]
         lstCommits.eachWithIndex {commit, i -> 
             mapIds.put(commit.id, i);
+            if (commit.parents.size() == 1) {
+                def parentNodeIndex = mapIds.get(commit.parents[0])
+                lstCommits[parentNodeIndex].children.add(commit.id);
+            }
         }
 
+        // draw a history graph
         lstCommits.eachWithIndex { commit, i ->
             if (commit.parents.size() == 1) {
                 def parentNodeIndex = mapIds.get(commit.parents[0])
-
-                // add current node to the children list of its parent node
-                lstCommits[parentNodeIndex].children.add(commit.id);
 
                 // draw a line (edge) between current node and its parent
                 def isBelongingToMaster = lstMaster.contains(commit.id);
@@ -132,26 +135,25 @@ class CommitSelectorTagLib {
                 
                 if (lstCommits[i].curves.size() == 0) {
                         // the very first branch should be vertical.
-                        lstCommits[i].curves.add( (i == to) ? Constants.CURVE_VERTICAL_ACT : Constants.CURVE_VERTICAL);
+                        lstCommits[i].curves.add( _getVerticalCurve(i == to));
                 }
                 else {
                     // others branchs should be curve, because here new branch "goes to the right" away of basic line
                     if (isBelongingToMaster) {
-                        lstCommits[i].curves.add(0, (i == to) ? Constants.CURVE_VERTICAL_ACT : Constants.CURVE_VERTICAL);
+                        lstCommits[i].curves.add(0, _getVerticalCurve(i == to));
                         lstCommits[i].curves[1] = _rotateRightEdge(lstCommits[i].curves[1])
                     } else {
-                        lstCommits[i].curves.add( (i == to) ? Constants.CURVE_SLASH_ACT : Constants.CURVE_SLASH);        
+                        lstCommits[i].curves.add( _getSlashCurve(i == to));        
                     }
                     
                 }
             }
             else {
-
                 if (isBelongingToMaster) {
-                    lstCommits[i].curves.add(0, (i == to) ? Constants.CURVE_VERTICAL_ACT : Constants.CURVE_VERTICAL);
+                    lstCommits[i].curves.add(0, _getVerticalCurve(i == to) );
                 }
                 else {
-                    lstCommits[i].curves.add( (i == to) ? Constants.CURVE_VERTICAL_ACT : Constants.CURVE_VERTICAL);
+                    lstCommits[i].curves.add( _getVerticalCurve(i == to) );
                 }
             }
         }
@@ -177,9 +179,11 @@ class CommitSelectorTagLib {
      */
     def _copyEdgesFromPreviousLine(lstCommits, i, toIndex) {
 
-        // compensate previous branches: just copy all the branches, that continous
         def prevCurvesCount = lstCommits[i-1].curves.size()
-        if (prevCurvesCount > 1) {
+        def currentCurvesCount = lstCommits[i].curves.size() + 1
+
+        if (prevCurvesCount > 1 && prevCurvesCount > currentCurvesCount) {
+
             def subArray = lstCommits[i-1].curves[0..(prevCurvesCount-2)]
 
             // but if a neighbour branche has a node, then replace it, when node is on current branch
@@ -214,5 +218,11 @@ class CommitSelectorTagLib {
         }
     }
 
+    def _getVerticalCurve(isCurrentCommit) {
+        return isCurrentCommit ? Constants.CURVE_VERTICAL_ACT : Constants.CURVE_VERTICAL;
+    }
 
+    def _getSlashCurve(isCurrentCommit) {
+        return isCurrentCommit ?  Constants.CURVE_SLASH_ACT : Constants.CURVE_SLASH;
+    }
 }
