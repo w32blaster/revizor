@@ -66,16 +66,55 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 			result[2].curves[0] == Constants.CURVE_VERTICAL_ACT
     }
 
+ /*
+        3.  | D
+            | |
+        2.  C | 
+            |/    
+        1.  B
+            |
+        0.  A
+    */
+    def "one additional branch from the B commit where B-C is master"() {
+        
+        given: 
+            def commits = [new Commit(id: 'A'),
+                           new Commit(id: 'B', parents: ['A'] ),
+                           new Commit(id: 'C', parents: ['B'] ),
+                           new Commit(id: 'D', parents: ['B'] )]
+
+            def lstMaster = ['A', 'B', 'C']
+        when:
+            def result = tagLib.prepareHistoryGraph(commits, lstMaster)
+            
+        then: 'root does not have parents'
+            result[0].curves.size == 0
+            
+        and: 'B node has only one edge to node A'
+            result[1].curves.size == 1
+            result[1].curves[0] == Constants.CURVE_VERTICAL_ACT
+
+        and: 'under the node C graph has two edges: C is master and goes up and the branch to D that is a feature branch'
+            result[2].curves.size == 2
+            result[2].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[2].curves[1] == Constants.CURVE_SLASH
+
+        and: 'node D is alone, because tip for C is behind the D'
+            result[3].curves.size == 2
+            result[3].curves[0] == Constants.CURVE_VERTICAL
+            result[3].curves[1] == Constants.CURVE_VERTICAL_ACT
+    }
+
     /*
-    	3.  D
-    	    |
+    	3.  D |
+    	    | |
 		2.  | C
 		    |/    
 		1.  B
 		    |
 		0.  A
     */
-    def "one additional branch from the B commit"() {
+    def "one additional branch from the B commit where B-D is master"() {
 		
 		given: 
 			def commits = [new Commit(id: 'A'),
@@ -100,10 +139,13 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             result[2].curves[0] == Constants.CURVE_VERTICAL
             result[2].curves[1] == Constants.CURVE_SLASH_ACT
 
-        and: 'node D is alone, because tip for C is behind the D'
-			result[3].curves.size == 1
+        and: 'node D is alone, but the edge still goes from C node'
+			result[3].curves.size == 2
 			result[3].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[3].curves[1] == Constants.CURVE_VERTICAL
     }
+
+
 
     // function for debuggin purposes: prints graph to the console
     def _print(commits) {

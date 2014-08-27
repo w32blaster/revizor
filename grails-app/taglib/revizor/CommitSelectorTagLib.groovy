@@ -60,6 +60,18 @@ class CommitSelectorTagLib {
         })
     }
 
+    def _printCommits(attrs, closurePrint) {
+        if (null == attrs.repo) {
+            out << "A repository is not specified"
+        }
+        else {
+            def repo = attrs.repo.initImplementation();
+            def commitList = repo.getListOfCommits();
+
+            closurePrint(repo, commitList);
+        }
+    }
+
     /**
      * Prepares the list of commits to be displayed as history graph
      *
@@ -74,19 +86,22 @@ class CommitSelectorTagLib {
             mapIds.put(commit.id, i);
         }
 
-        lstCommits.reverseEach { commit ->
+        lstCommits.eachWithIndex { commit, i ->
             if (commit.parents.size() == 1) {
-                def currentNodeIndex = mapIds.get(commit.id)
                 def parentNodeIndex = mapIds.get(commit.parents[0])
 
                 // add current node to the children list of its parent node
                 lstCommits[parentNodeIndex].children.add(commit.id);
 
                 // draw a line (edge) between current node and its parent
-                _addLinesBetweenTwoNodes(parentNodeIndex, currentNodeIndex, lstCommits);
+                def isBelongingToMaster = lstMaster.contains(commit.id);
+                def isTip = false; // TODO: implement it
+                _addLinesBetweenTwoNodes(parentNodeIndex, i, lstCommits, isBelongingToMaster, isTip);
             }
             else if (commit.parents.size() > 1) {
                 // when a node has more than one parents, this is a merging of two branches/revisions
+
+                // TODO: implement this
             }
         }
 
@@ -101,35 +116,103 @@ class CommitSelectorTagLib {
      *
      * @param from - index of node that we want draw line from (inclusive)
      * @param to - index of node that we want draw line to (exclusive)
+     * @param lstCommits - list of all commits to be modified
+     * @param isBelongingToMaster - (boolean) whether current commit ("to") belongs to master or not
+     * @param isTip - (boolean) whether current commit ("to") is tip (last commit) on current branch or not
      */
-    def _addLinesBetweenTwoNodes(from, to, lstCommits) {
+    def _addLinesBetweenTwoNodes(from, to, lstCommits, isBelongingToMaster, isTip) {
         for (i in from+1..to) {
-            if (lstCommits[i-1].children.size() > 1) {
+
+            _copyEdgesFromPreviousLine(lstCommits, i, to)
+
+            def isNewBranch = (lstCommits[i-1].children.size() > 1)
+
+            if (isNewBranch) {
                 // if parent has more than one children, here come(s) new branch(es)
+                
                 if (lstCommits[i].curves.size() == 0) {
-                    // the very first branch should be vertical.
-                    lstCommits[i].curves.add( (i == to) ? Constants.CURVE_VERTICAL_ACT : Constants.CURVE_VERTICAL);
+                        // the very first branch should be vertical.
+                        lstCommits[i].curves.add( (i == to) ? Constants.CURVE_VERTICAL_ACT : Constants.CURVE_VERTICAL);
                 }
                 else {
                     // others branchs should be curve, because here new branch "goes to the right" away of basic line
-                    lstCommits[i].curves.add( (i == to) ? Constants.CURVE_SLASH_ACT : Constants.CURVE_SLASH);
+                    if (isBelongingToMaster) {
+                        lstCommits[i].curves.add(0, (i == to) ? Constants.CURVE_VERTICAL_ACT : Constants.CURVE_VERTICAL);
+                        lstCommits[i].curves[1] = _rotateRightEdge(lstCommits[i].curves[1])
+                    } else {
+                        lstCommits[i].curves.add( (i == to) ? Constants.CURVE_SLASH_ACT : Constants.CURVE_SLASH);        
+                    }
+                    
                 }
             }
             else {
-                lstCommits[i].curves.add( (i == to) ? Constants.CURVE_VERTICAL_ACT : Constants.CURVE_VERTICAL);
+
+                if (isBelongingToMaster) {
+                    lstCommits[i].curves.add(0, (i == to) ? Constants.CURVE_VERTICAL_ACT : Constants.CURVE_VERTICAL);
+                }
+                else {
+                    lstCommits[i].curves.add( (i == to) ? Constants.CURVE_VERTICAL_ACT : Constants.CURVE_VERTICAL);
+                }
             }
         }
     }
 
-    def _printCommits(attrs, closurePrint) {
-        if (null == attrs.repo) {
-            out << "A repository is not specified"
-        }
-        else {
-            def repo = attrs.repo.initImplementation();
-            def commitList = repo.getListOfCommits();
+    /**
+     * Copies previous edges to current line.
+     *
+     * Let's say, previous line is
+     *    previous -> | | |
+     * and we need to prolong current branch (edge) which is third with slash bar ("/").
+     * If we just added new edge to the next line, then the result will be like that:
+     *    current  -> /
+     *    previous -> | | |
+     * because we forgot to prolong existed branches (the first and the second ones). Expected
+     * result should be (where the first two bars are copied and slash is current curve):
+     *    current  -> | | /
+     *    previous -> | | |
+     *     
+     * This method copies previous existing edges to new line.
+     * 
+     * While looping we need to 
+     */
+    def _copyEdgesFromPreviousLine(lstCommits, i, toIndex) {
 
-            closurePrint(repo, commitList);
+        // compensate previous branches: just copy all the branches, that continous
+        def prevCurvesCount = lstCommits[i-1].curves.size()
+        if (prevCurvesCount > 1) {
+            def subArray = lstCommits[i-1].curves[0..(prevCurvesCount-2)]
+
+            // but if a neighbour branche has a node, then replace it, when node is on current branch
+            if (i == toIndex) {
+                subArray = subArray.collect {
+                    switch (it) {
+                        case Constants.CURVE_VERTICAL_ACT:
+                            return Constants.CURVE_VERTICAL;
+                        case Constants.CURVE_SLASH_ACT:
+                            return Constants.CURVE_SLASH;
+                        case Constants.CURVE_BACK_SLASH_ACT:
+                            return Constants.CURVE_BACK_SLASH;
+                        default:
+                            return it;
+                    }
+                }
+            }
+
+            lstCommits[i].curves = subArray
+        }
+
+    }
+
+    def _rotateRightEdge(edge) {
+        switch (edge) {
+            case Constants.CURVE_VERTICAL_ACT:
+                return Constants.CURVE_SLASH_ACT;
+            case Constants.CURVE_VERTICAL:
+                return Constants.CURVE_SLASH;
+            default:
+                return edge;
         }
     }
+
+
 }
