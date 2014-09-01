@@ -25,5 +25,6 @@ public interface Constants {
     byte CURVE_BACK_SLASH = 3;    // "\"
     byte CURVE_VERTICAL_ACT = 4;      
     byte CURVE_SLASH_ACT = 5;         
-    byte CURVE_BACK_SLASH_ACT = 6; 
+    byte CURVE_BACK_SLASH_ACT = 6;
+    byte CURVE_BLANK = 7;
 }

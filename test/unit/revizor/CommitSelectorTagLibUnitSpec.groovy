@@ -30,7 +30,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 			def commits = [new Commit(id: 'A'),
 						   new Commit(id: 'B', parents: ['A'] )]	
 		when:
-			def result = tagLib.prepareHistoryGraph(commits, [])
+			def result = tagLib.prepareHistoryGraph(commits, [], [])
 			//_print(result)
 
 		then: 'root does not have any curves because it does not have any parents'
@@ -55,7 +55,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 						   new Commit(id: 'B', parents: ['A'] ),
 						   new Commit(id: 'C', parents: ['B'] )]	
 		when:
-			def result = tagLib.prepareHistoryGraph(commits, [])
+			def result = tagLib.prepareHistoryGraph(commits, [], [])
 			//_print(result)
 
 		then: 
@@ -87,7 +87,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 
             def lstMaster = ['A', 'B', 'C']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster)
+            def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
             //_print(result)
 
         then: 'root does not have parents'
@@ -127,7 +127,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 
 			def lstMaster = ['A', 'B', 'D']
 		when:
-			def result = tagLib.prepareHistoryGraph(commits, lstMaster)
+			def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
             //_print(result)
 
 		then: 'root does not have parents'
@@ -161,7 +161,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             |
         0.  A
     */
-    def "the branch B-E should bend out two nearest braches repeating the same shape"() {
+    def "the branch B-E should bend out two nearest branches repeating the same shape"() {
         
         given: 
             def commits = [new Commit(id: 'A'),
@@ -173,8 +173,8 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 
             def lstMaster = ['A', 'B', 'C', 'F']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster)
-            _print(result)
+            def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
+            //_print(result)
 
         then: 'A root does not have parents'
             result[0].curves.size == 0
@@ -207,10 +207,68 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             result[5].curves[2] == Constants.CURVE_VERTICAL
     }
 
+    /*
+        5.  F
+            |
+        4.  |   E
+            |   |
+        3.  | D |
+            |/ /
+        2.  C |
+            |/
+        1.  B
+            |
+        0.  A
+    */
+    def "the graph displays tips without outgoing edges"() {
+
+        given:
+            def commits = [new Commit(id: 'A'),
+                           new Commit(id: 'B', parents: ['A'] ),
+                           new Commit(id: 'C', parents: ['B'] ),
+                           new Commit(id: 'D', parents: ['C'] ),
+                           new Commit(id: 'E', parents: ['B'] ),
+                           new Commit(id: 'F', parents: ['C'] )]
+
+            def lstMaster = ['A', 'B', 'C', 'F']
+            def lstTips = ['D', 'E', 'F']
+        when:
+            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            _print(result)
+
+        then: 'A root does not have parents'
+            result[0].curves.size == 0
+
+        and: 'B node has only one edge to node A'
+            result[1].curves.size == 1
+            result[1].curves[0] == Constants.CURVE_VERTICAL_ACT
+
+        and: 'line 2 has two curves - node C and left branch'
+            result[2].curves.size == 2
+            result[2].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[2].curves[1] == Constants.CURVE_SLASH
+
+        and: 'line 3 has three curves - master, node D and the right branch (last two edges are slashes)'
+            result[3].curves.size == 3
+            result[3].curves[0] == Constants.CURVE_VERTICAL
+            result[3].curves[1] == Constants.CURVE_SLASH_ACT
+            result[3].curves[2] == Constants.CURVE_SLASH
+
+        and: 'line 4 has two curves - master and the right branch, node D is a tip and it does not have any outgoing edges'
+            result[4].curves.size == 3
+            result[4].curves[0] == Constants.CURVE_VERTICAL
+            result[4].curves[1] == Constants.CURVE_BLANK
+            result[4].curves[2] == Constants.CURVE_VERTICAL_ACT
+
+        and: 'line 5 has only one curve - node F. Other are tips so they do not have any edges'
+            result[5].curves.size == 3
+            result[5].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[5].curves[1] == Constants.CURVE_BLANK
+            result[5].curves[2] == Constants.CURVE_BLANK
+    }
 
 
-
-    // function for debuggin purposes: prints graph to the console
+    // function for debugging purposes: prints graph to the console
     def _print(commits) {
         commits.reverseEach { commit ->
             
@@ -254,6 +312,10 @@ class CommitSelectorTagLibUnitSpec extends Specification {
                             line2 += "\\ "
                             break;
 
+                        case Constants.CURVE_BLANK:
+                            line1 += "  "
+                            line2 += "  "
+                            break;
                         default:
                             line1 += " *"
                             line2 += " *"
