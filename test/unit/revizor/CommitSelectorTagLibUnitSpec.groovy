@@ -5,6 +5,7 @@ import spock.lang.IgnoreRest
 import spock.lang.Specification
 
 import com.revizor.utils.Constants
+import com.revizor.utils.Utils
 import com.revizor.repos.Commit
 
 /**
@@ -128,7 +129,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 			def lstMaster = ['A', 'B', 'D']
 		when:
 			def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
-            //_print(result)
+            Utils.printTree(result)
 
 		then: 'root does not have parents'
 			result[0].curves.size == 0
@@ -194,7 +195,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             result[3].curves[1] == Constants.CURVE_SLASH_ACT
             result[3].curves[2] == Constants.CURVE_SLASH
 
-        and: 'line 4 has three curves - master, node D and the right branch'
+        and: 'line 4 has three vertical curves - master, node D and the right branch'
             result[4].curves.size == 3
             result[4].curves[0] == Constants.CURVE_VERTICAL
             result[4].curves[1] == Constants.CURVE_VERTICAL
@@ -234,7 +235,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstTips = ['D', 'E', 'F']
         when:
             def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
-            _print(result)
+            //_print(result)
 
         then: 'A root does not have parents'
             result[0].curves.size == 0
@@ -267,65 +268,137 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             result[5].curves[2] == Constants.CURVE_BLANK
     }
 
+   /*
+        5.  F   |
+            |   |
+        4.  |   E
+            |   |
+        3.  | D |
+            |/ /
+        2.  C |
+            |/
+        1.  B
+            |
+        0.  A
+    */
+    def "the graph displays one tip without outgoing edges"() {
 
-    // function for debugging purposes: prints graph to the console
-    def _print(commits) {
-        commits.reverseEach { commit ->
-            
-            def line1 = ""
-            def line2 = ""
-            //println "commit ${commit.id} has curves ${commit.curves.size()}: ${commit.curves}"
-            if (commit.curves.size() == 0) {
-                // this is root
-                line1 += " " + commit.id
-            }
-            else {
-                commit.curves.each { curve ->
-                    switch (curve) {
-                        case Constants.CURVE_VERTICAL:
-                            line1 += " |"
-                            line2 += " |"
-                            break;
+        given:
+            def commits = [new Commit(id: 'A'),
+                           new Commit(id: 'B', parents: ['A'] ),
+                           new Commit(id: 'C', parents: ['B'] ),
+                           new Commit(id: 'D', parents: ['C'] ),
+                           new Commit(id: 'E', parents: ['B'] ),
+                           new Commit(id: 'F', parents: ['C'] )]
 
-                        case Constants.CURVE_SLASH:
-                            line1 += " |"
-                            line2 += "/ "
-                            break;
+            def lstMaster = ['A', 'B', 'C', 'F']
+            def lstTips = ['D', 'F']
+        when:
+            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            //Utils.printTree(result)
 
-                        case Constants.CURVE_BACK_SLASH:
-                            line1 += "\\ "
-                            line2 += " |"
-                            break;
+        then: 'A root does not have parents'
+            result[0].curves.size == 0
 
-                        case Constants.CURVE_VERTICAL_ACT:
-                            line1 += " " + commit.id
-                            line2 += " |"
-                            break;
+        and: 'B node has only one edge to node A'
+            result[1].curves.size == 1
+            result[1].curves[0] == Constants.CURVE_VERTICAL_ACT
 
-                        case Constants.CURVE_SLASH_ACT:
-                            line1 += " " + commit.id
-                            line2 += "/ "
-                            break;
+        and: 'line 2 has two curves - node C and left branch'
+            result[2].curves.size == 2
+            result[2].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[2].curves[1] == Constants.CURVE_SLASH
 
-                        case Constants.CURVE_BACK_SLASH_ACT:
-                            line1 += " " + commit.id
-                            line2 += "\\ "
-                            break;
+        and: 'line 3 has three curves - master, node D and the right branch (last two edges are slashes)'
+            result[3].curves.size == 3
+            result[3].curves[0] == Constants.CURVE_VERTICAL
+            result[3].curves[1] == Constants.CURVE_SLASH_ACT
+            result[3].curves[2] == Constants.CURVE_SLASH
 
-                        case Constants.CURVE_BLANK:
-                            line1 += "  "
-                            line2 += "  "
-                            break;
-                        default:
-                            line1 += " *"
-                            line2 += " *"
-                            break;                        
-                    }
-                }
-            }
-            
-            println line1
-            println line2
-        }
+        and: 'line 4 has two curves - master and the right branch, node D is a tip and it does not have any outgoing edges'
+            result[4].curves.size == 3
+            result[4].curves[0] == Constants.CURVE_VERTICAL
+            result[4].curves[1] == Constants.CURVE_BLANK
+            result[4].curves[2] == Constants.CURVE_VERTICAL_ACT
+
+        and: 'line 5 has only one curve - node F. Other are tips so they do not have any edges'
+            result[5].curves.size == 3
+            result[5].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[5].curves[1] == Constants.CURVE_BLANK
+            result[5].curves[2] == Constants.CURVE_VERTICAL
     }
+
+
+   /*
+        5.  F |  
+            | |  
+        4.  | E  
+            | |  
+        3.  | | D
+            |/ /
+        2.  C |
+            |/
+        1.  B
+            |
+        0.  A
+    */
+    
+
+  /*
+        5.  F |  
+            | |  
+        4.  | E  
+            | |  
+        3.  | |
+            |/ 
+        2.  C 
+            |
+        1.  | B
+            |/
+        0.  A
+    */
+
+
+  /*
+        5.    F 
+              |  
+        4.    E  
+              |  
+        3.    |
+              | 
+        2.  C |
+            | |
+        1.  | B
+            |/
+        0.  A
+    */
+
+  /*
+        5.  |   F
+            |   |
+        4.  |   | E 
+            |   | |  
+        3.  | D | |
+            |/ / /
+        2.  C | |
+            |/ /
+        1.  B |
+            |/
+        0.  A
+    */
+
+  /*
+        5.  F
+            |
+        4.  |   E
+            |   |      
+        3.  |   | D  
+            |   | |  
+        2.  | C | |   
+            | | | |  
+        1.  B/ / /   
+            |
+        0.  A
+    */
+
 }

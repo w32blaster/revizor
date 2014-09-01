@@ -2,6 +2,7 @@ package revizor
 
 import com.revizor.repos.Commit
 import com.revizor.utils.Constants
+import com.revizor.utils.Utils
 import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
 class CommitSelectorTagLib {
@@ -92,7 +93,7 @@ class CommitSelectorTagLib {
             }
         }
 
-        Set<Integer> setAccumulatedIdx = []
+        def tipFromLastLine;
 
         // draw a history graph
         lstCommits.eachWithIndex { commit, i ->
@@ -102,7 +103,16 @@ class CommitSelectorTagLib {
                 // draw a line (edge) between current node and its parent
                 def isBelongingToMaster = lstMaster.contains(commit.id);
                 def isTip = lstTips.contains(commit.id);
-                _addLinesBetweenTwoNodes(parentNodeIndex, i, lstCommits, isBelongingToMaster, isTip, setAccumulatedIdx);
+                tipFromLastLine = _addLinesBetweenTwoNodes(parentNodeIndex, i, lstCommits, isBelongingToMaster, isTip, tipFromLastLine);
+
+                /*
+                Uncomment it to see, how the graph is build step by step:
+                
+                println "draw from ${lstCommits[parentNodeIndex].id} to ${lstCommits[i].id}"
+                Utils.printTree(lstCommits)
+                println "------------->"
+                */
+
             }
             else if (commit.parents.size() > 1) {
                 // when a node has more than one parents, this is a merging of two branches/revisions
@@ -125,12 +135,11 @@ class CommitSelectorTagLib {
      * @param lstCommits - list of all commits to be modified
      * @param isBelongingToMaster - (boolean) whether current commit ("to") belongs to master or not
      * @param isTip - (boolean) whether current commit ("to") is tip (last commit) on current branch or not
-     * @param setTipsBranches - set accumulates all the indexes of tips to remember which edges we should keep blank (index of edge, not commit id)
      */
-    def _addLinesBetweenTwoNodes(from, to, lstCommits, isBelongingToMaster, isTip, setTipsBranches) {
+    def _addLinesBetweenTwoNodes(from, to, lstCommits, isBelongingToMaster, isTip, tipFromLastLine) {
         for (i in from+1..to) {
 
-            _copyEdgesFromPreviousLine(lstCommits, i, to, setTipsBranches)
+            _copyEdgesFromPreviousLine(lstCommits, i, to, tipFromLastLine, isBelongingToMaster)
 
             def isNewBranch = (lstCommits[i-1].children.size() > 1)
 
@@ -162,9 +171,14 @@ class CommitSelectorTagLib {
             }
         }
 
+        tipFromLastLine = null
+
         if (isTip) {
-            setTipsBranches << (isBelongingToMaster ? 0 : lstCommits[to].curves.size() - 1)
+            // rememer, that on thi line we have a tip. On the next iteration we will put there a blink space
+            tipFromLastLine = (isBelongingToMaster ? 0 : lstCommits[to].curves.size() - 1)
         }
+
+        return tipFromLastLine
     }
 
     /**
@@ -185,16 +199,23 @@ class CommitSelectorTagLib {
      * 
      * While looping we need to 
      */
-    def _copyEdgesFromPreviousLine(lstCommits, i, toIndex, setTipsBranches) {
+    def _copyEdgesFromPreviousLine(lstCommits, i, toIndex, idxOfTip, isBelongingToMaster) {
 
         def prevCurvesCount = lstCommits[i-1].curves.size()
         def currentCurvesCount = lstCommits[i].curves.size() + 1
 
         if (prevCurvesCount > 1 && prevCurvesCount > currentCurvesCount) {
 
-            def subArray = lstCommits[i-1].curves[0..(prevCurvesCount-2)]
+            // copy all the curves except current one from the previous line
+            def subArray
+            if (isBelongingToMaster) {
+                subArray = lstCommits[i-1].curves[1..(prevCurvesCount-1)] 
+            }
+            else {
+                subArray = lstCommits[i-1].curves[0..(prevCurvesCount-2)]
+            }
 
-            // but if a neighbour branch has a node, then replace it, when node is on current branch
+            // but if a copied branch has a node, then replace it with a simple curve line
             if (i == toIndex) {
                 subArray = subArray.collect {
                     switch (it) {
@@ -210,10 +231,9 @@ class CommitSelectorTagLib {
                 }
             }
 
-            // put blank edges after all the tips, because tips-refs do not have any outgoing edges
-            setTipsBranches.each { idx ->
-                println "current node is ${lstCommits[i].id} subArray = $subArray"
-                subArray[idx] = Constants.CURVE_BLANK
+            // put blank edges after all the tips, because tips/refs do not have any outgoing edges
+            if (null != idxOfTip) {
+                subArray[idxOfTip] = Constants.CURVE_BLANK
             }
 
             lstCommits[i].curves = subArray
@@ -239,4 +259,5 @@ class CommitSelectorTagLib {
     def _getSlashCurve(isCurrentCommit) {
         return isCurrentCommit ?  Constants.CURVE_SLASH_ACT : Constants.CURVE_SLASH;
     }
+
 }
