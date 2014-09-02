@@ -222,7 +222,7 @@ class CommitSelectorTagLib {
                         case Constants.CURVE_VERTICAL_ACT:
                             return Constants.CURVE_VERTICAL;
                         case Constants.CURVE_SLASH_ACT:
-                            return Constants.CURVE_SLASH;
+                            return Constants.CURVE_VERTICAL;
                         case Constants.CURVE_BACK_SLASH_ACT:
                             return Constants.CURVE_BACK_SLASH;
                         default:

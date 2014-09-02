@@ -129,7 +129,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 			def lstMaster = ['A', 'B', 'D']
 		when:
 			def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
-            Utils.printTree(result)
+            //Utils.printTree(result)
 
 		then: 'root does not have parents'
 			result[0].curves.size == 0
