@@ -107,11 +107,12 @@ class CommitSelectorTagLib {
 
                 /*
                 Uncomment it to see, how the graph is build step by step:
-                
+                */
+
                 println "draw from ${lstCommits[parentNodeIndex].id} to ${lstCommits[i].id}"
                 Utils.printTree(lstCommits)
                 println "------------->"
-                */
+
 
             }
             else if (commit.parents.size() > 1) {
@@ -139,46 +140,88 @@ class CommitSelectorTagLib {
     def _addLinesBetweenTwoNodes(from, to, lstCommits, isBelongingToMaster, isTip, tipFromLastLine) {
         for (i in from+1..to) {
 
+            def isFirstIteration = i == (from+1)
             _copyEdgesFromPreviousLine(lstCommits, i, to, tipFromLastLine, isBelongingToMaster)
 
-            def isNewBranch = (lstCommits[i-1].children.size() > 1)
+            /*
+                isSameSlotOnNextRowTaken - flag showing that the same slot on the next row is free or not.
+                This returns TRUE (asterisk is the current iteration):
+                | | |
+                | | * <-- current iteration
+
+                but this returns FALSE (the same slot on next row is free)
+                | |
+                | | * <-- current iteration
+
+             */
+            def isSameSlotOnNextRowTaken = (lstCommits[from+1]?.curves?.size() != 0 && lstCommits[i].curves.size() >= lstCommits[i-1].curves.size())
+
+            def isTreeStart = (from == 0);
+            def isNewBranch = (lstCommits[i-1].children.size() != 0 && !isTreeStart && isSameSlotOnNextRowTaken)
+            def isCurrentLineActive = (i == to)
 
             if (isNewBranch) {
-                // if parent has more than one children, here come(s) new branch(es)
-                
-                if (lstCommits[i].curves.size() == 0) {
-                        // the very first branch should be vertical.
-                        lstCommits[i].curves.add( _getVerticalCurve(i == to));
-                }
-                else {
-                    // others branches should be curve, because here new branch "goes to the right" away of basic line
-                    if (isBelongingToMaster) {
-                        lstCommits[i].curves.add(0, _getVerticalCurve(i == to));
-                        lstCommits[i].curves[1] = _rotateRightEdge(lstCommits[i].curves[1])
-                    } else {
-                        lstCommits[i].curves.add( _getSlashCurve(i == to));
-                    }
-                    
-                }
+
+                _drawRowForNewBranch(isBelongingToMaster, lstCommits, i, isCurrentLineActive, isFirstIteration)
+
             }
             else {
                 if (isBelongingToMaster) {
-                    lstCommits[i].curves.add(0, _getVerticalCurve(i == to) );
+                    lstCommits[i].curves.add(0, _getVerticalCurve(isCurrentLineActive) );
                 }
                 else {
-                    lstCommits[i].curves.add( _getVerticalCurve(i == to) );
+                    lstCommits[i].curves.add( _getVerticalCurve(isCurrentLineActive) );
                 }
+            }
+
+            if (i == to) {
+                // save the row number of current node
+                lstCommits[i].currentCurveIdx = isBelongingToMaster ? 0 : (lstCommits[i].curves.size() - 1)
             }
         }
 
         tipFromLastLine = null
 
         if (isTip) {
-            // rememer, that on thi line we have a tip. On the next iteration we will put there a blink space
-            tipFromLastLine = (isBelongingToMaster ? 0 : lstCommits[to].curves.size() - 1)
+            // remember, that on this line we have a tip. On the next iteration we will put there a blank space
+            tipFromLastLine = (isBelongingToMaster ? 0 : lstCommits[to].currentCurveIdx)
         }
 
         return tipFromLastLine
+    }
+
+    /**
+     * Draw one row in the point, where a new branch is started
+     *
+     * @param isBelongingToMaster
+     * @param lstCommits
+     * @param i
+     * @param isCurrentLineActive
+     * @param isFirstIteration
+     */
+    private void _drawRowForNewBranch(isBelongingToMaster, lstCommits, i, isCurrentLineActive, isFirstIteration) {
+
+        if (isBelongingToMaster) {
+
+            def isFirstColumnEmpty = lstCommits[i].curves[0] == Constants.CURVE_BLANK
+
+            if (isFirstColumnEmpty) {
+                lstCommits[i].curves[0] = _getVerticalCurve(isCurrentLineActive);
+            }
+            else {
+                lstCommits[i].curves.add(0, _getVerticalCurve(isCurrentLineActive));
+                if (isFirstIteration) {
+                    // as long as it is a new branch to the left, we need to "move" all the lines on this row and make them curve slash
+                    for (ii in 1..lstCommits[i].curves.size() - 1) {
+                        lstCommits[i].curves[ii] = _rotateRightEdge(lstCommits[i].curves[ii])
+                    }
+                    lstCommits[i].currentCurveIdx++;
+                }
+            }
+
+        } else {
+            lstCommits[i].curves.add(_getSlashCurve(isCurrentLineActive));
+        }
     }
 
     /**
@@ -209,7 +252,7 @@ class CommitSelectorTagLib {
             // copy all the curves except current one from the previous line
             def subArray
             if (isBelongingToMaster) {
-                subArray = lstCommits[i-1].curves[1..(prevCurvesCount-1)] 
+                subArray = lstCommits[i-1].curves[1..(prevCurvesCount-1)]
             }
             else {
                 subArray = lstCommits[i-1].curves[0..(prevCurvesCount-2)]

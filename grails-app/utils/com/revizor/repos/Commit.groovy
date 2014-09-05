@@ -18,7 +18,10 @@ class Commit {
     String message
 
     // used to draw a graph
-    // curves - the set of short line types, that will be drawin in current line to the parents
+    // curves - the set of short line types, that will be drawn in current row. All the row will be combined to the graph
     List<Byte> curves = new ArrayList<Byte>();
+    // which column (branch) current node is placed on
+    byte currentCurveIdx
+
     String labelText
 }
