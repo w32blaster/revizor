@@ -3,7 +3,6 @@ package revizor
 import com.revizor.repos.Commit
 import com.revizor.utils.Constants
 import com.revizor.utils.Utils
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
 class CommitSelectorTagLib {
 
@@ -138,6 +137,9 @@ class CommitSelectorTagLib {
      * @param isTip - (boolean) whether current commit ("to") is tip (last commit) on current branch or not
      */
     def _addLinesBetweenTwoNodes(from, to, lstCommits, isBelongingToMaster, isTip, tipFromLastLine) {
+
+        def isMoveGraphToRight = false
+
         for (i in from+1..to) {
 
             def isFirstIteration = i == (from+1)
@@ -166,18 +168,14 @@ class CommitSelectorTagLib {
 
             }
             else {
-                if (isBelongingToMaster) {
-                    lstCommits[i].curves.add(0, _getVerticalCurve(isCurrentLineActive) );
-                }
-                else {
-                    lstCommits[i].curves.add( _getVerticalCurve(isCurrentLineActive) );
-                }
+                _drawRow(isBelongingToMaster, lstCommits, i, isCurrentLineActive)
             }
 
             if (i == to) {
                 // save the row number of current node
                 lstCommits[i].currentCurveIdx = isBelongingToMaster ? 0 : (lstCommits[i].curves.size() - 1)
             }
+
         }
 
         tipFromLastLine = null
@@ -191,7 +189,28 @@ class CommitSelectorTagLib {
     }
 
     /**
-     * Draw one row in the point, where a new branch is started
+     * Draws a row in case if current row has the same amount of branches, as previous (no new branches here).
+     *
+     * @param isBelongingToMaster
+     * @param lstCommits
+     * @param i
+     * @param isCurrentLineActive
+     */
+    private void _drawRow(isBelongingToMaster, lstCommits, i, boolean isCurrentLineActive) {
+        if (isBelongingToMaster) {
+            lstCommits[i].curves.add(0, _getVerticalCurve(isCurrentLineActive));
+        } else {
+            lstCommits[i].curves.add(_getVerticalCurve(isCurrentLineActive));
+        }
+    }
+
+    /**
+     * Draw one row in the point, where a new branch is started.
+     *
+     * For example:
+     *  | / <-- this "slash" curve will be drawn by this method
+     *  |
+     *  |
      *
      * @param isBelongingToMaster
      * @param lstCommits
@@ -203,9 +222,7 @@ class CommitSelectorTagLib {
 
         if (isBelongingToMaster) {
 
-            def isFirstColumnEmpty = lstCommits[i].curves[0] == Constants.CURVE_BLANK
-
-            if (isFirstColumnEmpty) {
+            if (_isFirstColumnEmpty(lstCommits[i].curves)) {
                 lstCommits[i].curves[0] = _getVerticalCurve(isCurrentLineActive);
             }
             else {
@@ -258,18 +275,14 @@ class CommitSelectorTagLib {
                 subArray = lstCommits[i-1].curves[0..(prevCurvesCount-2)]
             }
 
-            // but if a copied branch has a node, then replace it with a simple curve line
+            // but if a copied branch has a node, then replace it with a blank space
             if (i == toIndex) {
                 subArray = subArray.collect {
-                    switch (it) {
-                        case Constants.CURVE_VERTICAL_ACT:
-                            return Constants.CURVE_VERTICAL;
-                        case Constants.CURVE_SLASH_ACT:
-                            return Constants.CURVE_VERTICAL;
-                        case Constants.CURVE_BACK_SLASH_ACT:
-                            return Constants.CURVE_BACK_SLASH;
-                        default:
-                            return it;
+                    if (it in [Constants.CURVE_VERTICAL_ACT, Constants.CURVE_SLASH_ACT, Constants.CURVE_BACK_SLASH_ACT]) {
+                        return Constants.CURVE_BLANK
+                    }
+                    else {
+                        return it;
                     }
                 }
             }
@@ -303,4 +316,13 @@ class CommitSelectorTagLib {
         return isCurrentCommit ?  Constants.CURVE_SLASH_ACT : Constants.CURVE_SLASH;
     }
 
+    /**
+     * Returns TRUE if only the first column is blank.
+     *
+     * @param arrCurves
+     * @return
+     */
+    private boolean _isFirstColumnEmpty(arrCurves) {
+        return arrCurves[0] == Constants.CURVE_BLANK
+    }
 }

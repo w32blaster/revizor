@@ -160,8 +160,8 @@ class CommitSelectorTagLibUnitSpec extends Specification {
     /*
         5.  F
             |
-        4.  |   E
-            |   |
+        4.  | E
+            |  \
         3.  | D |
             |/ /
         2.  C | 
@@ -219,8 +219,8 @@ class CommitSelectorTagLibUnitSpec extends Specification {
     /*
         5.  F
             |
-        4.  |   E
-            |   |
+        4.  | E
+            |  \
         3.  | D |
             |/ /
         2.  C |
@@ -279,8 +279,8 @@ class CommitSelectorTagLibUnitSpec extends Specification {
    /*
         5.  F
             |
-        4.  |   E
-            |   |
+        4.  | E
+            |  \
         3.  | D |
             |/ /
         2.  C |
@@ -333,15 +333,15 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             result[5].curves.size == 3
             result[5].curves[0] == Constants.CURVE_VERTICAL_ACT
             result[5].curves[1] == Constants.CURVE_BLANK
-            result[5].curves[2] == Constants.CURVE_VERTICAL
+            result[5].curves[2] == Constants.CURVE_BLANK
     }
 
 
    /*
         5.  F
             |
-        4.  |   E
-            |   |
+        4.  | E
+            |  \
         3.  | D |
             | |/
         2.  C |
@@ -350,7 +350,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             |
         0.  A
     */
-    @IgnoreRest
+    @Ignore
     def "the graph displays one tip without outgoing edges the most right branch"() {
 
         given:
@@ -401,7 +401,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 
   /*
         5.  F
-            |   
+            |
         4.  | E  
             | |  
         3.  | |
@@ -413,26 +413,11 @@ class CommitSelectorTagLibUnitSpec extends Specification {
         0.  A
     */
 
-
   /*
-        5.    F 
-              |  
-        4.    E  
-              |  
-        3.    |
-              | 
-        2.  C |
+        5.  | F
             | |
-        1.  | B
-            |/
-        0.  A
-    */
-
-  /*
-        5.  |   F
-            |   |
-        4.  |   | E 
-            |   | |  
+        4.  | | E
+            |  \ \
         3.  | D | |
             |/ / /
         2.  C | |
@@ -445,10 +430,10 @@ class CommitSelectorTagLibUnitSpec extends Specification {
   /*
         5.  F
             |
-        4.  |   E
-            |   |      
-        3.  |   | D  
-            |   | |  
+        4.  | E
+            | |
+        3.  | | D
+            |  \ \
         2.  | C | |   
             | | | |  
         1.  B/ / /   
