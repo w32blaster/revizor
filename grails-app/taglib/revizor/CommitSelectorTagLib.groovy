@@ -104,20 +104,20 @@ class CommitSelectorTagLib {
                 def isTip = lstTips.contains(commit.id);
                 tipFromLastLine = _addLinesBetweenTwoNodes(parentNodeIndex, i, lstCommits, isBelongingToMaster, isTip, tipFromLastLine);
 
-                /*
-                Uncomment it to see, how the graph is build step by step:
-                */
-
-                println "draw from ${lstCommits[parentNodeIndex].id} to ${lstCommits[i].id}"
-                Utils.printTree(lstCommits)
-                println "------------->"
-
-
+                if (Constants.IS_TREE_LOG_ENABLED) {
+                    println "draw from ${lstCommits[parentNodeIndex].id} to ${lstCommits[i].id}"
+                    Utils.printTree(lstCommits)
+                    println "------------->"
+                }
             }
-            else if (commit.parents.size() > 1) {
-                // when a node has more than one parents, this is a merging of two branches/revisions
+        }
 
-                // TODO: implement this
+        // decorate master branch
+        lstCommits.eachWithIndex { commit, i ->
+            if (commit.currentCurveIdx == 0 && !lstMaster.contains(commit.id)) {
+                // shift this layer in decorative purposes
+                lstCommits[i].curves.add(0, Constants.CURVE_BLANK);
+                _shiftLayer(lstCommits[i])
             }
         }
 
@@ -137,8 +137,6 @@ class CommitSelectorTagLib {
      * @param isTip - (boolean) whether current commit ("to") is tip (last commit) on current branch or not
      */
     def _addLinesBetweenTwoNodes(from, to, lstCommits, isBelongingToMaster, isTip, tipFromLastLine) {
-
-        def isMoveGraphToRight = false
 
         for (i in from+1..to) {
 
@@ -163,9 +161,7 @@ class CommitSelectorTagLib {
             def isCurrentLineActive = (i == to)
 
             if (isNewBranch) {
-
                 _drawRowForNewBranch(isBelongingToMaster, lstCommits, i, isCurrentLineActive, isFirstIteration)
-
             }
             else {
                 _drawRow(isBelongingToMaster, lstCommits, i, isCurrentLineActive)
@@ -199,8 +195,17 @@ class CommitSelectorTagLib {
     private void _drawRow(isBelongingToMaster, lstCommits, i, boolean isCurrentLineActive) {
         if (isBelongingToMaster) {
             lstCommits[i].curves.add(0, _getVerticalCurve(isCurrentLineActive));
+            if (!isCurrentLineActive) lstCommits[i].currentCurveIdx++;
         } else {
-            lstCommits[i].curves.add(_getVerticalCurve(isCurrentLineActive));
+            def nearestCurveIdx = lstCommits[i].curves.size() - 1
+            if (nearestCurveIdx >= 0 && lstCommits[i].curves[nearestCurveIdx] == Constants.CURVE_BLANK) {
+                // if nearest curve is empty (it was "ended"), then turn left on the graph
+                lstCommits[i].curves[nearestCurveIdx] = _getBackSlashCurve(isCurrentLineActive);
+                lstCommits[i].currentCurveIdx = nearestCurveIdx;
+            }
+            else {
+                lstCommits[i].curves.add(_getVerticalCurve(isCurrentLineActive));
+            }
         }
     }
 
@@ -229,10 +234,7 @@ class CommitSelectorTagLib {
                 lstCommits[i].curves.add(0, _getVerticalCurve(isCurrentLineActive));
                 if (isFirstIteration) {
                     // as long as it is a new branch to the left, we need to "move" all the lines on this row and make them curve slash
-                    for (ii in 1..lstCommits[i].curves.size() - 1) {
-                        lstCommits[i].curves[ii] = _rotateRightEdge(lstCommits[i].curves[ii])
-                    }
-                    lstCommits[i].currentCurveIdx++;
+                    _shiftLayer(lstCommits[i])
                 }
             }
 
@@ -263,8 +265,10 @@ class CommitSelectorTagLib {
 
         def prevCurvesCount = lstCommits[i-1].curves.size()
         def currentCurvesCount = lstCommits[i].curves.size() + 1
+        def isNearestNodeIsSlash = isNearestNodeTypeEquals(Constants.CURVE_BACK_SLASH, lstCommits[i]) ||
+                                        isNearestNodeTypeEquals(Constants.CURVE_BACK_SLASH_ACT, lstCommits[i])
 
-        if (prevCurvesCount > 1 && prevCurvesCount > currentCurvesCount) {
+        if (prevCurvesCount > 1 && prevCurvesCount > currentCurvesCount && !isNearestNodeIsSlash) {
 
             // copy all the curves except current one from the previous line
             def subArray
@@ -297,12 +301,48 @@ class CommitSelectorTagLib {
 
     }
 
+    /**
+     * Shift the layer
+     *
+     * @param commit
+     * @return
+     */
+    def _shiftLayer(commit) {
+        for (ii in 1..commit.curves.size() - 1) {
+            commit.curves[ii] = _rotateRightEdge(commit.curves[ii])
+        }
+        commit.currentCurveIdx++;
+    }
+
+    /**
+     * "Rotate" curve. It means, that we move right the layer and want to change curve types.
+     *
+     * For example, we had the next structure:
+     *
+     *          | | |
+     *          | | |
+     *
+     * And we want to move (shift) the upper layer to the right:
+     *
+     * shift->>  | | |
+     *          / / /
+     *
+     * As you can see, all the curves from lower layer were modified ("rotated to the right").
+     * This rotation should be done using this method.
+     *
+     * @param edge
+     * @return rotated edge
+     */
     def _rotateRightEdge(edge) {
         switch (edge) {
             case Constants.CURVE_VERTICAL_ACT:
                 return Constants.CURVE_SLASH_ACT;
             case Constants.CURVE_VERTICAL:
                 return Constants.CURVE_SLASH;
+            case Constants.CURVE_BACK_SLASH_ACT:
+                return Constants.CURVE_VERTICAL_ACT;
+            case Constants.CURVE_BACK_SLASH:
+                return Constants.CURVE_VERTICAL;
             default:
                 return edge;
         }
@@ -316,6 +356,14 @@ class CommitSelectorTagLib {
         return isCurrentCommit ?  Constants.CURVE_SLASH_ACT : Constants.CURVE_SLASH;
     }
 
+    def _getBackSlashCurve(isCurrentCommit) {
+        return isCurrentCommit ?  Constants.CURVE_BACK_SLASH_ACT : Constants.CURVE_BACK_SLASH;
+    }
+
+    private boolean isNearestNodeTypeEquals(byte type, Commit commit) {
+        def nearestCurveIdx = commit.curves.size() - 1
+        return (nearestCurveIdx >= 0 && commit.curves[nearestCurveIdx] == type);
+    }
     /**
      * Returns TRUE if only the first column is blank.
      *

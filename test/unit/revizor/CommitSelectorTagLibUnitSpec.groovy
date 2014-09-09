@@ -30,9 +30,10 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 		
 		given: 
 			def commits = [new Commit(id: 'A'),
-						   new Commit(id: 'B', parents: ['A'] )]	
+						   new Commit(id: 'B', parents: ['A'] )]
+            def lstMaster = ['A', 'B', 'C']
 		when:
-			def result = tagLib.prepareHistoryGraph(commits, [], [])
+			def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
 			//_print(result)
 
 		then: 'root does not have any curves because it does not have any parents'
@@ -55,9 +56,10 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 		given: 
 			def commits = [new Commit(id: 'A'),
 						   new Commit(id: 'B', parents: ['A'] ),
-						   new Commit(id: 'C', parents: ['B'] )]	
+						   new Commit(id: 'C', parents: ['B'] )]
+            def lstMaster = ['A', 'B', 'C']
 		when:
-			def result = tagLib.prepareHistoryGraph(commits, [], [])
+			def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
 			//_print(result)
 
 		then: 
@@ -90,7 +92,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'B', 'C']
         when:
             def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
-            //_print(result)
+            //Utils.printTree(result)
 
         then: 'root does not have parents'
             result[0].curves.size == 0
@@ -183,7 +185,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'B', 'C', 'F']
         when:
             def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
-            //_print(result)
+            //Utils.printTree(result)
 
         then: 'A root does not have parents'
             result[0].curves.size == 0
@@ -204,16 +206,14 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             result[3].curves[2] == Constants.CURVE_SLASH
 
         and: 'line 4 has three vertical curves - master, node D and the right branch'
-            result[4].curves.size == 3
+            result[4].curves.size == 2
             result[4].curves[0] == Constants.CURVE_VERTICAL
-            result[4].curves[1] == Constants.CURVE_BLANK
-            result[4].curves[2] == Constants.CURVE_VERTICAL_ACT
+            result[4].curves[1] == Constants.CURVE_BACK_SLASH_ACT
 
         and: 'line 5 has three curves - node F, and two empty spaces'
-            result[5].curves.size == 3
+            result[5].curves.size == 2
             result[5].curves[0] == Constants.CURVE_VERTICAL_ACT
             result[5].curves[1] == Constants.CURVE_BLANK
-            result[5].curves[2] == Constants.CURVE_BLANK
     }
 
     /*
@@ -243,7 +243,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstTips = ['D', 'E', 'F']
         when:
             def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
-            //_print(result)
+            Utils.printTree(result)
 
         then: 'A root does not have parents'
             result[0].curves.size == 0
@@ -264,16 +264,14 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             result[3].curves[2] == Constants.CURVE_SLASH
 
         and: 'line 4 has two curves - master and the right branch, node D is a tip and it does not have any outgoing edges'
-            result[4].curves.size == 3
+            result[4].curves.size == 2
             result[4].curves[0] == Constants.CURVE_VERTICAL
-            result[4].curves[1] == Constants.CURVE_BLANK
-            result[4].curves[2] == Constants.CURVE_VERTICAL_ACT
+            result[4].curves[1] == Constants.CURVE_BACK_SLASH_ACT
 
         and: 'line 5 has only one curve - node F. Other are tips so they do not have any edges'
-            result[5].curves.size == 3
+            result[5].curves.size == 2
             result[5].curves[0] == Constants.CURVE_VERTICAL_ACT
             result[5].curves[1] == Constants.CURVE_BLANK
-            result[5].curves[2] == Constants.CURVE_BLANK
     }
 
    /*
@@ -324,16 +322,14 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             result[3].curves[2] == Constants.CURVE_SLASH
 
         and: 'line 4 has two curves - master and the right branch, node D is a tip and it does not have any outgoing edges'
-            result[4].curves.size == 3
+            result[4].curves.size == 2
             result[4].curves[0] == Constants.CURVE_VERTICAL
-            result[4].curves[1] == Constants.CURVE_BLANK
-            result[4].curves[2] == Constants.CURVE_VERTICAL_ACT
+            result[4].curves[1] == Constants.CURVE_BACK_SLASH_ACT
 
         and: 'line 5 has only one curve - node F. Other are tips so they do not have any edges'
-            result[5].curves.size == 3
+            result[5].curves.size == 2
             result[5].curves[0] == Constants.CURVE_VERTICAL_ACT
             result[5].curves[1] == Constants.CURVE_BLANK
-            result[5].curves[2] == Constants.CURVE_BLANK
     }
 
 

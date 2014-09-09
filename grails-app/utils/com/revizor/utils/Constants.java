@@ -8,6 +8,9 @@ package com.revizor.utils;
  * To change this template use File | Settings | File Templates.
  */
 public interface Constants {
+
+    boolean IS_TREE_LOG_ENABLED = false;
+
     String LOCAL_REPO_PATH = System.getProperty("user.home") + "/repo";
     
     String REVIEW_SINGLE_VIEW = "single";

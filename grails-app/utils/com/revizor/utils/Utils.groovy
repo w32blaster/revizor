@@ -34,7 +34,7 @@ public class Utils {
                             break;
 
                         case Constants.CURVE_BACK_SLASH:
-                            line1 += "\\ "
+                            line1 += "  \\"
                             line2 += " |"
                             break;
 
@@ -50,7 +50,7 @@ public class Utils {
 
                         case Constants.CURVE_BACK_SLASH_ACT:
                             line1 += " " + commit.id
-                            line2 += "\\ "
+                            line2 += "  \\"
                             break;
 
                         case Constants.CURVE_BLANK:
