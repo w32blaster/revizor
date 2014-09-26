@@ -93,9 +93,14 @@ class CommitSelectorTagLib {
         }
 
         def tipFromLastLine;
+        def masterTipIdx = 0;
 
         // draw a history graph
         lstCommits.eachWithIndex { commit, i ->
+
+            // remember the master tip index
+            if (lstMaster.contains(commit.id) && lstTips.contains(commit.id)) masterTipIdx = i;
+
             if (commit.parents.size() == 1) {
                 def parentNodeIndex = mapIds.get(commit.parents[0])
 
@@ -112,16 +117,39 @@ class CommitSelectorTagLib {
             }
         }
 
-        // decorate master branch
-        lstCommits.eachWithIndex { commit, i ->
-            if (commit.currentCurveIdx == 0 && !lstMaster.contains(commit.id)) {
-                // shift this layer in decorative purposes
-                lstCommits[i].curves.add(0, Constants.CURVE_BLANK);
-                _shiftLayer(lstCommits[i])
-            }
-        }
+        // decorate tree
+        moveNonMasterBranchesToRight(lstCommits, masterTipIdx, lstMaster)
 
         return lstCommits;
+    }
+
+    /**
+     * Decorate master branch: if there are some branches, that goes after
+     * a master tip, then move them to the right.
+     * It looks more natural.
+     *
+     * @param lstCommits
+     * @param masterTipIdx
+     * @param lstMaster
+     */
+    private void moveNonMasterBranchesToRight(lstCommits, int masterTipIdx, lstMaster) {
+        def lastCommitIdx = lstCommits.size() - 1;
+        def isFirstTime = true;
+        if (masterTipIdx != 0 && masterTipIdx < lastCommitIdx) {
+            for (i in masterTipIdx..lastCommitIdx) {
+                if (lstCommits[i].currentCurveIdx == 0 && !lstMaster.contains(lstCommits[i].id)) {
+                    // shift this layer in decorative purposes
+                    lstCommits[i].curves.add(0, Constants.CURVE_BLANK);
+                    if (isFirstTime) {
+                        _shiftLayer(lstCommits[i])
+                        isFirstTime = false
+                    }
+                    else {
+                        lstCommits[i].currentCurveIdx++
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -164,7 +192,7 @@ class CommitSelectorTagLib {
                 _drawRowForNewBranch(isBelongingToMaster, lstCommits, i, isCurrentLineActive, isFirstIteration)
             }
             else {
-                _drawRow(isBelongingToMaster, lstCommits, i, isCurrentLineActive)
+                _drawRow(isBelongingToMaster, lstCommits, i, isCurrentLineActive, isFirstIteration)
             }
 
             if (i == to) {
@@ -192,16 +220,19 @@ class CommitSelectorTagLib {
      * @param i
      * @param isCurrentLineActive
      */
-    private void _drawRow(isBelongingToMaster, lstCommits, i, boolean isCurrentLineActive) {
+    private void _drawRow(isBelongingToMaster, lstCommits, i, boolean isCurrentLineActive, boolean isFirstIteration) {
         if (isBelongingToMaster) {
             lstCommits[i].curves.add(0, _getVerticalCurve(isCurrentLineActive));
-            if (!isCurrentLineActive) lstCommits[i].currentCurveIdx++;
+            // as long as it is a new branch to the left, we need to "move" all the lines on this row and make them curve slash
+            if (isFirstIteration) _shiftLayer(lstCommits[i])
         } else {
-            def nearestCurveIdx = lstCommits[i].curves.size() - 1
-            if (nearestCurveIdx >= 0 && lstCommits[i].curves[nearestCurveIdx] == Constants.CURVE_BLANK) {
+
+            def isPreviousLineHavingMoreCurves = (lstCommits[i-1].curves.size() > (lstCommits[i].curves.size() + 1) )
+
+            if (isPreviousLineHavingMoreCurves) {
                 // if nearest curve is empty (it was "ended"), then turn left on the graph
-                lstCommits[i].curves[nearestCurveIdx] = _getBackSlashCurve(isCurrentLineActive);
-                lstCommits[i].currentCurveIdx = nearestCurveIdx;
+                lstCommits[i].curves.add(_getBackSlashCurve(isCurrentLineActive));
+                if (isCurrentLineActive) lstCommits[i].currentCurveIdx = lstCommits[i].curves.size() - 1;
             }
             else {
                 lstCommits[i].curves.add(_getVerticalCurve(isCurrentLineActive));
@@ -293,25 +324,40 @@ class CommitSelectorTagLib {
 
             // put blank edges after all the tips, because tips/refs do not have any outgoing edges
             if (null != idxOfTip) {
-                subArray[idxOfTip] = Constants.CURVE_BLANK
+                //subArray[idxOfTip] = Constants.CURVE_BLANK
             }
 
-            lstCommits[i].curves = subArray
+            def isSubArrayHasOnlyBlank = (subArray.size() == 1 && subArray[0] == Constants.CURVE_BLANK)
+            if (!isSubArrayHasOnlyBlank) {
+                lstCommits[i].curves = subArray
+            }
+        }
+
+        // trim
+        while(lstCommits[i].curves.size() > 1 && lstCommits[i].curves.last() == Constants.CURVE_BLANK) {
+            lstCommits[i].curves = lstCommits[i].curves[0..-2]
         }
 
     }
 
     /**
-     * Shift the layer
+     * Shift the layer to the left.
+     *
+     * It means, if we added a new node A to the left of this line:
+     *    | | |
+     * then others neighbors should be shifted to the left:
+     *    A / / /
      *
      * @param commit
      * @return
      */
     def _shiftLayer(commit) {
-        for (ii in 1..commit.curves.size() - 1) {
-            commit.curves[ii] = _rotateRightEdge(commit.curves[ii])
+        if (commit.curves.size() > 1) {
+            for (ii in 1..commit.curves.size() - 1) {
+                commit.curves[ii] = _rotateRightEdge(commit.curves[ii])
+            }
+            commit.currentCurveIdx++;
         }
-        commit.currentCurveIdx++;
     }
 
     /**

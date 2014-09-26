@@ -68,6 +68,7 @@ public class Utils {
             println line1
             println line2
         }
+        println ""
     }
 
 }
