@@ -131,7 +131,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'C']
         when:
             def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
-            Utils.printTree(result)
+            //Utils.printTree(result)
 
         then: 'root does not have parents'
             result[0].curves.size == 0
@@ -335,7 +335,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstTips = ['D', 'E', 'F']
         when:
             def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
-            Utils.printTree(result)
+            //Utils.printTree(result)
 
         then: 'A root does not have parents'
             result[0].curves.size == 0
@@ -393,7 +393,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstTips = ['D', 'E', 'F']
         when:
             def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
-            Utils.printTree(result)
+            //Utils.printTree(result)
 
         then: 'A root does not have parents'
             result[0].curves.size == 0
@@ -566,7 +566,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstTips = ['B', 'E', 'F']
         when:
             def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
-            Utils.printTree(result)
+            //Utils.printTree(result)
 
         then: 'A root does not have parents'
             result[0].curves.size == 0
@@ -598,18 +598,73 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 
 
   /*
-        5.  | F
-            | |
-        4.  | | E
-            |  \ \
-        3.  | D | |
-            |/ / /
+        5.    F
+               \
+        4.    E |
+               \ \
+        3.    D | |
+             / / /
         2.  C | |
             |/ /
         1.  B |
             |/
         0.  A
     */
+    def "Each branch repeats the shape of their neighbours"() {
+
+        given:
+            def commits = [new Commit(id: 'A'),
+                           new Commit(id: 'B', parents: ['A'] ),
+                           new Commit(id: 'C', parents: ['B'] ),
+                           new Commit(id: 'D', parents: ['C'] ),
+                           new Commit(id: 'E', parents: ['B'] ),
+                           new Commit(id: 'F', parents: ['A'] )]
+
+            def lstMaster = ['A', 'B', 'C']
+            def lstTips = ['C', 'D', 'E', 'F']
+        when:
+            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            //Utils.printTree(result)
+
+        then: 'A root does not have parents'
+            result[0].curves.size == 0
+
+        and: 'node B and slash curve'
+            result[1].curves.size == 2
+            result[1].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[1].curves[1] == Constants.CURVE_SLASH
+            result[1].currentCurveIdx == 0
+
+        and: 'node C is alone on the line 2'
+            result[2].curves.size == 3
+            result[2].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[2].curves[1] == Constants.CURVE_SLASH
+            result[2].curves[2] == Constants.CURVE_SLASH
+            result[2].currentCurveIdx == 0
+
+        and: 'line 3 is shifted to the right'
+            result[3].curves.size == 4
+            result[3].curves[0] == Constants.CURVE_BLANK
+            result[3].curves[1] == Constants.CURVE_SLASH_ACT
+            result[3].curves[2] == Constants.CURVE_SLASH
+            result[3].curves[3] == Constants.CURVE_SLASH
+            result[3].currentCurveIdx == 1
+
+        and: 'only vertical curve and node E'
+            result[4].curves.size == 3
+            result[4].curves[0] == Constants.CURVE_BLANK
+            result[4].curves[1] == Constants.CURVE_BACK_SLASH_ACT
+            result[4].curves[2] == Constants.CURVE_BACK_SLASH
+            result[4].currentCurveIdx == 1
+
+        and: 'the last node F is alone'
+            result[5].curves.size == 2
+            result[5].curves[0] == Constants.CURVE_BLANK
+            result[5].curves[1] == Constants.CURVE_BACK_SLASH_ACT
+            result[5].currentCurveIdx == 1
+    }
+
+
 
   /*
         5.  F

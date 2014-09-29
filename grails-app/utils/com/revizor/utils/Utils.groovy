@@ -34,8 +34,8 @@ public class Utils {
                             break;
 
                         case Constants.CURVE_BACK_SLASH:
-                            line1 += "  \\"
-                            line2 += " |"
+                            line1 += " |"
+                            line2 += " \\"
                             break;
 
                         case Constants.CURVE_VERTICAL_ACT:
@@ -54,8 +54,8 @@ public class Utils {
                             break;
 
                         case Constants.CURVE_BLANK:
-                            line1 += "  "
-                            line2 += "  "
+                            line1 += " ❑"
+                            line2 += " ❑"
                             break;
                         default:
                             line1 += " *"

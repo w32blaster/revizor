@@ -183,9 +183,7 @@ class CommitSelectorTagLib {
 
              */
             def isSameSlotOnNextRowTaken = (lstCommits[from+1]?.curves?.size() != 0 && lstCommits[i].curves.size() >= lstCommits[i-1].curves.size())
-
-            def isTreeStart = (from == 0);
-            def isNewBranch = (lstCommits[i-1].children.size() != 0 && !isTreeStart && isSameSlotOnNextRowTaken)
+            def isNewBranch = (lstCommits[i-1].children.size() != 0 && isSameSlotOnNextRowTaken)
             def isCurrentLineActive = (i == to)
 
             if (isNewBranch) {
