@@ -670,14 +670,64 @@ class CommitSelectorTagLibUnitSpec extends Specification {
         5.  F
             |
         4.  | E
-            | |
-        3.  | | D
+            |  \
+        3.  | D |
             |  \ \
         2.  | C | |   
-            | | | |  
-        1.  B/ / /   
+            |/ / /   <-- Four branches are going from the same node B
+        1.  B
             |
         0.  A
     */
+    def "Few branches are started from the same node B"() {
+
+        given:
+            def commits = [new Commit(id: 'A'),
+                           new Commit(id: 'B', parents: ['A'] ),
+                           new Commit(id: 'C', parents: ['B'] ),
+                           new Commit(id: 'D', parents: ['B'] ),
+                           new Commit(id: 'E', parents: ['B'] ),
+                           new Commit(id: 'F', parents: ['B'] )]
+
+            def lstMaster = ['A', 'B', 'F']
+            def lstTips = ['C', 'D', 'E', 'F']
+        when:
+            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            //Utils.printTree(result)
+
+        then: 'A root does not have parents'
+            result[0].curves.size == 0
+
+        and: 'only node B'
+            result[1].curves.size == 1
+            result[1].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[1].currentCurveIdx == 0
+
+        and: 'from this point we expect to have four starting branches'
+            result[2].curves.size == 4
+            result[2].curves[0] == Constants.CURVE_VERTICAL
+            result[2].curves[1] == Constants.CURVE_SLASH_ACT
+            result[2].curves[2] == Constants.CURVE_SLASH
+            result[2].curves[3] == Constants.CURVE_SLASH
+            result[2].currentCurveIdx == 1
+
+        and: 'line 3'
+            result[3].curves.size == 3
+            result[3].curves[0] == Constants.CURVE_VERTICAL
+            result[3].curves[1] == Constants.CURVE_BACK_SLASH_ACT
+            result[3].curves[2] == Constants.CURVE_BACK_SLASH
+            result[3].currentCurveIdx == 1
+
+        and: 'line 4'
+            result[4].curves.size == 2
+            result[4].curves[0] == Constants.CURVE_VERTICAL
+            result[4].curves[1] == Constants.CURVE_BACK_SLASH_ACT
+            result[4].currentCurveIdx == 1
+
+        and: 'the last node F is alone'
+            result[5].curves.size == 1
+            result[5].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[5].currentCurveIdx == 0
+    }
 
 }

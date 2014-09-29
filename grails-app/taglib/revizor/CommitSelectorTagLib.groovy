@@ -184,16 +184,18 @@ class CommitSelectorTagLib {
              */
             def isSameSlotOnNextRowTaken = (lstCommits[from+1]?.curves?.size() != 0 && lstCommits[i].curves.size() >= lstCommits[i-1].curves.size())
             def isNewBranch = (lstCommits[i-1].children.size() != 0 && isSameSlotOnNextRowTaken)
-            def isCurrentLineActive = (i == to)
+
+            // current iteration goes directly to a target node, not curves at the middle
+            def isCurrentIterationGoesToNode = (i == to)
 
             if (isNewBranch) {
-                _drawRowForNewBranch(isBelongingToMaster, lstCommits, i, isCurrentLineActive, isFirstIteration)
+                _drawRowForNewBranch(isBelongingToMaster, lstCommits, i, isCurrentIterationGoesToNode, isFirstIteration)
             }
             else {
-                _drawRow(isBelongingToMaster, lstCommits, i, isCurrentLineActive, isFirstIteration)
+                _drawRow(isBelongingToMaster, lstCommits, i, isCurrentIterationGoesToNode, isFirstIteration)
             }
 
-            if (i == to) {
+            if (isCurrentIterationGoesToNode) {
                 // save the row number of current node
                 lstCommits[i].currentCurveIdx = isBelongingToMaster ? 0 : (lstCommits[i].curves.size() - 1)
             }
@@ -221,8 +223,14 @@ class CommitSelectorTagLib {
     private void _drawRow(isBelongingToMaster, lstCommits, i, boolean isCurrentLineActive, boolean isFirstIteration) {
         if (isBelongingToMaster) {
             lstCommits[i].curves.add(0, _getVerticalCurve(isCurrentLineActive));
-            // as long as it is a new branch to the left, we need to "move" all the lines on this row and make them curve slash
-            if (isFirstIteration) _shiftLayer(lstCommits[i])
+            // as long as it is a new branch to the left, we need to "move" all the
+            // lines on this row and make them curve slash (only on the first iteration)
+            if (isFirstIteration) {
+                _shiftLayer(lstCommits[i])
+            }
+            else {
+                lstCommits[i].currentCurveIdx++;
+            }
         } else {
 
             def isPreviousLineHavingMoreCurves = (lstCommits[i-1].curves.size() > (lstCommits[i].curves.size() + 1) )
