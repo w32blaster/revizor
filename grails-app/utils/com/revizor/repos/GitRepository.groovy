@@ -71,7 +71,7 @@ class GitRepository implements IRepository {
 
             new Commit(
                 id: commit.getId().name(),
-                parents: commit.getParents(),
+                parents: commit.getParents().collect({ it.getId().name()}),
                 author: commit.getAuthorIdent().getName(),
                 message: commit.getShortMessage()
             )}

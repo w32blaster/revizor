@@ -43,7 +43,7 @@ class CommitSelectorTagLib {
             def listOfMasterIds = repo.getListOfMasterCommits();
             def mapBranches = repo.getMapBranchesReferences();
 
-            prepareHistoryGraph(list, listOfMasterIds, mapBranches)
+            prepareHistoryGraph(list, listOfMasterIds, mapBranches.keySet())
 
             out << "<ul class='list-group'>"
             for (Commit rev : list) {
@@ -81,14 +81,14 @@ class CommitSelectorTagLib {
      * @param list of SHA keys of tips (references)
      */
     def prepareHistoryGraph(lstCommits, lstMaster, lstTips) {
-          
+
         // prepare list of commits: build map "SHA key" <=> "index" and fill "children" collection for each commit
         def mapIds = [:]
-        lstCommits.eachWithIndex {commit, i -> 
+        lstCommits.eachWithIndex {commit, i ->
             mapIds.put(commit.id, i);
             if (commit.parents.size() == 1) {
                 def parentNodeIndex = mapIds.get(commit.parents[0])
-                lstCommits[parentNodeIndex].children.add(commit.id);
+                if (parentNodeIndex) lstCommits[parentNodeIndex].children.add(commit.id);
             }
         }
 
