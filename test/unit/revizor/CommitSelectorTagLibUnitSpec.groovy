@@ -730,4 +730,17 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             result[5].currentCurveIdx == 0
     }
 
+    /*
+
+     ADD merging!!!
+
+     A
+     | \
+     | B
+     | |
+     C |
+
+     */
+
+
 }

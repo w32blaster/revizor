@@ -8,6 +8,9 @@ class CommitSelectorTagLib {
 
     static namespace = "sc"
 
+    final private static int CURVE_WIDTH = 10; // in px
+    final private static int ROW_HEIGHT = 35; // in px
+
     /**
      *  Prints flat list of all the commits with a checkbox. Allows user to select commits for a review
      */
@@ -43,21 +46,32 @@ class CommitSelectorTagLib {
             def listOfMasterIds = repo.getListOfMasterCommits();
             def mapBranches = repo.getMapBranchesReferences();
 
-            prepareHistoryGraph(list, listOfMasterIds, mapBranches.keySet())
+            list = prepareHistoryGraph(list.reverse(), listOfMasterIds, mapBranches.keySet())
 
-            out << "<ul class='list-group'>"
-            for (Commit rev : list) {
-                out << """
-                        <li class="list-group-item truncate" title="${rev.id.subSequence(0, 7)}">
-                            ${rev.message } 
-                            <span class="label label-default">${rev.author}</span>
-                            <a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.id])}" class="btn btn-default btn-xs tree-context-button">
+            def outHtml = "<table class='table table-condensed'>"
+            def graphHtml = "<div id='history-graph' style='position: absolute;'><svg height='${list.size() * ROW_HEIGHT}' width='100' overflow='hidden'><g>"
+
+            list.reverse().eachWithIndex { Commit rev, int i ->
+
+                rev.curves.eachWithIndex { curve, int idx ->
+                    graphHtml <<= "<line x1='${idx * CURVE_WIDTH}' y1='${i * ROW_HEIGHT}' x2='${idx * CURVE_WIDTH}' y2='${(i+1) * ROW_HEIGHT}' style='stroke:rgb(255,0,0);stroke-width:2' />"
+                }
+
+                outHtml <<= """
+                        <tr title="${rev.id.subSequence(0, 7)}" height="${ROW_HEIGHT}">
+                            <td><span style="padding-left: ${rev.curves.size() * CURVE_WIDTH}px">${rev.message }</span></td>
+                            <td><span class="label label-default">${rev.author}</span><td>
+                            <td><a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.id])}" class="btn btn-default btn-xs tree-context-button">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </a>
-                         </li>
+                            </td>
+                        </tr>
                         """
             }
-            out << "</ul>"
+            graphHtml <<= "</g></svg></div>"
+            outHtml <<= "</table>"
+
+            out << graphHtml + outHtml
         })
     }
 
@@ -88,7 +102,7 @@ class CommitSelectorTagLib {
             mapIds.put(commit.id, i);
             if (commit.parents.size() == 1) {
                 def parentNodeIndex = mapIds.get(commit.parents[0])
-                if (parentNodeIndex) lstCommits[parentNodeIndex].children.add(commit.id);
+                lstCommits[parentNodeIndex].children.add(commit.id);
             }
         }
 
@@ -167,6 +181,8 @@ class CommitSelectorTagLib {
     def _addLinesBetweenTwoNodes(from, to, lstCommits, isBelongingToMaster, isTip, tipFromLastLine) {
 
         for (i in from+1..to) {
+            //if (i>to) break;
+            //for (int i = from+1; i < to+1; i++) {
 
             def isFirstIteration = i == (from+1)
             _copyEdgesFromPreviousLine(lstCommits, i, to, tipFromLastLine, isBelongingToMaster)
@@ -335,13 +351,15 @@ class CommitSelectorTagLib {
 
             def isSubArrayHasOnlyBlank = (subArray.size() == 1 && subArray[0] == Constants.CURVE_BLANK)
             if (!isSubArrayHasOnlyBlank) {
-                lstCommits[i].curves = subArray
+                lstCommits[i].curves.removeAll({ true })
+                lstCommits[i].curves.addAll(subArray)
             }
         }
 
         // trim
         while(lstCommits[i].curves.size() > 1 && lstCommits[i].curves.last() == Constants.CURVE_BLANK) {
-            lstCommits[i].curves = lstCommits[i].curves[0..-2]
+            //lstCommits[i].curves = lstCommits[i].curves[0..-2]
+            lstCommits[i].curves.pop()
         }
 
     }
