@@ -115,18 +115,22 @@ class CommitSelectorTagLib {
             // remember the master tip index
             if (lstMaster.contains(commit.id) && lstTips.contains(commit.id)) masterTipIdx = i;
 
-            if (commit.parents.size() == 1) {
-                def parentNodeIndex = mapIds.get(commit.parents[0])
+            if (commit.parents.size() > 0) {
+                for (ip in 0..(commit.parents.size()-1) ) {
 
-                // draw a line (edge) between current node and its parent
-                def isBelongingToMaster = lstMaster.contains(commit.id);
-                def isTip = lstTips.contains(commit.id);
-                tipFromLastLine = _addLinesBetweenTwoNodes(parentNodeIndex, i, lstCommits, isBelongingToMaster, isTip, tipFromLastLine);
+                    def parentNodeIndex = mapIds.get(commit.parents[ip])
+                    def isMerge = (ip > 0) // ip is >1 when current node has few parents (=is merged)
 
-                if (Constants.IS_TREE_LOG_ENABLED) {
-                    println "draw from ${lstCommits[parentNodeIndex].id} to ${lstCommits[i].id}"
-                    Utils.printTree(lstCommits)
-                    println "------------->"
+                    // draw a line (edge) between current node and its parent
+                    def isBelongingToMaster = lstMaster.contains(commit.id);
+                    def isTip = lstTips.contains(commit.id);
+                    tipFromLastLine = _addLinesBetweenTwoNodes(parentNodeIndex, i, lstCommits, isBelongingToMaster, isTip, tipFromLastLine, isMerge);
+
+                    if (Constants.IS_TREE_LOG_ENABLED) {
+                        println "draw from ${lstCommits[parentNodeIndex].id} to ${lstCommits[i].id}"
+                        Utils.printTree(lstCommits)
+                        println "------------->"
+                    }
                 }
             }
         }
@@ -178,11 +182,10 @@ class CommitSelectorTagLib {
      * @param isBelongingToMaster - (boolean) whether current commit ("to") belongs to master or not
      * @param isTip - (boolean) whether current commit ("to") is tip (last commit) on current branch or not
      */
-    def _addLinesBetweenTwoNodes(from, to, lstCommits, isBelongingToMaster, isTip, tipFromLastLine) {
+    def _addLinesBetweenTwoNodes(from, to, lstCommits, isBelongingToMaster, boolean isTip, tipFromLastLine, boolean isMerge) {
 
         for (i in from+1..to) {
-            //if (i>to) break;
-            //for (int i = from+1; i < to+1; i++) {
+        //for (int i = from+1; i < to+1; i++) {
 
             def isFirstIteration = i == (from+1)
             _copyEdgesFromPreviousLine(lstCommits, i, to, tipFromLastLine, isBelongingToMaster)
@@ -204,7 +207,11 @@ class CommitSelectorTagLib {
             // current iteration goes directly to a target node, not curves at the middle
             def isCurrentIterationGoesToNode = (i == to)
 
-            if (isNewBranch) {
+            if (isMerge && isCurrentIterationGoesToNode) {
+                // change the current node as "merged"
+                lstCommits[i].curves[lstCommits[i].currentCurveIdx] = Constants.CURVE_MERGE;
+            }
+            else if (isNewBranch) {
                 _drawRowForNewBranch(isBelongingToMaster, lstCommits, i, isCurrentIterationGoesToNode, isFirstIteration)
             }
             else {

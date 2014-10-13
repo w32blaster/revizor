@@ -53,6 +53,11 @@ public class Utils {
                             line2 += "  \\"
                             break;
 
+                        case Constants.CURVE_MERGE:
+                            line1 += " " + commit.id
+                            line2 += " |\\"
+                            break;
+
                         case Constants.CURVE_BLANK:
                             line1 += " ❑"
                             line2 += " ❑"

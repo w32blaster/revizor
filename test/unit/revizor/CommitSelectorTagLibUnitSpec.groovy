@@ -731,16 +731,83 @@ class CommitSelectorTagLibUnitSpec extends Specification {
     }
 
     /*
-
-     ADD merging!!!
-
-     A
-     | \
-     | B
-     | |
-     C |
-
+         5.  F
+             |
+         4.  E
+             |\
+         3.  | D
+             | |
+         2.  C |
+             |/
+         1.  B
+             |
+         0.  A
      */
+    def "merge, where node E has two parents C and D"() {
+
+        given:
+            def commits = [new Commit(id: 'A'),
+                           new Commit(id: 'B', parents: ['A'] ),
+                           new Commit(id: 'C', parents: ['B'] ),
+                           new Commit(id: 'D', parents: ['B'] ),
+                           new Commit(id: 'E', parents: ['C', 'D'] ),
+                           new Commit(id: 'F', parents: ['E'] )]
+
+            def lstMaster = ['A', 'B', 'C', 'E', 'F']
+            def lstTips = ['F']
+        when:
+            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            //Utils.printTree(result)
+
+        then: 'A root does not have parents'
+            result[0].curves.size == 0
+
+        and: 'B node has only one edge to node A'
+            result[1].curves.size == 1
+            result[1].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[1].currentCurveIdx == 0
+
+        and: 'line 2 has two curves - node C and left branch'
+            result[2].curves.size == 2
+            result[2].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[2].curves[1] == Constants.CURVE_SLASH
+            result[2].currentCurveIdx == 0
+
+        and: 'line 3 is usual, only D node on the second branch'
+            result[3].curves.size == 2
+            result[3].curves[0] == Constants.CURVE_VERTICAL
+            result[3].curves[1] == Constants.CURVE_VERTICAL_ACT
+            result[3].currentCurveIdx == 1
+
+        and: 'here is the merging! The feature branch ends here, thus there is only one curve'
+            result[4].curves.size == 1
+            result[4].curves[0] == Constants.CURVE_MERGE
+            result[4].currentCurveIdx == 0
+
+        and: 'line 5 has three curves - node F, and two empty spaces'
+            result[5].curves.size == 1
+            result[5].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[5].currentCurveIdx == 0
+    }
 
 
+    /*
+
+    The third branch repeats shape correctly in case of merging
+
+     6.  G
+         | \
+     5.  | F
+         | |
+     4.  E |  <-- correctly recognizes merging point
+         |\ \
+     3.  | D |
+         | | |
+     2.  C | |
+         |/ /  <-- two branches from one node
+     1.  B
+         |
+     0.  A
+
+ */
 }

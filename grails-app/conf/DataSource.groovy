@@ -18,10 +18,7 @@ environments {
     development {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop','update'
-            url = "jdbc:mysql://localhost/revizor"
-            driverClassName = "com.mysql.jdbc.Driver"
-            username = "root"
-            password = ""
+            url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
             pooled = true
             properties {
                 validationQuery = "SELECT 1"
