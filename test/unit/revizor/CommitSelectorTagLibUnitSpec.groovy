@@ -796,10 +796,10 @@ class CommitSelectorTagLibUnitSpec extends Specification {
     The third branch repeats shape correctly in case of merging
 
      6.  G
-         | \
+         |\
      5.  | F
          | |
-     4.  E |  <-- correctly recognizes merging point
+     4.  E |  <-- correctly recognizes merging point and another branch passes around it
          |\ \
      3.  | D |
          | | |
@@ -809,5 +809,61 @@ class CommitSelectorTagLibUnitSpec extends Specification {
          |
      0.  A
 
- */
+    */
+    def "test two merges that starts from the same branch"() {
+
+        given:
+            def commits = [new Commit(id: 'A'),
+                           new Commit(id: 'B', parents: ['A'] ),
+                           new Commit(id: 'C', parents: ['B'] ),
+                           new Commit(id: 'D', parents: ['B'] ),
+                           new Commit(id: 'E', parents: ['C', 'D'] ),
+                           new Commit(id: 'F', parents: ['B'] ),
+                           new Commit(id: 'G', parents: ['E', 'F'] )]
+
+            def lstMaster = ['A', 'B', 'C', 'E', 'G']
+            def lstTips = ['G']
+        when:
+            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            //Utils.printTree(result)
+
+        then: 'A root does not have parents'
+            result[0].curves.size == 0
+
+        and: 'B node has only one edge to node A'
+            result[1].curves.size == 1
+            result[1].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[1].currentCurveIdx == 0
+
+        and: 'line 2 is full of curves, because two new branches are started here'
+            result[2].curves.size == 3
+            result[2].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[2].curves[1] == Constants.CURVE_SLASH
+            result[2].curves[2] == Constants.CURVE_SLASH
+            result[2].currentCurveIdx == 0
+
+        and: 'line 3, D in the middle'
+            result[3].curves.size == 3
+            result[3].curves[0] == Constants.CURVE_VERTICAL
+            result[3].curves[1] == Constants.CURVE_VERTICAL_ACT
+            result[3].curves[2] == Constants.CURVE_VERTICAL
+            result[3].currentCurveIdx == 1
+
+        and: 'here is the merging! The last branch moves the the left'
+            result[4].curves.size == 2
+            result[4].curves[0] == Constants.CURVE_MERGE
+            result[4].curves[1] == Constants.CURVE_BACK_SLASH
+            result[4].currentCurveIdx == 0
+
+        and: 'line 5 has two curves'
+            result[5].curves.size == 2
+            result[5].curves[0] == Constants.CURVE_VERTICAL
+            result[5].curves[1] == Constants.CURVE_VERTICAL_ACT
+            result[5].currentCurveIdx == 1
+
+        and: 'line 6 is merge'
+            result[6].curves.size == 1
+            result[6].curves[0] == Constants.CURVE_MERGE
+            result[6].currentCurveIdx == 0
+    }
 }

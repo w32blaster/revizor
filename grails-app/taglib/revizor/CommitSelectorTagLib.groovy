@@ -209,7 +209,7 @@ class CommitSelectorTagLib {
 
             if (isMerge && isCurrentIterationGoesToNode) {
                 // change the current node as "merged"
-                lstCommits[i].curves[lstCommits[i].currentCurveIdx] = Constants.CURVE_MERGE;
+                lstCommits[i].curves[lstCommits[i].currentCurveIdx] = Constants.CURVE_MERGE
             }
             else if (isNewBranch) {
                 _drawRowForNewBranch(isBelongingToMaster, lstCommits, i, isCurrentIterationGoesToNode, isFirstIteration)
@@ -321,14 +321,15 @@ class CommitSelectorTagLib {
      * 
      * While looping we need to 
      */
-    def _copyEdgesFromPreviousLine(lstCommits, i, toIndex, idxOfTip, isBelongingToMaster) {
+    def _copyEdgesFromPreviousLine(lstCommits, i, toIndex, idxOfTip, boolean isBelongingToMaster) {
 
         def prevCurvesCount = lstCommits[i-1].curves.size()
         def currentCurvesCount = lstCommits[i].curves.size() + 1
+        def isCurrentNodeMerged = (lstCommits[i].curves[lstCommits[i].currentCurveIdx] == Constants.CURVE_MERGE)
         def isNearestNodeIsSlash = isNearestNodeTypeEquals(Constants.CURVE_BACK_SLASH, lstCommits[i]) ||
                                         isNearestNodeTypeEquals(Constants.CURVE_BACK_SLASH_ACT, lstCommits[i])
 
-        if (prevCurvesCount > 1 && prevCurvesCount > currentCurvesCount && !isNearestNodeIsSlash) {
+        if (prevCurvesCount > 1 && prevCurvesCount > currentCurvesCount && !isNearestNodeIsSlash && !isCurrentNodeMerged) {
 
             // copy all the curves except current one from the previous line
             def subArray
@@ -342,7 +343,7 @@ class CommitSelectorTagLib {
             // but if a copied branch has a node, then replace it with a blank space
             if (i == toIndex) {
                 subArray = subArray.collect {
-                    if (it in [Constants.CURVE_VERTICAL_ACT, Constants.CURVE_SLASH_ACT, Constants.CURVE_BACK_SLASH_ACT]) {
+                    if (it in [Constants.CURVE_VERTICAL_ACT, Constants.CURVE_SLASH_ACT, Constants.CURVE_BACK_SLASH_ACT, Constants.CURVE_MERGE]) {
                         return Constants.CURVE_BLANK
                     }
                     else {
