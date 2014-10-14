@@ -865,4 +865,24 @@ class GraphBuilderUnitSpec extends Specification {
             result[6].curves[0] == Constants.CURVE_MERGE
             result[6].currentCurveIdx == 0
     }
+
+    /*
+
+     Test that merging between is displayed correctly
+
+     6.  G
+         |\
+     5.  | F  <-- Merge with non-master branch
+         | |\
+     4.  | | E
+         | | |
+     3.  | D |
+         |/ /
+     2.  C |
+         | |
+     1.  B |
+         |/
+     0.  A
+
+    */
 }
