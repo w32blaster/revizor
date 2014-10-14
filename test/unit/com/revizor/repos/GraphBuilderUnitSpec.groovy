@@ -1,4 +1,4 @@
-package revizor
+package com.revizor.repos
 
 import grails.test.mixin.*
 import spock.lang.Ignore
@@ -10,10 +10,9 @@ import com.revizor.utils.Utils
 import com.revizor.repos.Commit
 
 /**
- * test-app -echoOut unit: revizor.CommitSelectorTagLibUnitSpec
+ * test-app -echoOut unit: com.revizor.repos.GraphBuilderUnitSpec
  */
-@TestFor(CommitSelectorTagLib)
-class CommitSelectorTagLibUnitSpec extends Specification {
+class GraphBuilderUnitSpec extends Specification {
 
     def setup() {
     }
@@ -33,7 +32,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 						   new Commit(id: 'B', parents: ['A'] )]
             def lstMaster = ['A', 'B', 'C']
 		when:
-			def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
+			def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, [])
 			//_print(result)
 
 		then: 'root does not have any curves because it does not have any parents'
@@ -59,7 +58,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 						   new Commit(id: 'C', parents: ['B'] )]
             def lstMaster = ['A', 'B', 'C']
 		when:
-			def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
+			def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, [])
 			//_print(result)
 
 		then: 
@@ -91,7 +90,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 
             def lstMaster = ['A', 'B', 'D']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, [])
             //Utils.printTree(result)
 
         then: 'root does not have parents'
@@ -130,7 +129,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 
             def lstMaster = ['A', 'C']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, [])
             //Utils.printTree(result)
 
         then: 'root does not have parents'
@@ -169,7 +168,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'B', 'C']
             def lstTips = ['C', 'D']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
             //Utils.printTree(result)
 
         then: 'root does not have parents'
@@ -222,7 +221,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'B', 'C']
             def lstTips = ['C', 'G']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
             //Utils.printTree(result)
 
         then: 'root does not have parents'
@@ -284,7 +283,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
 
 			def lstMaster = ['A', 'B', 'D']
 		when:
-			def result = tagLib.prepareHistoryGraph(commits, lstMaster, [])
+			def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, [])
             //Utils.printTree(result)
 
 		then: 'root does not have parents'
@@ -334,7 +333,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'B', 'C', 'F']
             def lstTips = ['D', 'E', 'F']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
@@ -392,7 +391,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'B', 'C', 'F']
             def lstTips = ['D', 'E', 'F']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
@@ -449,7 +448,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'B', 'C', 'F']
             def lstTips = ['D', 'F']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
@@ -507,7 +506,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'B', 'C', 'F']
             def lstTips = ['D', 'F']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
@@ -565,7 +564,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'C', 'D', 'F']
             def lstTips = ['B', 'E', 'F']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
@@ -623,7 +622,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'B', 'C']
             def lstTips = ['C', 'D', 'E', 'F']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
@@ -692,7 +691,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'B', 'F']
             def lstTips = ['C', 'D', 'E', 'F']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
@@ -756,7 +755,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'B', 'C', 'E', 'F']
             def lstTips = ['F']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
@@ -824,7 +823,7 @@ class CommitSelectorTagLibUnitSpec extends Specification {
             def lstMaster = ['A', 'B', 'C', 'E', 'G']
             def lstTips = ['G']
         when:
-            def result = tagLib.prepareHistoryGraph(commits, lstMaster, lstTips)
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
