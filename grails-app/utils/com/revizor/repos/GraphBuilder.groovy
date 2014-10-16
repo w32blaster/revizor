@@ -4,7 +4,7 @@ import com.revizor.utils.Constants
 import com.revizor.utils.Utils
 
 /**
- * Helps to guild a history graph.
+ * Helps to build a history graph.
  *
  * @see Wiki: https://github.com/w32blaster/revizor/wiki/History-graph-in-Revizor
  */
@@ -202,7 +202,7 @@ class GraphBuilder {
                 if (isCurrentLineActive) lstCommits[i].currentCurveIdx = lstCommits[i].curves.size() - 1;
             }
             else {
-                lstCommits[i].curves.add(_getVerticalCurve(isCurrentLineActive));
+                 lstCommits[i].curves.add(_getVerticalCurve(isCurrentLineActive));
             }
         }
     }

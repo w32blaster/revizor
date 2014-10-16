@@ -155,3 +155,7 @@ html, body
     overflow-y: auto;
     max-width: 800px;
 }
+.graph-line-text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
