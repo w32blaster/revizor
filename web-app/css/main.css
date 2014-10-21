@@ -159,3 +159,13 @@ html, body
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.svg-path {
+    stroke: #000;
+    stroke-width:1;
+    fill:none;
+}
+.svg-circle {
+    stroke: #000;
+    stroke-width:2;
+    fill: blue;
+}

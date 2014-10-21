@@ -15,6 +15,12 @@ public class Utils {
             
             def line1 = ""
             def line2 = ""
+            def node = commit.id.substring(0, 3) + " p["
+            commit.parents.each { parent ->
+                node += parent.substring(0,3) + ","
+            }
+            node += "]"
+
             //println "commit ${commit.id} has curves ${commit.curves.size()}: ${commit.curves}"
             if (commit.curves.size() == 0) {
                 // this is root
@@ -39,22 +45,22 @@ public class Utils {
                             break;
 
                         case Constants.CURVE_VERTICAL_ACT:
-                            line1 += " " + commit.id
+                            line1 += " " + node
                             line2 += " |"
                             break;
 
                         case Constants.CURVE_SLASH_ACT:
-                            line1 += " " + commit.id
+                            line1 += " " + node
                             line2 += "/ "
                             break;
 
                         case Constants.CURVE_BACK_SLASH_ACT:
-                            line1 += " " + commit.id
+                            line1 += " " + node
                             line2 += "  \\"
                             break;
 
                         case Constants.CURVE_MERGE:
-                            line1 += " " + commit.id
+                            line1 += " " + node
                             line2 += " |\\"
                             break;
 

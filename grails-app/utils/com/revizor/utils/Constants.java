@@ -9,7 +9,7 @@ package com.revizor.utils;
  */
 public interface Constants {
 
-    boolean IS_TREE_LOG_ENABLED = false;
+    boolean IS_TREE_LOG_ENABLED = true;
 
     String LOCAL_REPO_PATH = System.getProperty("user.home") + "/.repo";
     
