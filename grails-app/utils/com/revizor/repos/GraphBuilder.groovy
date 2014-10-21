@@ -23,7 +23,8 @@ class GraphBuilder {
 
         // prepare list of commits: build map "SHA key" <=> "index" and fill "children" collection for each commit
         def mapIds = [:]
-        lstCommits.eachWithIndex {commit, i ->
+        for (int i = lstCommits.size()-1; i > -1; i--) {
+            def commit = lstCommits[i]
             mapIds.put(commit.id, i);
             if (commit.parents.size() == 1) {
                 def parentNodeIndex = mapIds.get(commit.parents[0])
@@ -34,7 +35,8 @@ class GraphBuilder {
         def masterTipIdx = 0;
 
         // draw a history graph
-        lstCommits.eachWithIndex { commit, i ->
+        for (int i = lstCommits.size()-1; i > -1; i--) {
+            def commit = lstCommits[i]
 
             // remember the master tip index
             if (lstMaster.contains(commit.id) && lstTips.contains(commit.id)) masterTipIdx = i;
@@ -73,23 +75,23 @@ class GraphBuilder {
      *
      * Example, if there is this scenario:
      *
-     *   D
-     *   |
-     *   C
-     *    \
-     *   B |
-     *   |/
-     *   A
+     *  0. D
+     *     |
+     *  1. C
+     *      \
+     *  2. B |
+     *     |/
+     *  3. A
      *
      * , where A-B is master/default, then decorate it and move non-master branch to the right:
      *
-     *     D
-     *     |
-     *     C
-     *     | <-- rotate this curve ("shift this layer")
-     *   B |
-     *   |/
-     *   A
+     *   0.   D
+     *        |
+     *   1.   C
+     *        | <-- rotate this curve ("shift this layer")
+     *   2. B |
+     *      |/
+     *   3. A
      *
      * Just for decorative purposes.
      *
@@ -100,8 +102,8 @@ class GraphBuilder {
     private void moveNonMasterBranchesToRight(lstCommits, int masterTipIdx, lstMaster) {
         def lastCommitIdx = lstCommits.size() - 1;
         def isFirstTime = true;
-        if (masterTipIdx != 0 && masterTipIdx < lastCommitIdx) {
-            for (i in masterTipIdx..lastCommitIdx) {
+        if (masterTipIdx != lastCommitIdx && masterTipIdx > 0) {
+            for (i in masterTipIdx..0) {
                 if (lstCommits[i].currentCurveIdx == 0 && !lstMaster.contains(lstCommits[i].id)) {
                     // shift this layer in decorative purposes
                     lstCommits[i].curves.add(0, Constants.CURVE_BLANK);
@@ -131,10 +133,9 @@ class GraphBuilder {
      */
     def _addLinesBetweenTwoNodes(from, to, lstCommits, isBelongingToMaster, boolean isMerge) {
 
-        for (i in from+1..to) {
-            //for (int i = from+1; i < to+1; i++) {
+        for (i in from-1..to) {
 
-            def isFirstIteration = i == (from+1)
+            def isFirstIteration = i == (from-1)
             _copyEdgesFromPreviousLine(lstCommits, i, to, isBelongingToMaster)
 
             /*
@@ -148,8 +149,8 @@ class GraphBuilder {
                 | | * <-- current iteration
 
              */
-            def isSameSlotOnNextRowTaken = (lstCommits[from+1]?.curves?.size() != 0 && lstCommits[i].curves.size() >= lstCommits[i-1].curves.size())
-            def isNewBranch = (lstCommits[i-1].children.size() != 0 && isSameSlotOnNextRowTaken)
+            def isSameSlotOnNextRowTaken = (lstCommits[from-1]?.curves?.size() != 0 && lstCommits[i].curves.size() >= lstCommits[i+1].curves.size())
+            def isNewBranch = (lstCommits[i+1].children.size() != 0 && isSameSlotOnNextRowTaken)
 
             // current iteration goes directly to a target node, not curves at the middle
             def isCurrentIterationGoesToNode = (i == to)
@@ -194,7 +195,7 @@ class GraphBuilder {
             }
         } else {
 
-            def isPreviousLineHavingMoreCurves = (lstCommits[i-1].curves.size() > (lstCommits[i].curves.size() + 1) )
+            def isPreviousLineHavingMoreCurves = (lstCommits[i+1].curves.size() > (lstCommits[i].curves.size() + 1) )
 
             if (isPreviousLineHavingMoreCurves) {
                 // if nearest curve is empty (it was "ended"), then turn left on the graph
@@ -261,7 +262,7 @@ class GraphBuilder {
      */
     def _copyEdgesFromPreviousLine(lstCommits, i, toIndex, boolean isBelongingToMaster) {
 
-        def prevCurvesCount = lstCommits[i-1].curves.size()
+        def prevCurvesCount = lstCommits[i+1].curves.size()
         def currentCurvesCount = lstCommits[i].curves.size() + 1
         def isCurrentNodeMerged = (lstCommits[i].curves[lstCommits[i].currentCurveIdx] == Constants.CURVE_MERGE)
         def isNearestNodeIsSlash = isNearestNodeTypeEquals(Constants.CURVE_BACK_SLASH, lstCommits[i]) ||
@@ -272,10 +273,10 @@ class GraphBuilder {
             // copy all the curves except current one from the previous line
             def subArray
             if (isBelongingToMaster) {
-                subArray = lstCommits[i-1].curves[1..(prevCurvesCount-1)]
+                subArray = lstCommits[i+1].curves[1..(prevCurvesCount-1)]
             }
             else {
-                subArray = lstCommits[i-1].curves[0..(prevCurvesCount-2)]
+                subArray = lstCommits[i+1].curves[0..(prevCurvesCount-2)]
             }
 
             // but if a copied branch has a node, then replace it with a blank space

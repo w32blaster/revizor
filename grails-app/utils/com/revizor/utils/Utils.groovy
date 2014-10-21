@@ -11,15 +11,11 @@ public class Utils {
     
     // function for debugging purposes: prints graph to the console
     static printTree(commits) {
-        commits.reverseEach { commit ->
+        commits.each { commit ->
             
             def line1 = ""
             def line2 = ""
-            def node = commit.id.substring(0, 3) + " p["
-            commit.parents.each { parent ->
-                node += parent.substring(0,3) + ","
-            }
-            node += "]"
+            def node = commit.id
 
             //println "commit ${commit.id} has curves ${commit.curves.size()}: ${commit.curves}"
             if (commit.curves.size() == 0) {
