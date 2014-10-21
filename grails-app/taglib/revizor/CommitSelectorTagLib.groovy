@@ -50,13 +50,13 @@ class CommitSelectorTagLib {
             def mapBranches = repo.getMapBranchesReferences();
 
             def graphBuilder = new GraphBuilder()
-            list = graphBuilder.prepareHistoryGraph(list.reverse(), listOfMasterIds, mapBranches.keySet())
+            list = graphBuilder.prepareHistoryGraph(list, listOfMasterIds, mapBranches.keySet())
 
             def outHtml = "<table class='table table-condensed'>"
             def graphHtml = "<div id='history-graph' style='position: absolute; top: ${(ROW_HEIGHT / 2) - PADDING_TOP}px'>" +
                     "<svg height='${list.size() * ROW_HEIGHT}' width='${CURVE_WIDTH * 6}' overflow='hidden'><g>"
 
-            list.reverse().eachWithIndex { Commit rev, int i ->
+            list.eachWithIndex { Commit rev, int i ->
 
                 rev.curves.eachWithIndex { curve, int idx ->
                     graphHtml <<= _drawSVGCurve(curve, idx, list, i)
@@ -122,15 +122,11 @@ class CommitSelectorTagLib {
             case Constants.CURVE_SLASH:
             case Constants.CURVE_SLASH_ACT:
 
-                if (list[i].id.startsWith("b6f")) {
-                    println " next line is list[${i}+1] = ${list[i+1]}, list[${i}-1] = ${list[i-1]} and the current is ${list[i]}"
-                }
-
                 def isParentNodeOnLineBelow = (list[i+1].id == list[i].parents[0])
                 def htmlCurve
                 if (isParentNodeOnLineBelow) {
                     def parentNodeIdx = list[i+1].currentCurveIdx
-                    def Xparent = parentNodeIdx * CURVE_WIDTH + CURVE_WIDTH
+                    def Xparent = parentNodeIdx * CURVE_WIDTH + PADDING_LEFT
                     htmlCurve =  "<path d='M ${Xparent} ${Ydown} C ${Xparent} ${Yup} ${X} ${Ydown} ${X} ${Yup}' class='svg-path' />"
                 }
                 else {
