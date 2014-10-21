@@ -60,6 +60,11 @@ class GraphBuilder {
                 }
 
             }
+            else if (commit.parents.size() == 0) {
+                // root
+                lstCommits[i].curves.add(Constants.CURVE_ROOT);
+                lstCommits[i].currentCurveIdx = 0;
+            }
         }
 
         // decorate tree

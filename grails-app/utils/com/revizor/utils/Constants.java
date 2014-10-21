@@ -31,4 +31,5 @@ public interface Constants {
     byte CURVE_BACK_SLASH_ACT = 6;
     byte CURVE_BLANK = 7;
     byte CURVE_MERGE = 8;
+    byte CURVE_ROOT = 9;
 }

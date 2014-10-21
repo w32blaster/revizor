@@ -52,6 +52,8 @@ class CommitSelectorTagLib {
             def graphBuilder = new GraphBuilder()
             list = graphBuilder.prepareHistoryGraph(list, listOfMasterIds, mapBranches.keySet())
 
+            Utils.printTree(list)
+
             def outHtml = "<table class='table table-condensed'>"
             def graphHtml = "<div id='history-graph' style='position: absolute; top: ${(ROW_HEIGHT / 2) - PADDING_TOP}px'>" +
                     "<svg height='${list.size() * ROW_HEIGHT}' width='${CURVE_WIDTH * 6}' overflow='hidden'><g>"
@@ -59,8 +61,9 @@ class CommitSelectorTagLib {
             list.eachWithIndex { Commit rev, int i ->
 
                 rev.curves.eachWithIndex { curve, int idx ->
-                    graphHtml <<= _drawSVGCurve(curve, idx, list, i)
+                        graphHtml <<= _drawSVGCurve(curve, idx, list, i)
                 }
+
 
                 outHtml <<= """
                         <tr title="${rev.id.subSequence(0, 7)}" height="${ROW_HEIGHT}">
@@ -104,7 +107,6 @@ class CommitSelectorTagLib {
      */
     def _drawSVGCurve(byte curve, int idx, list, int i) {
 
-        def isTop = (i == 0)
         def X = (idx * CURVE_WIDTH) + PADDING_LEFT
         def Yup = i * ROW_HEIGHT + PADDING_TOP
         def Ydown = (i+1) * ROW_HEIGHT + PADDING_TOP
@@ -157,6 +159,9 @@ class CommitSelectorTagLib {
                 return "<line x1='${X}' y1='${Yup}' x2='${X}' y2='${Ydown}' class='svg-path' />" +
                         "<path d='M${X} ${Yup} C ${X} ${Ydown} ${X + CURVE_WIDTH} ${Yup} ${X + CURVE_WIDTH} ${Ydown}' class='svg-path' />" +
                         "<circle cx='${X}' cy='${Yup}' r='3' class='svg-circle' />"
+
+            case Constants.CURVE_ROOT:
+                return  "<circle cx='${X}' cy='${Yup}' r='5' class='svg-circle' title='Root' />"
         }
 
         return ""

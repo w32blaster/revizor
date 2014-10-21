@@ -32,7 +32,8 @@ class GraphBuilderUnitSpec extends Specification {
 			//_print(result)
 
 		then: 'root does not have any curves because it does not have any parents'
-			result[1].curves.size == 0
+			result[1].curves.size == 1
+            result[1].curves[0] == Constants.CURVE_ROOT
 
 		and:
 			result[0].curves.size == 1
@@ -57,7 +58,8 @@ class GraphBuilderUnitSpec extends Specification {
 			def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, [])
 
 		then: 
-			result[2].curves.size == 0
+			result[2].curves.size == 1
+            result[2].curves[0] == Constants.CURVE_ROOT
 
 		and:
 			result[1].curves.size == 1
@@ -91,7 +93,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
         then: 'root does not have parents'
-            result[3].curves.size == 0
+            result[3].curves.size == 1
+            result[3].curves[0] == Constants.CURVE_ROOT
 
         and: 'B node has two edge to node A'
             result[2].curves.size == 1
@@ -130,7 +133,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
         then: 'root does not have parents'
-            result[2].curves.size == 0
+            result[2].curves.size == 1
+            result[2].curves[0] == Constants.CURVE_ROOT
 
         and: 'line 1 has two edges'
             result[1].curves.size == 2
@@ -169,7 +173,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
         then: 'root does not have parents'
-            result[3].curves.size == 0
+            result[3].curves.size == 1
+            result[3].curves[0] == Constants.CURVE_ROOT
             
         and: 'B node has only one edge to node A'
             result[2].curves.size == 1
@@ -222,7 +227,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
         then: 'root does not have parents'
-            result[6].curves.size == 0
+            result[6].curves.size == 1
+            result[6].curves[0] == Constants.CURVE_ROOT
 
         and: 'B node has only one edge to node A'
             result[5].curves.size == 1
@@ -284,7 +290,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
 		then: 'root does not have parents'
-			result[3].curves.size == 0
+			result[3].curves.size == 1
+            result[3].curves[0] == Constants.CURVE_ROOT
 			
 		and: 'B node has only one edge to node A'
 			result[2].curves.size == 1
@@ -334,7 +341,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
-            result[5].curves.size == 0
+            result[5].curves.size == 1
+            result[5].curves[0] == Constants.CURVE_ROOT
             
         and: 'B node has only one edge to node A'
             result[4].curves.size == 1
@@ -392,7 +400,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
-            result[5].curves.size == 0
+            result[5].curves.size == 1
+            result[5].curves[0] == Constants.CURVE_ROOT
 
         and: 'B node has only one edge to node A'
             result[4].curves.size == 1
@@ -449,7 +458,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
-            result[5].curves.size == 0
+            result[5].curves.size == 1
+            result[5].curves[0] == Constants.CURVE_ROOT
 
         and: 'B node has only one edge to node A'
             result[4].curves.size == 1
@@ -507,7 +517,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
-            result[5].curves.size == 0
+            result[5].curves.size == 1
+            result[5].curves[0] == Constants.CURVE_ROOT
 
         and: 'B node has only one edge to node A'
             result[4].curves.size == 1
@@ -565,7 +576,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
-            result[5].curves.size == 0
+            result[5].curves.size == 1
+            result[5].curves[0] == Constants.CURVE_ROOT
 
         and: 'B should be a tip of a branch'
             result[4].curves.size == 2
@@ -623,7 +635,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
-            result[5].curves.size == 0
+            result[5].curves.size == 1
+            result[5].curves[0] == Constants.CURVE_ROOT
 
         and: 'node B and slash curve'
             result[4].curves.size == 2
@@ -692,7 +705,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
-            result[5].curves.size == 0
+            result[5].curves.size == 1
+            result[5].curves[0] == Constants.CURVE_ROOT
 
         and: 'only node B'
             result[4].curves.size == 1
@@ -756,7 +770,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
-            result[5].curves.size == 0
+            result[5].curves.size == 1
+            result[5].curves[0] == Constants.CURVE_ROOT
 
         and: 'B node has only one edge to node A'
             result[4].curves.size == 1
@@ -824,7 +839,8 @@ class GraphBuilderUnitSpec extends Specification {
             //Utils.printTree(result)
 
         then: 'A root does not have parents'
-            result[6].curves.size == 0
+            result[6].curves.size == 1
+            result[6].curves[0] == Constants.CURVE_ROOT
 
         and: 'B node has only one edge to node A'
             result[5].curves.size == 1
@@ -901,7 +917,8 @@ class GraphBuilderUnitSpec extends Specification {
             Utils.printTree(result)
 
         then: 'A root does not have parents'
-            result[0].curves.size == 0
+            result[0].curves.size == 1
+            result[0].curves[0] == Constants.CURVE_ROOT
 
         and: 'B node with slash'
             result[1].curves.size == 2
