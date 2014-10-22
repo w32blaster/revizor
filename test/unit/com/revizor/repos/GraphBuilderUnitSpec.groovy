@@ -974,6 +974,37 @@ class GraphBuilderUnitSpec extends Specification {
     }
 
 
+    @IgnoreRest
+    def "test has taken from the real graph"() {
+
+        given:
+        def commits = [
+                new Commit(id: '4633e7', parents: ['536bfe']),
+                new Commit(id: '536bfe', parents: ['40ae9d']),
+                new Commit(id: 'e0d37a', parents: ['cc5bf7', '40ae9d']),
+                new Commit(id: '40ae9d', parents: ['3f1aba', '26c138']),
+                new Commit(id: '26c138', parents: ['922aa0']),
+                new Commit(id: '922aa0', parents: ['f71a69']),
+                new Commit(id: 'f71a69', parents: ['3f1aba']),
+                new Commit(id: 'cc5bf7', parents: ['48f170']),
+                new Commit(id: '48f170', parents: ['03a943']),
+                new Commit(id: '03a943', parents: ['b6f47b']),
+                new Commit(id: 'b6f47b', parents: ['3f1aba']),
+                new Commit(id: '3f1aba')]
+
+
+            def lstMaster = ['3f1aba', '40ae9d', '4633e7']
+            def lstTips = ['4633e7']
+        when:
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
+            Utils.printTree(result)
+
+        then:
+            true
+
+
+    }
+
     /*
 
      TODO: re-think that case. Merging between is displayed correctly

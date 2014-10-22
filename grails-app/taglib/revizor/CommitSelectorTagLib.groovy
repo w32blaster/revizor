@@ -52,7 +52,7 @@ class CommitSelectorTagLib {
             def graphBuilder = new GraphBuilder()
             list = graphBuilder.prepareHistoryGraph(list, listOfMasterIds, mapBranches.keySet())
 
-            Utils.dumbCommits(list)
+            Utils.printTree(list)
 
             def outHtml = "<table class='table table-condensed'>"
             def graphHtml = "<div id='history-graph' style='position: absolute; top: ${(ROW_HEIGHT / 2) - PADDING_TOP}px'>" +
