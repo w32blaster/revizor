@@ -52,7 +52,7 @@ class CommitSelectorTagLib {
             def graphBuilder = new GraphBuilder()
             list = graphBuilder.prepareHistoryGraph(list, listOfMasterIds, mapBranches.keySet())
 
-            Utils.printTree(list)
+            Utils.dumbCommits(list)
 
             def outHtml = "<table class='table table-condensed'>"
             def graphHtml = "<div id='history-graph' style='position: absolute; top: ${(ROW_HEIGHT / 2) - PADDING_TOP}px'>" +
@@ -155,7 +155,7 @@ class CommitSelectorTagLib {
                 return "<text x='${X}' y='${Yup}' dx='0'>X</text>"
                 break;
 
-            case Constants.CURVE_MERGE:
+            case Constants.CURVE_MERGE_ACT:
                 return "<line x1='${X}' y1='${Yup}' x2='${X}' y2='${Ydown}' class='svg-path' />" +
                         "<path d='M${X} ${Yup} C ${X} ${Ydown} ${X + CURVE_WIDTH} ${Yup} ${X + CURVE_WIDTH} ${Ydown}' class='svg-path' />" +
                         "<circle cx='${X}' cy='${Yup}' r='3' class='svg-circle' />"
