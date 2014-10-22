@@ -1,17 +1,26 @@
 import com.revizor.Role
 import com.revizor.User
+import com.revizor.utils.Constants
 
 class BootStrap {
 
     def init = { servletContext ->
 
-        if (!User.count()) {
-            User user = new User(
+
+        def repoDir = new File(Constants.LOCAL_REPO_PATH)
+        if (!repoDir.exists()) repoDir.mkdirs()
+
+        if (User.all.isEmpty()) {
+
+            //insert some default user
+            new User(
                     email: 'admin@admin.com',
                     username: 'admin',
                     password: 'admin123',
-                    role: Role.ADMIN)
-            user.save(failOnError: true)
+                    role: Role.ADMIN
+            ).save(failOnError: true)
+
+            println "The default user with email 'admin@admin.com' and password 'admin123' is created."
         }
     }
 

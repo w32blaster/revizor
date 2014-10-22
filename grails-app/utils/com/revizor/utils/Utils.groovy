@@ -11,10 +11,12 @@ public class Utils {
     
     // function for debugging purposes: prints graph to the console
     static printTree(commits) {
-        commits.reverseEach { commit ->
+        commits.each { commit ->
             
             def line1 = ""
             def line2 = ""
+            def node = commit.id
+
             //println "commit ${commit.id} has curves ${commit.curves.size()}: ${commit.curves}"
             if (commit.curves.size() == 0) {
                 // this is root
@@ -39,22 +41,22 @@ public class Utils {
                             break;
 
                         case Constants.CURVE_VERTICAL_ACT:
-                            line1 += " " + commit.id
+                            line1 += " " + node
                             line2 += " |"
                             break;
 
                         case Constants.CURVE_SLASH_ACT:
-                            line1 += " " + commit.id
+                            line1 += " " + node
                             line2 += "/ "
                             break;
 
                         case Constants.CURVE_BACK_SLASH_ACT:
-                            line1 += " " + commit.id
+                            line1 += " " + node
                             line2 += "  \\"
                             break;
 
                         case Constants.CURVE_MERGE:
-                            line1 += " " + commit.id
+                            line1 += " " + node
                             line2 += " |\\"
                             break;
 

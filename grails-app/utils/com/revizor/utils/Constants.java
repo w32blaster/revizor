@@ -11,7 +11,7 @@ public interface Constants {
 
     boolean IS_TREE_LOG_ENABLED = false;
 
-    String LOCAL_REPO_PATH = System.getProperty("user.home") + "/repo";
+    String LOCAL_REPO_PATH = System.getProperty("user.home") + "/.repo";
     
     String REVIEW_SINGLE_VIEW = "single";
     String REVIEW_SIDE_BY_SIDE_VIEW = "side-by-side";
@@ -31,4 +31,5 @@ public interface Constants {
     byte CURVE_BACK_SLASH_ACT = 6;
     byte CURVE_BLANK = 7;
     byte CURVE_MERGE = 8;
+    byte CURVE_ROOT = 9;
 }
