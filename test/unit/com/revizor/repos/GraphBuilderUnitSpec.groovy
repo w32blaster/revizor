@@ -3,6 +3,7 @@ package com.revizor.repos
 import com.revizor.utils.Constants
 import com.revizor.utils.Utils
 import spock.lang.Ignore
+import spock.lang.IgnoreRest
 import spock.lang.Specification
 
 /**
@@ -792,7 +793,7 @@ class GraphBuilderUnitSpec extends Specification {
 
         and: 'here is the merging! The feature branch ends here, thus there is only one curve'
             result[1].curves.size == 1
-            result[1].curves[0] == Constants.CURVE_MERGE
+            result[1].curves[0] == Constants.CURVE_MERGE_ACT
             result[1].currentCurveIdx == 0
 
         and: 'line 5 has three curves - node F, and two empty spaces'
@@ -863,7 +864,7 @@ class GraphBuilderUnitSpec extends Specification {
 
         and: 'here is the merging! The last branch moves the the left'
             result[2].curves.size == 2
-            result[2].curves[0] == Constants.CURVE_MERGE
+            result[2].curves[0] == Constants.CURVE_MERGE_ACT
             result[2].curves[1] == Constants.CURVE_BACK_SLASH
             result[2].currentCurveIdx == 0
 
@@ -875,8 +876,133 @@ class GraphBuilderUnitSpec extends Specification {
 
         and: 'line 6 is merge'
             result[0].curves.size == 1
-            result[0].curves[0] == Constants.CURVE_MERGE
+            result[0].curves[0] == Constants.CURVE_MERGE_ACT
             result[0].currentCurveIdx == 0
+    }
+
+     /*
+
+        The third branch repeats shape correctly in case of merging
+
+         0.    H
+               |\
+         1.  G | |
+             |/ /
+         2.  F |
+             |\ \
+         3.  | E |
+             | | |
+         4.  | D |
+             | \/   <-- "crossroad", where two branches cross each other
+         5.  | C |
+             | | |
+         6.  | B |
+             |/ /
+         7.  A
+
+    */
+    def "test crossroads where two branches"() {
+
+        given:
+        def commits = [
+                new Commit(id: 'H', parents: ['F','C'] ),
+                new Commit(id: 'G', parents: ['F'] ),
+                new Commit(id: 'F', parents: ['E','A'] ),
+                new Commit(id: 'E', parents: ['D'] ),
+                new Commit(id: 'D', parents: ['A'] ),
+                new Commit(id: 'C', parents: ['B'] ),
+                new Commit(id: 'B', parents: ['A'] ),
+                new Commit(id: 'A' )]
+
+
+            def lstMaster = ['A', 'F', 'G']
+            def lstTips = ['G', 'H']
+        when:
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
+            //Utils.printTree(result)
+
+        then: 'A root'
+            result[7].curves.size == 1
+            result[7].curves[0] == Constants.CURVE_ROOT
+
+        and: 'B '
+            result[6].curves.size == 3
+            result[6].curves[0] == Constants.CURVE_VERTICAL
+            result[6].curves[1] == Constants.CURVE_SLASH_ACT
+            result[6].curves[2] == Constants.CURVE_SLASH
+            result[6].currentCurveIdx == 1
+
+        and: 'C'
+            result[5].curves.size == 3
+            result[5].curves[0] == Constants.CURVE_VERTICAL
+            result[5].curves[1] == Constants.CURVE_VERTICAL_ACT
+            result[5].curves[2] == Constants.CURVE_VERTICAL
+            result[5].currentCurveIdx == 1
+
+        and: 'D, crossroads'
+            result[4].curves.size == 3
+            result[4].curves[0] == Constants.CURVE_VERTICAL
+            result[4].curves[1] == Constants.CURVE_BACK_SLASH_ACT
+            result[4].curves[2] == Constants.CURVE_SLASH
+            result[4].currentCurveIdx == 1
+
+        and: 'E'
+            result[3].curves.size == 3
+            result[3].curves[0] == Constants.CURVE_VERTICAL
+            result[3].curves[1] == Constants.CURVE_VERTICAL_ACT
+            result[3].curves[2] == Constants.CURVE_VERTICAL
+            result[3].currentCurveIdx == 1
+
+        and: 'here F'
+            result[2].curves.size == 2
+            result[2].curves[0] == Constants.CURVE_MERGE_ACT
+            result[2].curves[1] == Constants.CURVE_BACK_SLASH
+            result[2].currentCurveIdx == 0
+
+        and: 'one G node and merging without node, i.e. only lines are merged'
+            result[1].curves.size == 3
+            result[1].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[1].curves[1] == Constants.CURVE_SLASH
+            result[1].curves[1] == Constants.CURVE_SLASH
+            result[1].currentCurveIdx == 0
+
+        and: 'node H'
+            result[0].curves.size == 2
+            result[0].curves[0] == Constants.CURVE_BLANK
+            result[0].curves[1] == Constants.CURVE_MERGE_ACT
+            result[0].currentCurveIdx == 1
+    }
+
+
+    @IgnoreRest
+    def "test has taken from the real graph"() {
+
+        given:
+        def commits = [
+                new Commit(id: '4633e7', parents: ['536bfe']),
+                new Commit(id: '536bfe', parents: ['40ae9d']),
+                new Commit(id: 'e0d37a', parents: ['cc5bf7', '40ae9d']),
+                new Commit(id: '40ae9d', parents: ['3f1aba', '26c138']),
+                new Commit(id: '26c138', parents: ['922aa0']),
+                new Commit(id: '922aa0', parents: ['f71a69']),
+                new Commit(id: 'f71a69', parents: ['3f1aba']),
+                new Commit(id: 'cc5bf7', parents: ['48f170']),
+                new Commit(id: '48f170', parents: ['03a943']),
+                new Commit(id: '03a943', parents: ['b6f47b']),
+                new Commit(id: 'b6f47b', parents: ['3f1aba']),
+                new Commit(id: '3f1aba')]
+
+
+            def lstMaster = ['3f1aba', '40ae9d', '4633e7']
+            def lstTips = ['4633e7']
+        when:
+            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
+            Utils.printTree(result)
+
+        then:
+            true
+
+
     }
 
     /*
@@ -949,12 +1075,12 @@ class GraphBuilderUnitSpec extends Specification {
         and: 'line 5 has one vertical and one merge. The current curve index is 1'
             result[5].curves.size == 2
             result[5].curves[0] == Constants.CURVE_VERTICAL
-            result[5].curves[1] == Constants.CURVE_MERGE
+            result[5].curves[1] == Constants.CURVE_MERGE_ACT
             result[5].currentCurveIdx == 1
 
         and: 'line 6 is merge'
             result[6].curves.size == 1
-            result[6].curves[0] == Constants.CURVE_MERGE
+            result[6].curves[0] == Constants.CURVE_MERGE_ACT
             result[6].currentCurveIdx == 0
     }
 }

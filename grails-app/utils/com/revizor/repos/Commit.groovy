@@ -24,4 +24,13 @@ class Commit {
     byte currentCurveIdx
 
     String labelText
+
+
+    @Override
+    public String toString() {
+        return "Commit{" +
+                "id='" + id + '\'' +
+                ", parents=" + parents +
+                '}';
+    }
 }

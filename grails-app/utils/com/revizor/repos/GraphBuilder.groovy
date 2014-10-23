@@ -26,9 +26,11 @@ class GraphBuilder {
         for (int i = lstCommits.size()-1; i > -1; i--) {
             def commit = lstCommits[i]
             mapIds.put(commit.id, i);
-            if (commit.parents.size() == 1) {
-                def parentNodeIndex = mapIds.get(commit.parents[0])
-                lstCommits[parentNodeIndex].children.add(commit.id);
+            if (commit.parents.size() > 0) {
+                commit.parents.each { parent ->
+                    def parentNodeIndex = mapIds.get(parent)
+                    lstCommits[parentNodeIndex].children.add(commit.id);
+                }
             }
         }
 
@@ -144,27 +146,28 @@ class GraphBuilder {
             _copyEdgesFromPreviousLine(lstCommits, i, to, isBelongingToMaster)
 
             /*
-                isSameSlotOnNextRowTaken - flag showing whether the same slot on the next row is free or not.
-                This returns TRUE (asterisk is the current iteration):
+                isNeededToGoAround - flag showing whether the same slot on the next row is free or not.
+                This returns TRUE (asterisk is the current iteration), we need to turn right to walk around:
                 | | |
                 | | * <-- current iteration
 
-                but this returns FALSE (the same slot on next row is free)
+                but this returns FALSE (the same slot on next row is free), we can proceed with vertical curve:
                 | |
                 | | * <-- current iteration
 
              */
-            def isSameSlotOnNextRowTaken = (lstCommits[from-1]?.curves?.size() != 0 && lstCommits[i].curves.size() >= lstCommits[i+1].curves.size())
-            def isNewBranch = (lstCommits[i+1].children.size() != 0 && isSameSlotOnNextRowTaken)
+            def isNeededToGoAround = (lstCommits[from-1]?.curves?.size() != 0 && lstCommits[i].curves.size() >= lstCommits[i+1].curves.size())
+            def isNewBranch = (lstCommits[i+1].children.size() != 0 && isNeededToGoAround)
+            def isTaken = _isNextSlotTaken(lstCommits, i, isFirstIteration)
 
             // current iteration goes directly to a target node, not curves at the middle
             def isCurrentIterationGoesToNode = (i == to)
 
             if (isMerge && isCurrentIterationGoesToNode) {
                 // change the current node as "merged"
-                lstCommits[i].curves[lstCommits[i].currentCurveIdx] = Constants.CURVE_MERGE
+                lstCommits[i].curves[lstCommits[i].currentCurveIdx] = Constants.CURVE_MERGE_ACT
             }
-            else if (isNewBranch) {
+            else if (isNewBranch || isTaken) {
                 _drawRowForNewBranch(isBelongingToMaster, lstCommits, i, isCurrentIterationGoesToNode, isFirstIteration)
             }
             else {
@@ -177,6 +180,19 @@ class GraphBuilder {
             }
 
         }
+    }
+
+    /**
+     * Detects crossroads (when curves are crossing each other)
+     *
+     * @param lstCommits
+     * @param i
+     * @param isFirstIteration
+     * @return
+     */
+    private boolean _isNextSlotTaken(lstCommits, int i, boolean isFirstIteration) {
+        def currentIterationIndex = lstCommits[i+1].currentCurveIdx
+        return isFirstIteration ? lstCommits[i].curves[currentIterationIndex] != null : false
     }
 
     /**
@@ -269,7 +285,7 @@ class GraphBuilder {
 
         def prevCurvesCount = lstCommits[i+1].curves.size()
         def currentCurvesCount = lstCommits[i].curves.size() + 1
-        def isCurrentNodeMerged = (lstCommits[i].curves[lstCommits[i].currentCurveIdx] == Constants.CURVE_MERGE)
+        def isCurrentNodeMerged = (lstCommits[i].curves[lstCommits[i].currentCurveIdx] == Constants.CURVE_MERGE_ACT)
         def isNearestNodeIsSlash = isNearestNodeTypeEquals(Constants.CURVE_BACK_SLASH, lstCommits[i]) ||
                 isNearestNodeTypeEquals(Constants.CURVE_BACK_SLASH_ACT, lstCommits[i])
 
@@ -287,7 +303,7 @@ class GraphBuilder {
             // but if a copied branch has a node, then replace it with a blank space
             if (i == toIndex) {
                 subArray = subArray.collect {
-                    if (it in [Constants.CURVE_VERTICAL_ACT, Constants.CURVE_SLASH_ACT, Constants.CURVE_BACK_SLASH_ACT, Constants.CURVE_MERGE]) {
+                    if (it in [Constants.CURVE_VERTICAL_ACT, Constants.CURVE_SLASH_ACT, Constants.CURVE_BACK_SLASH_ACT, Constants.CURVE_MERGE_ACT]) {
                         return Constants.CURVE_BLANK
                     }
                     else {

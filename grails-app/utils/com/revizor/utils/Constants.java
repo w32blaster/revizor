@@ -9,7 +9,7 @@ package com.revizor.utils;
  */
 public interface Constants {
 
-    boolean IS_TREE_LOG_ENABLED = false;
+    boolean IS_TREE_LOG_ENABLED = true;
 
     String LOCAL_REPO_PATH = System.getProperty("user.home") + "/.repo";
     
@@ -30,6 +30,7 @@ public interface Constants {
     byte CURVE_SLASH_ACT = 5;         
     byte CURVE_BACK_SLASH_ACT = 6;
     byte CURVE_BLANK = 7;
-    byte CURVE_MERGE = 8;
-    byte CURVE_ROOT = 9;
+    byte CURVE_MERGE_ACT = 8;
+    byte CURVE_MERGE = 9;
+    byte CURVE_ROOT = 10;
 }
