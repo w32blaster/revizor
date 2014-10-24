@@ -61,7 +61,6 @@ class GitRepository implements IRepository {
 
         def localRepo = new FileRepository(this.repoPath);
         def git = new Git(localRepo);
-        RevWalk walk = new RevWalk(localRepo);
 
         Iterable<RevCommit> logs = git.log()
                 .all()

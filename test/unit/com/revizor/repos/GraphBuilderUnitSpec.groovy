@@ -72,8 +72,8 @@ class GraphBuilderUnitSpec extends Specification {
     }
 
     /*
-        3.  D
-            |
+        3.  D |
+            | |
         2.  | C
             |/
         1.  B
@@ -87,10 +87,8 @@ class GraphBuilderUnitSpec extends Specification {
                        new Commit(id: 'B', parents: ['A'] ),
                        new Commit(id: 'C', parents: ['B'] ),
                        new Commit(id: 'D', parents: ['B'] )].reverse()
-
-            def lstMaster = ['A', 'B', 'D']
         when:
-            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, [])
+            def result = new GraphBuilder().prepareHistoryGraph(commits)
             //Utils.printTree(result)
 
         then: 'root does not have parents'
@@ -109,14 +107,15 @@ class GraphBuilderUnitSpec extends Specification {
             result[1].currentCurveIdx == 1
 
         and: 'node D is alone'
-            result[0].curves.size == 1
+            result[0].curves.size == 2
             result[0].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[0].curves[1] == Constants.CURVE_VERTICAL
             result[0].currentCurveIdx == 0
     }
 
     /*
-        2.  C
-            |
+        2.  C |
+            | |
         1.  | B
             |/
         0.  A
@@ -128,9 +127,8 @@ class GraphBuilderUnitSpec extends Specification {
                            new Commit(id: 'B', parents: ['A'] ),
                            new Commit(id: 'C', parents: ['A'] )].reverse()
 
-            def lstMaster = ['A', 'C']
         when:
-            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, [])
+            def result = new GraphBuilder().prepareHistoryGraph(commits)
             //Utils.printTree(result)
 
         then: 'root does not have parents'
@@ -144,16 +142,17 @@ class GraphBuilderUnitSpec extends Specification {
             result[1].currentCurveIdx == 1
 
         and: 'node D is alone'
-            result[0].curves.size == 1
+            result[0].curves.size == 2
             result[0].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[0].curves[1] == Constants.CURVE_VERTICAL
             result[0].currentCurveIdx == 0
 
     }
 
     /*
-        0.    D
-              |
-        1.  C |
+        0.  D |
+            | |
+        1.  | C
             |/    
         2.  B
             |
@@ -167,10 +166,8 @@ class GraphBuilderUnitSpec extends Specification {
                            new Commit(id: 'C', parents: ['B'] ),
                            new Commit(id: 'D', parents: ['B'] )].reverse()
 
-            def lstMaster = ['A', 'B', 'C']
-            def lstTips = ['C', 'D']
         when:
-            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
+            def result = new GraphBuilder().prepareHistoryGraph(commits)
             //Utils.printTree(result)
 
         then: 'root does not have parents'
@@ -184,48 +181,47 @@ class GraphBuilderUnitSpec extends Specification {
 
         and: 'under the node C graph has two edges: C is master and goes up and the branch to D that is a feature branch'
             result[1].curves.size == 2
-            result[1].curves[0] == Constants.CURVE_VERTICAL_ACT
-            result[1].curves[1] == Constants.CURVE_SLASH
-            result[1].currentCurveIdx == 0
+            result[1].curves[0] == Constants.CURVE_VERTICAL
+            result[1].curves[1] == Constants.CURVE_SLASH_ACT
+            result[1].currentCurveIdx == 1
 
         and: 'node D is alone, because tip for C is behind the D'
             result[0].curves.size == 2
-            result[0].curves[0] == Constants.CURVE_BLANK
-            result[0].curves[1] == Constants.CURVE_VERTICAL_ACT // <-- this curve is rotated, thus not "back slash" but "vertical"
-            result[0].currentCurveIdx == 1
+            result[0].curves[0] == Constants.CURVE_VERTICAL_ACT // <-- this curve is rotated, thus not "back slash" but "vertical"
+            result[0].curves[1] == Constants.CURVE_VERTICAL
+            result[0].currentCurveIdx == 0
     }
 
     /*
-       6.    G
-             |
-       5.    F
-             |
-       4.    E
-             |
-       3.    D
-             |
-       2.  C |
+       0.  | G
+           | |
+       1.  | F
+           | |
+       2.  | E
+           | |
+       3.  D |
+           | |
+       4.  | C
            |/
-       1.  B
+       5.  B
            |
-       0.  A
+       6.  A
    */
-    def "non master branch is decorated by moving to the right in case if they are displayed above the master tip"() {
+    @IgnoreRest
+    def "everything goes up"() {
 
         given:
             def commits = [new Commit(id: 'A'),
                            new Commit(id: 'B', parents: ['A'] ),
                            new Commit(id: 'C', parents: ['B'] ),
                            new Commit(id: 'D', parents: ['B'] ),
-                           new Commit(id: 'E', parents: ['D'] ),
+                           new Commit(id: 'E', parents: ['C'] ),
                            new Commit(id: 'F', parents: ['E'] ),
                            new Commit(id: 'G', parents: ['F'] )].reverse()
 
-            def lstMaster = ['A', 'B', 'C']
-            def lstTips = ['C', 'G']
         when:
-            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
-            //Utils.printTree(result)
+            def result = new GraphBuilder().prepareHistoryGraph(commits)
+            Utils.printTree(result)
 
         then: 'root does not have parents'
             result[6].curves.size == 1
@@ -236,34 +232,34 @@ class GraphBuilderUnitSpec extends Specification {
             result[5].curves[0] == Constants.CURVE_VERTICAL_ACT
             result[5].currentCurveIdx == 0
 
-        and: 'under the node C graph has two edges: C is master and goes up and the branch to D that is a feature branch'
+        and:
             result[4].curves.size == 2
-            result[4].curves[0] == Constants.CURVE_VERTICAL_ACT
-            result[4].curves[1] == Constants.CURVE_SLASH
-            result[4].currentCurveIdx == 0
+            result[4].curves[0] == Constants.CURVE_VERTICAL
+            result[4].curves[1] == Constants.CURVE_SLASH_ACT
+            result[4].currentCurveIdx == 1
 
         and: 'all other nodes are displayed with the indent because they are placed above the master tip'
             // node D
             result[3].curves.size == 2
-            result[3].curves[0] == Constants.CURVE_BLANK
-            result[3].curves[1] == Constants.CURVE_VERTICAL_ACT
-            result[3].currentCurveIdx == 1
+            result[3].curves[0] == Constants.CURVE_VERTICAL_ACT
+            result[3].curves[1] == Constants.CURVE_VERTICAL
+            result[3].currentCurveIdx == 0
 
             // node E
             result[2].curves.size == 2
-            result[2].curves[0] == Constants.CURVE_BLANK
+            result[2].curves[0] == Constants.CURVE_VERTICAL
             result[2].curves[1] == Constants.CURVE_VERTICAL_ACT
             result[2].currentCurveIdx == 1
 
             // node F
             result[1].curves.size == 2
-            result[1].curves[0] == Constants.CURVE_BLANK
+            result[1].curves[0] == Constants.CURVE_VERTICAL
             result[1].curves[1] == Constants.CURVE_VERTICAL_ACT
             result[1].currentCurveIdx == 1
 
             // node G
             result[0].curves.size == 2
-            result[0].curves[0] == Constants.CURVE_BLANK
+            result[0].curves[0] == Constants.CURVE_VERTICAL
             result[0].curves[1] == Constants.CURVE_VERTICAL_ACT
             result[0].currentCurveIdx == 1
     }
@@ -974,113 +970,4 @@ class GraphBuilderUnitSpec extends Specification {
     }
 
 
-    @IgnoreRest
-    def "test has taken from the real graph"() {
-
-        given:
-        def commits = [
-                new Commit(id: '4633e7', parents: ['536bfe']),
-                new Commit(id: '536bfe', parents: ['40ae9d']),
-                new Commit(id: 'e0d37a', parents: ['cc5bf7', '40ae9d']),
-                new Commit(id: '40ae9d', parents: ['3f1aba', '26c138']),
-                new Commit(id: '26c138', parents: ['922aa0']),
-                new Commit(id: '922aa0', parents: ['f71a69']),
-                new Commit(id: 'f71a69', parents: ['3f1aba']),
-                new Commit(id: 'cc5bf7', parents: ['48f170']),
-                new Commit(id: '48f170', parents: ['03a943']),
-                new Commit(id: '03a943', parents: ['b6f47b']),
-                new Commit(id: 'b6f47b', parents: ['3f1aba']),
-                new Commit(id: '3f1aba')]
-
-
-            def lstMaster = ['3f1aba', '40ae9d', '4633e7']
-            def lstTips = ['4633e7']
-        when:
-            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
-            Utils.printTree(result)
-
-        then:
-            true
-
-
-    }
-
-    /*
-
-     TODO: re-think that case. Merging between is displayed correctly
-
-     6.  G
-         |\
-     5.  | F  <-- Merge with non-master branch
-         | |\
-     4.  | | E
-         | | |
-     3.  | D |
-         |/ /
-     2.  C |
-         | |
-     1.  B |
-         |/
-     0.  A
-
-    */
-    @Ignore
-    def "test merges in non master branch"() {
-
-        given:
-        def commits = [new Commit(id: 'A'),
-                       new Commit(id: 'B', parents: ['A'] ),
-                       new Commit(id: 'C', parents: ['B'] ),
-                       new Commit(id: 'D', parents: ['C'] ),
-                       new Commit(id: 'E', parents: ['A'] ),
-                       new Commit(id: 'F', parents: ['D', 'E'] ),
-                       new Commit(id: 'G', parents: ['C', 'F'] )]
-
-            def lstMaster = ['A', 'B', 'C', 'G']
-            def lstTips = ['G']
-        when:
-            def result = new GraphBuilder().prepareHistoryGraph(commits, lstMaster, lstTips)
-            Utils.printTree(result)
-
-        then: 'A root does not have parents'
-            result[0].curves.size == 1
-            result[0].curves[0] == Constants.CURVE_ROOT
-
-        and: 'B node with slash'
-            result[1].curves.size == 2
-            result[1].curves[0] == Constants.CURVE_VERTICAL_ACT
-            result[1].curves[1] == Constants.CURVE_SLASH
-            result[1].currentCurveIdx == 0
-
-        and: 'line 2 is full of curves, because two new branches are started here'
-            result[2].curves.size == 2
-            result[2].curves[0] == Constants.CURVE_VERTICAL_ACT
-            result[2].curves[1] == Constants.CURVE_VERTICAL
-            result[2].currentCurveIdx == 0
-
-        and: 'line 3, D in the middle'
-            result[3].curves.size == 3
-            result[3].curves[0] == Constants.CURVE_VERTICAL
-            result[3].curves[1] == Constants.CURVE_SLASH_ACT
-            result[3].curves[2] == Constants.CURVE_SLASH
-            result[3].currentCurveIdx == 1
-
-        and: 'E is the most right node'
-            result[4].curves.size == 3
-            result[4].curves[0] == Constants.CURVE_VERTICAL
-            result[4].curves[1] == Constants.CURVE_VERTICAL
-            result[4].curves[2] == Constants.CURVE_VERTICAL_ACT
-            result[4].currentCurveIdx == 2
-
-        and: 'line 5 has one vertical and one merge. The current curve index is 1'
-            result[5].curves.size == 2
-            result[5].curves[0] == Constants.CURVE_VERTICAL
-            result[5].curves[1] == Constants.CURVE_MERGE_ACT
-            result[5].currentCurveIdx == 1
-
-        and: 'line 6 is merge'
-            result[6].curves.size == 1
-            result[6].curves[0] == Constants.CURVE_MERGE_ACT
-            result[6].currentCurveIdx == 0
-    }
 }

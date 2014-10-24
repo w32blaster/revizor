@@ -28,9 +28,9 @@ class Commit {
 
     @Override
     public String toString() {
-        return "Commit{" +
-                "id='" + id + '\'' +
-                ", parents=" + parents +
-                '}';
+        return "new Commit(" +
+                "id: '" + id + '\'' +
+                ", parents: " + parents +
+                ')';
     }
 }

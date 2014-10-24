@@ -46,13 +46,13 @@ class CommitSelectorTagLib {
 
         _printCommits(attrs, { repo, list ->
 
-            def listOfMasterIds = repo.getListOfMasterCommits();
-            def mapBranches = repo.getMapBranchesReferences();
+            def listOfMasterIds = repo.getListOfMasterCommits()
+            def mapBranches = repo.getMapBranchesReferences()
 
             def graphBuilder = new GraphBuilder()
-            list = graphBuilder.prepareHistoryGraph(list, listOfMasterIds, mapBranches.keySet())
+            list = graphBuilder.prepareHistoryGraph(list, [], mapBranches.keySet())
 
-            Utils.printTree(list)
+            //Utils.dumpTree(list)
 
             def outHtml = "<table class='table table-condensed'>"
             def graphHtml = "<div id='history-graph' style='position: absolute; top: ${(ROW_HEIGHT / 2) - PADDING_TOP}px'>" +
