@@ -33,5 +33,13 @@ public interface IRepository {
      */
     def getDiffForCommit(String commitID);
 
-    def getGraph()
+    /**
+     * Draw the history graph (plot) using specific tools for a repository.
+     *
+     * @return array of three items:
+     *  [0]: set of SVG tags displaying all the branches
+     *  [1]: array of Commit items
+     *  [2]: the longest row size
+     */
+    def getGraphSVG()
 }

@@ -65,8 +65,8 @@ public class GitGraphRenderer extends AbstractPlotRenderer<PlotLane, BranchColor
         if (Math.abs(x1 - x2) < LANE_WIDTH && y1 != y2 && x1 != x2) {
             // it is a corner
             sb.append("<path d='M ").append(x1).append(SPACE).append(y1 + topPadding)
-                    .append(" C ").append(x2).append(SPACE).append(y2 + topPadding).append(SPACE)
-                    .append(x2).append(SPACE).append(y2 + topPadding).append(SPACE)
+                    .append(" C ").append(x2).append(SPACE).append(y1 + topPadding).append(SPACE)
+                    .append(x2).append(SPACE).append(y1 + topPadding).append(SPACE)
                     .append(x2).append(SPACE).append(y2 + topPadding).append("' class='svg-path' />");
         }
         else if (x1 == x2 || y1 == y2) {

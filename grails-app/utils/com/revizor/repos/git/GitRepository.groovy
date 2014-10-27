@@ -75,16 +75,17 @@ class GitRepository implements IRepository {
 
             new Commit(
                 id: commit.getId().name(),
-                parents: commit.getParents().collect({ it.getId().name()}),
                 author: commit.getAuthorIdent().getName(),
                 message: commit.getShortMessage()
             )}
 
     }
 
-
+    /**
+     * {@inheritDoc }
+     */
     @Override
-    def getGraph() {
+    def getGraphSVG() {
         if (!this.repoPath) throw new RuntimeException("The folder name for the GIT repo was not specified")
 
         def localRepo = new FileRepository(this.repoPath);
@@ -109,7 +110,7 @@ class GitRepository implements IRepository {
             renderer.reset(i);
             renderer.paintCommit(commit, Constants.ROW_HEIGHT)
             def pos = commit.getLane().getPosition()
-            if (maxLaneIdx < pos) maxLaneIdx == pos
+            if (maxLaneIdx < pos) maxLaneIdx = pos
 
             def renderedCommit = renderer.getRenderedCommit()
             renderedCommit.setId(commit.getId().name())
