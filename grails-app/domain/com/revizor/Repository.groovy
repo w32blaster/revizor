@@ -1,8 +1,6 @@
 package com.revizor
 
-import grails.util.GrailsNameUtils
-
-import com.revizor.repos.GitRepository
+import com.revizor.repos.git.GitRepository
 import com.revizor.repos.IRepository
 
 /**

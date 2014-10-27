@@ -1,8 +1,13 @@
-package com.revizor.repos
+package com.revizor.repos.git
 
+import com.revizor.repos.IRepository
 import org.eclipse.jgit.api.Git
 import com.revizor.utils.Constants
 import org.eclipse.jgit.internal.storage.file.FileRepository
+import org.eclipse.jgit.revplot.PlotCommit
+import org.eclipse.jgit.revplot.PlotCommitList
+import org.eclipse.jgit.revplot.PlotLane
+import org.eclipse.jgit.revplot.PlotWalk
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.diff.DiffEntry
@@ -61,7 +66,6 @@ class GitRepository implements IRepository {
 
         def localRepo = new FileRepository(this.repoPath);
         def git = new Git(localRepo);
-        RevWalk walk = new RevWalk(localRepo);
 
         Iterable<RevCommit> logs = git.log()
                 .all()
@@ -75,41 +79,41 @@ class GitRepository implements IRepository {
                 author: commit.getAuthorIdent().getName(),
                 message: commit.getShortMessage()
             )}
+
     }
 
-    /**
-     * {@inheritDoc }
-     */
+
     @Override
-    def getMapBranchesReferences() {
+    def getGraph() {
+        if (!this.repoPath) throw new RuntimeException("The folder name for the GIT repo was not specified")
+
         def localRepo = new FileRepository(this.repoPath);
 
-        // build map "reference key" <=> "branch name"
-        Map<String, List<String>> localRefs = new HashMap<String, List<String>>();
-        localRepo.getAllRefs().each { key, value ->
-            def newKey = value.objectId.getName().value.toString();
-            if (localRefs.containsKey(newKey)) {
-                localRefs.get(newKey).add(key);
-            }
-            else {
-                localRefs.put(newKey, [key]);
-            }
-        };
+        PlotWalk pw = new PlotWalk(localRepo);
+        RevCommit rootCommit = pw.parseCommit(localRepo.resolve(org.eclipse.jgit.lib.Constants.HEAD));
 
-        return localRefs;
-    }
+        pw.markStart(rootCommit);
+        //pw.markUninteresting(rw.parseCommit(to));
 
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    def getListOfMasterCommits() {
-        def localRepo = new FileRepository(this.repoPath);
-        def git = new Git(localRepo);
+        PlotCommitList<PlotLane> commitList = new PlotCommitList<PlotLane>();
+        commitList.source(pw);
+        commitList.fillTo(Integer.MAX_VALUE);
 
-        // checkout to MASTER branch and select all the commits only from this branch
-        git.checkout().setName(org.eclipse.jgit.lib.Constants.MASTER).call();
-        return git.log().call().collect { it.getId().getName() }
+        GitGraphRenderer renderer = new GitGraphRenderer();
+
+        StringBuffer sb = new StringBuffer()
+        def titles = []
+        def maxLaneIdx = 0
+        for (int i = 0; i < commitList.size(); i++) {
+            PlotCommit<PlotLane> commit = commitList.get(i);
+            renderer.paintCommit(commit, Constants.ROW_HEIGHT)
+            def pos = commit.getLane().getPosition()
+            if (maxLaneIdx < pos) maxLaneIdx == pos
+            sb.append(renderer.getSVG())
+            titles << renderer.getMessage()
+        }
+
+        return [sb.toString(), titles, maxLaneIdx]
     }
 
     /**
@@ -149,4 +153,5 @@ class GitRepository implements IRepository {
 
         return output
     }
+
 }

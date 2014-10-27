@@ -10,7 +10,7 @@ class CommitSelectorTagLib {
     static namespace = "sc"
 
     final private static int CURVE_WIDTH = 20; // in px
-    final private static int ROW_HEIGHT = 35; // in px
+
     final private static int PADDING_LEFT = 13; // in px
     final private static int PADDING_TOP = 7; // in px
 
@@ -20,7 +20,7 @@ class CommitSelectorTagLib {
     def selectCommitsForReview = {attrs, body ->
 
         _printCommits(attrs, { repo, list ->
-            
+
             int count = 0;
             def isChecked = "";
             out << "<ul class='list-group'>"
@@ -44,43 +44,29 @@ class CommitSelectorTagLib {
      */
     def buildFlatListofCommits = { attrs, body ->
 
-        _printCommits(attrs, { repo, list ->
+            def repo = attrs.repo.initImplementation();
+            def arrCommits = repo.getGraph();
 
-            def listOfMasterIds = repo.getListOfMasterCommits();
-            def mapBranches = repo.getMapBranchesReferences();
-
-            def graphBuilder = new GraphBuilder()
-            list = graphBuilder.prepareHistoryGraph(list, listOfMasterIds, mapBranches.keySet())
-
-            Utils.printTree(list)
+            def list = arrCommits[1]
+            int maxLaneIdx = arrCommits[2]
 
             def outHtml = "<table class='table table-condensed'>"
-            def graphHtml = "<div id='history-graph' style='position: absolute; top: ${(ROW_HEIGHT / 2) - PADDING_TOP}px'>" +
-                    "<svg height='${list.size() * ROW_HEIGHT}' width='${CURVE_WIDTH * 6}' overflow='hidden'><g>"
+            def graphHtml = "<div id='history-graph' style='position: absolute; top: ${(Constants.ROW_HEIGHT / 2) - PADDING_TOP}px'>" +
+                    "<svg height='${list.size() * Constants.ROW_HEIGHT}' width='${CURVE_WIDTH * 6}' overflow='hidden'><g>${arrCommits[0]}</g></svg></div>"
 
-            list.eachWithIndex { Commit rev, int i ->
-
-                rev.curves.eachWithIndex { curve, int idx ->
-                        graphHtml <<= _drawSVGCurve(curve, idx, list, i)
-                }
-
+            list.each { String rev ->
 
                 outHtml <<= """
-                        <tr title="${rev.id.subSequence(0, 7)}" height="${ROW_HEIGHT}">
-                            <td><span class="graph-line-text" style="padding-left: ${rev.curves.size() * CURVE_WIDTH + PADDING_LEFT}px">${rev.message }</span></td>
-                            <td><span class="label label-default">${rev.author}</span><td>
-                            <td><a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.id])}" class="btn btn-default btn-xs tree-context-button">
-                                <span class="glyphicon glyphicon-plus"></span>
-                            </a>
-                            </td>
+                        <tr title="${rev}" height="${Constants.ROW_HEIGHT}">
+                            <td><span class="graph-line-text" style="padding-left: ${maxLaneIdx * CURVE_WIDTH + PADDING_LEFT}px">${rev}</span></td>
+
                         </tr>
                         """
             }
-            graphHtml <<= "</g></svg></div>"
             outHtml <<= "</table>"
 
             out << graphHtml + outHtml
-        })
+
     }
 
     def _printCommits(attrs, closurePrint) {
