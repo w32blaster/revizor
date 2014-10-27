@@ -23,6 +23,9 @@ public interface Constants {
     String PARAM_FILE_NAME = "fileName";
     int MAX_PER_REQUEST = 5;
 
+    int ROW_HEIGHT = 35; // in px
+    String SPACE = " ";
+
     byte CURVE_VERTICAL = 1;      // "|"
     byte CURVE_SLASH = 2;         // "/"
     byte CURVE_BACK_SLASH = 3;    // "\"

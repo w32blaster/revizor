@@ -25,21 +25,6 @@ public interface IRepository {
     def getListOfCommits();
 
     /**
-     * Builds the map "reference key" <=> "branch name list"
-     *
-     * @return map of lists <code>Map<String, List<String>></code>
-     */  
-    def getMapBranchesReferences();
-
-    /**
-     * Returns list of those commits, that belongs to the master/default branch.
-     * List contains only SHA keys. It is used to build the history graph
-     *
-     * @return list of SHA keys
-     */  
-	def getListOfMasterCommits();
-
-    /**
      * Returns DIFF between a commit and its parent
      *
      * @param commitID - SHA-1 of a commit
@@ -47,4 +32,14 @@ public interface IRepository {
      * List contains the files, splitted by line
      */
     def getDiffForCommit(String commitID);
+
+    /**
+     * Draw the history graph (plot) using specific tools for a repository.
+     *
+     * @return array of three items:
+     *  [0]: set of SVG tags displaying all the branches
+     *  [1]: array of Commit items
+     *  [2]: the longest row size
+     */
+    def getGraphSVG()
 }

@@ -8,29 +8,9 @@ package com.revizor.repos
 class Commit {
     
     // SHA code
-    String id;
-    
-    // list of children and parent SHA's
-    List<String> parents = [];
-    List<String> children = [];
-
+    String id
+    String svg
     String author
     String message
-
-    // used to draw a graph
-    // curves - the set of short line types, that will be drawn in current row. All the row will be combined to the graph
-    List<Byte> curves = [];
-    // which column (branch) current node is placed on
-    byte currentCurveIdx
-
-    String labelText
-
-
-    @Override
-    public String toString() {
-        return "Commit{" +
-                "id='" + id + '\'' +
-                ", parents=" + parents +
-                '}';
-    }
+    int padding; // in px
 }

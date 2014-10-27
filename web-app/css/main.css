@@ -160,12 +160,12 @@ html, body
     white-space: nowrap;
 }
 .svg-path {
-    stroke: #000;
+    stroke: rgba(0, 0, 0, 0.80);
     stroke-width:1;
     fill:none;
 }
 .svg-circle {
-    stroke: #000;
+    stroke: rgba(0, 0, 0, 0.80);
     stroke-width:2;
-    fill: blue;
+    fill: #3c46ff;
 }
