@@ -102,18 +102,23 @@ class GitRepository implements IRepository {
         GitGraphRenderer renderer = new GitGraphRenderer();
 
         StringBuffer sb = new StringBuffer()
-        def titles = []
+        def commits = []
         def maxLaneIdx = 0
         for (int i = 0; i < commitList.size(); i++) {
             PlotCommit<PlotLane> commit = commitList.get(i);
+            renderer.reset(i);
             renderer.paintCommit(commit, Constants.ROW_HEIGHT)
             def pos = commit.getLane().getPosition()
             if (maxLaneIdx < pos) maxLaneIdx == pos
-            sb.append(renderer.getSVG())
-            titles << renderer.getMessage()
+
+            def renderedCommit = renderer.getRenderedCommit()
+            renderedCommit.setId(commit.getId().name())
+            renderedCommit.setAuthor(commit.getAuthorIdent().getName())
+            sb.append(renderedCommit.svg)
+            commits << renderedCommit
         }
 
-        return [sb.toString(), titles, maxLaneIdx]
+        return [sb.toString(), commits, maxLaneIdx]
     }
 
     /**

@@ -54,12 +54,16 @@ class CommitSelectorTagLib {
             def graphHtml = "<div id='history-graph' style='position: absolute; top: ${(Constants.ROW_HEIGHT / 2) - PADDING_TOP}px'>" +
                     "<svg height='${list.size() * Constants.ROW_HEIGHT}' width='${CURVE_WIDTH * 6}' overflow='hidden'><g>${arrCommits[0]}</g></svg></div>"
 
-            list.each { String rev ->
+            list.each { Commit rev ->
 
                 outHtml <<= """
-                        <tr title="${rev}" height="${Constants.ROW_HEIGHT}">
-                            <td><span class="graph-line-text" style="padding-left: ${maxLaneIdx * CURVE_WIDTH + PADDING_LEFT}px">${rev}</span></td>
-
+                        <tr title="${rev.id}" height="${Constants.ROW_HEIGHT}">
+                            <td><span class="graph-line-text" style="padding-left: ${rev.padding}px">${rev.message}</span></td>
+                            <td><span class="label label-default">${rev.author}</span><td>
+                            <td><a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.id])}" class="btn btn-default btn-xs tree-context-button">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </a>
+                            </td>
                         </tr>
                         """
             }
