@@ -43,7 +43,7 @@
                         </div>
                     </g:if>
 
-                    <h1>                    
+                    <h2>
                         <small>
                             <g:link action="index" params="[filter: ReviewFilter.ONLY_MINE]" class="btn btn-default btn-success btn-xs">
                                 <span class="glyphicon glyphicon-arrow-left"></span>  
@@ -53,7 +53,7 @@
 
                         <g:fieldValue bean="${reviewInstance}" field="title"/>
 
-                    </h1>
+                    </h2>
                 </div>
 
                 <g:if test="${flash.message}">

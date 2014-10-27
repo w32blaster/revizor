@@ -1,5 +1,5 @@
 
-<h1>${reviewInstance?.title}</h1>
+<h2>${reviewInstance?.title}</h2>
 
 <div class="row">
 

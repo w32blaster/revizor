@@ -224,7 +224,7 @@ class DiffTagLib {
 					def isContentStarted = false;
 					def range;
 					
-					out << "<h2>$fileName</h2>"
+					out << "<h3>$fileName</h3>"
 	                out << '<div id="diff-panel-id" class="panel panel-default"><div class="panel-body"><table class="code-table">'
 	                file.eachWithIndex { line, i ->
 
@@ -265,7 +265,7 @@ class DiffTagLib {
 								type = Constants.ACTION_ADDED
 								out << "<td>${getButtonHtml(newCommentFormId, LineType.NEW, range.new, i, commentContainerId)}</td>"
 								out << "<td> </td>"
-								out << "<td class='line-added'>${range.new}</td>"
+								out << "<td><span class='line-added'>${range.new}</span></td>"
 								commentsForTheLine = findCommentsForLine(mapComments, range.new++, LineType.NEW)
 							}
 							else {
