@@ -16,17 +16,12 @@
         <div class="row">
         
             <div class="col-md-3">
-            
-                <!-- The list of files -->
-                <div class="panel panel-default">
-                  <div class="panel-body">
+
                     <sc:showFilesForReview 
                         repo="${reviewInstance.repository}" 
                         commitID="${reviewInstance.commits[0]}" 
                         reviewId="${reviewInstance.id}"/>
-                  </div>
-                </div>
-                
+
             </div>
             
             <div class="col-md-9">
