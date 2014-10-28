@@ -223,6 +223,7 @@ class DiffTagLib {
 					def fileName = extractFileName(file[0])
 					def isContentStarted = false;
 					def range;
+                    def extension = fileName[fileName.lastIndexOf('.')+1 .. -1]
 					
 					out << "<h3>$fileName</h3>"
 	                out << '<div id="diff-panel-id" class="panel panel-default"><div class="panel-body"><table class="code-table">'
@@ -277,7 +278,7 @@ class DiffTagLib {
 							}
 							
 		                    out << "<td>"
-							out << printStyledLineOfCode(line, type)
+							out << printStyledLineOfCode(line, type, extension)
 							
 							// add comment for this line of code, if they exist
 							out << "<div id='${commentContainerId}' class='code-line-comments' style='display:${commentsForTheLine ? "visible" : "none"};'>"
@@ -311,7 +312,7 @@ class DiffTagLib {
 				"""
 	}
 
-	private String printStyledLineOfCode(String line, byte type) {
+	private String printStyledLineOfCode(String line, byte type, String extension) {
 		def additionalClass = ''
 		if (type == Constants.ACTION_DELETED) {
 			additionalClass = 'line-deleted';
@@ -319,7 +320,8 @@ class DiffTagLib {
 		if (type == Constants.ACTION_ADDED) {
 			additionalClass = 'line-added';
 		}
-		return "<code class='line $additionalClass'>${XmlUtil.escapeXml(line)}</code>"
+        def lang = extension ? "lang-$extension" : ""
+		return "<pre class='prettyprint ${lang} reset-pre $additionalClass'>${XmlUtil.escapeXml(line)}</pre>"
 	}
 
 	private def getDiffLines(repository, commitID) {

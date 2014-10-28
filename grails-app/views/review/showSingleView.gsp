@@ -7,8 +7,11 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'review.label', default: 'Review')}" />
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
-	</head>
-	<body>
+
+        <link rel="stylesheet" href="${resource(dir: 'css/prettify', file: 'prettify.css')}" type="text/css">
+        <script type="text/javascript" src="${resource(dir: 'js/prettify', file: 'prettify.js')}"></script>
+    </head>
+    <body>
 		
 		<div class="row">
 		
@@ -107,16 +110,23 @@
 
 					    return false;
                     }
-                    
+
+                    (function($) {
+                        $(document).ready(function(){
+                            prettyPrint();
+                        });
+
+                    })(jQuery);
+
                 </g:javascript>
-                
+
                 <!-- Print the Diff of the considered file -->	
 				<sc:showDiffForCommit 
                     repo="${reviewInstance.repository}" 
                     commitID="${reviewInstance.commits[0]}" 
                     fileName="${fileName}" 
                     review="${reviewInstance}" />
-				
+
 			</div>
 			
 		</div>

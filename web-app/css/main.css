@@ -63,17 +63,25 @@ html, body
     font-size: 0.8em;
 }
 
+/* reset Prettify styles */
+.reset-pre {
+    border: none !important;
+    background: none;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
 .line {
 	color: #3F3F3F;
 	background: none;
 }
 .line-deleted {
-	background-color: rgb(255, 239, 239);
-	color: red;
+	background-color: #fff1f1;
+	color: #CF0000;
 }
 .line-added {
-	background-color: rgb(209, 255, 187);
-	color: green;
+	background-color: #f3feee;
+	color: #036902;
 }
 
 #diff-panel-id .btn-comment {
