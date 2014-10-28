@@ -29,7 +29,7 @@
                 <div class="row">
 
                     <g:if test="${reviewInstance?.author?.id == session.user.id}">
-                        <div class="btn-group">
+                        <div class="btn-group pull-right" >
                             <g:link action="edit" resource="${reviewInstance}" class="btn btn-default btn-xs">
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </g:link>
@@ -38,7 +38,7 @@
                         </div>
                     </g:if>
 
-                    <h2>
+
                         <small>
                             <g:link action="index" params="[filter: ReviewFilter.ONLY_MINE]" class="btn btn-default btn-success btn-xs">
                                 <span class="glyphicon glyphicon-arrow-left"></span>  
@@ -46,9 +46,8 @@
                             </g:link>
                         </small>
 
-                        <g:fieldValue bean="${reviewInstance}" field="title"/>
+                    <h2><g:fieldValue bean="${reviewInstance}" field="title"/></h2>
 
-                    </h2>
                 </div>
 
                 <g:if test="${flash.message}">

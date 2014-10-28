@@ -13,27 +13,22 @@
 		<div class="row">
 		
 			<div class="col-md-3">
-			
-				<!-- The list of files -->
-				<div class="panel panel-default">
-				  <div class="panel-body">
 				  
 					<sc:showFilesForReview 
 						repo="${reviewInstance.repository}" 
 						commitID="${reviewInstance.commits[0]}" 
 						reviewId="${reviewInstance.id}"/>
-						
-				  </div>
-				</div>
-				
+
 			</div>
 			
 			<div class="col-md-9">
-								
-				<div class="panel panel-default">
-				  <div class="panel-body">
-				  	
-				  	<a href="${createLink(controller: 'review', action: 'show', id: reviewInstance.id)}" class="btn btn-info"><i class="icon-white icon-arrow-left"></i> Back</a>
+
+                  <small>
+                      <g:link controller="review" action="show" params="[id: reviewInstance.id]" class="btn btn-default btn-success btn-xs">
+                          <span class="glyphicon glyphicon-arrow-left"></span>
+                          <g:message code="default.back.label" args="[entityName]" />
+                      </g:link>
+                  </small>
                     
                     <%-- 
                     
@@ -43,9 +38,6 @@
 				  	<g:render template="viewTypeButtons"></g:render>
 				  	
                     --%>
-
-				  </div>
-				</div>
 				
 				
 				<g:if test="${flash.message}">
