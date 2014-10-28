@@ -37,7 +37,7 @@
 
 					<g:if test="${session.user}">
 						<div id="current-account-block" role="account-container">
-							<img height="64" width="64" class="avatar img-rounded" src="${createLink(controller:'user', 	action:'avatar_image', id:session.user.ident())}" alt="${session.user.username}" />
+                            <g:render template="/user/userAvatar" model="['user' : session.user, 'size': 32]" />
 
 							<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-cog"></span></a>
 

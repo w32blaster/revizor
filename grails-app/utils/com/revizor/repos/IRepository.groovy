@@ -14,8 +14,10 @@ public interface IRepository {
      * be updated with a last changes and be ready to work with it
      *
      * @param url - URL of a repository
+     * @param username - optional username
+     * @param password - optional password (null for public repositories)
      */
-    def cloneRepository(String url);
+    def cloneRepository(String url, String username, String password);
 
     /**
      * Returns the list of last commits

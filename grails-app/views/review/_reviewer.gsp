@@ -4,10 +4,8 @@
     One cell with author (avatar, his name and his decision)
 --%>
 <div class="reviewer">
-    
-    <g:if test="${reviewer?.image}">
-        <img height="32" width="32" class="avatar img-rounded" src="${createLink(controller:'user', action:'avatar_image', id: reviewer?.ident())}" />
-    </g:if>
+
+    <g:render template="/user/userAvatar" model="['user' : reviewer, 'size': 32]" />
 
     <span class="property-value" aria-labelledby="reviewers-label">${reviewer.username}</span>
 

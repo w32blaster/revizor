@@ -1,9 +1,7 @@
 package revizor
 
 import com.revizor.repos.Commit
-import com.revizor.repos.GraphBuilder
 import com.revizor.utils.Constants
-import com.revizor.utils.Utils
 
 class CommitSelectorTagLib {
 

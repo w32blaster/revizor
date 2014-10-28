@@ -66,11 +66,8 @@
                         <div class="row"> 
                             <div class="col-md-2">
 
-                                <g:if test="${reviewInstance?.author?.image}">
-                                    <img height="64" width="64" class="avatar img-rounded" src="${createLink(controller:'user', action:'avatar_image', id:reviewInstance?.author?.ident())}" />
-                                </g:if>
-                                    
-                                
+                                <g:render template="/user/userAvatar" model="['user' : reviewInstance?.author]" />
+
                             </div>   
 
                             <div class="col-md-10">

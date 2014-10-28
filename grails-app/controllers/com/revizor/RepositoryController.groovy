@@ -75,7 +75,7 @@ class RepositoryController {
         repositoryInstance.save flush:true
 
         def impl = repositoryInstance.initImplementation();
-        impl.cloneRepository(repositoryInstance.url);
+        impl.cloneRepository(repositoryInstance.url, repositoryInstance.username, repositoryInstance.password);
 
         request.withFormat {
             form multipartForm {

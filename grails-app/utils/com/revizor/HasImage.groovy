@@ -2,6 +2,7 @@ package com.revizor
 
 abstract class HasImage {
 
+    boolean hasImage
 	byte[] image
 	String imageType // <-- MIME type of uploaded image
 
@@ -12,5 +13,6 @@ abstract class HasImage {
 
     static mapping = {
         tablePerHierarchy false
+        hasImage defaultValue: false
     }
 }

@@ -14,6 +14,8 @@ class Repository extends HasImage implements INotifiable {
     String url;
     String title;
     String folderName;
+    String password;
+    String username;
 
     static belongsTo = User
     static hasMany = [members: User]
@@ -23,6 +25,8 @@ class Repository extends HasImage implements INotifiable {
         title(nullable: false)
         folderName(nullable: false, matches: '[a-zA-Z0-9]+')
         members(nullable: true)
+        password(nullable: true)
+        username(nullable: true)
     }
 
     /**

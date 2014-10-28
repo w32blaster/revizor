@@ -1,4 +1,4 @@
-<%@ page import="com.revizor.ReviewFilter" %>
+<%@ page import="com.revizor.RepositoryType; com.revizor.ReviewFilter" %>
 <%@ page import="com.revizor.CommentsFilter" %>
 <!DOCTYPE html>
 <html>
@@ -20,7 +20,15 @@
 				<div id="repository-header" class="col-md-12">
 
 					<!-- Repository logo -->
-					<img height="64" width="64" class="avatar img-rounded pull-left" src="${createLink(controller: 'repository', action: 'logo_image', id: selectedRepo?.ident())}" alt="${session.user.username}" />
+                    <g:if test="${selectedRepo.isHasImage()}">
+					    <img height="64" width="64" class="avatar img-rounded pull-left" src="${createLink(controller: 'repository', action: 'logo_image', id: selectedRepo?.ident())}" alt="${session.user.username}" />
+                    </g:if>
+                    <g:elseif test="${selectedRepo.type == RepositoryType.GIT}">
+                        <img height="64" width="64" class="avatar img-rounded pull-left" src="${resource(dir: 'images/default-icons', file: 'git.png')}" alt="Default icon for a GIT repository" />
+                    </g:elseif>
+                    <g:elseif test="${selectedRepo.type == RepositoryType.MERCURIAL}">
+                        <img height="64" width="64" class="avatar img-rounded pull-left" src="${resource(dir: 'images/default-icons', file: 'mercurial.png')}" alt="Default icon for a Mercurial repository" />
+                    </g:elseif>
 
 					<h3 class="pull-left">${selectedRepo.title}</h3>
 

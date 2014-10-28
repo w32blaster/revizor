@@ -33,6 +33,7 @@
 			<div class="input-group">
 				<g:form url="[resource:repositoryInstance, action:'save']" >
 					<fieldset class="form">
+                        <g:hiddenField name="hasImage" value="false"/>
 						<g:render template="form"/>
 					</fieldset>
 					<fieldset class="buttons">

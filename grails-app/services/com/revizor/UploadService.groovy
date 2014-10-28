@@ -25,6 +25,7 @@ class UploadService {
         // Save the image and mime type
         object.image = f.bytes
         object.imageType = f.contentType
+        object.hasImage = true
         log.info("File uploaded: $object.imageType")
 
         return object

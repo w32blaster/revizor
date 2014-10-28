@@ -29,10 +29,29 @@
 
 </div>
 
+<p class="text-primary">
+    <g:message code="repository.only.for.not.anonymous.label" default="Left it empty for anonymous repositories" />
+</p>
+
+<div class="form-group ${hasErrors(bean: repositoryInstance, field: 'username', 'error')} ">
+    <label for="username">
+        <g:message code="repository.username.label" default="User name" />
+    </label>
+    <g:textField class="form-control" name="username" pattern="${repositoryInstance.constraints.folderName.matches}" value="${repositoryInstance?.username}"/>
+
+</div>
+
+<div class="form-group ${hasErrors(bean: repositoryInstance, field: 'password', 'error')} ">
+    <label for="password">
+        <g:message code="repository.password.label" default="Password" />
+    </label>
+    <g:passwordField class="form-control" name="password" pattern="${repositoryInstance.constraints.password.matches}" value="${repositoryInstance?.password}"/>
+</div>
+
+
 <div class="form-group ${hasErrors(bean: repositoryInstance, field: 'members', 'error')} ">
 	<label for="members">
 		<g:message code="repository.members.label" default="Members" />
-		
 	</label>
 	
 <ul class="one-to-many">

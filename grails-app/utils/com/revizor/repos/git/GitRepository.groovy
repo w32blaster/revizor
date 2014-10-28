@@ -1,6 +1,7 @@
 package com.revizor.repos.git
 
 import com.revizor.repos.IRepository
+import org.eclipse.jgit.api.CloneCommand
 import org.eclipse.jgit.api.Git
 import com.revizor.utils.Constants
 import org.eclipse.jgit.internal.storage.file.FileRepository
@@ -12,6 +13,7 @@ import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.lib.ObjectId
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
 import org.eclipse.jgit.lib.ObjectReader
 import org.eclipse.jgit.diff.DiffFormatter
@@ -39,16 +41,21 @@ class GitRepository implements IRepository {
      * {@inheritDoc }
      */
     @Override
-    def cloneRepository(String url) {
+    def cloneRepository(String url, String username, String password) {
 
         def dirRepo = new File(this.repoHome)
         dirRepo.delete();
 
-        Git git = Git.cloneRepository()
+        CloneCommand command = Git.cloneRepository()
                 .setURI(url)
                 .setDirectory(dirRepo)
-                .setCloneAllBranches(true)
-                .call();
+                .setCloneAllBranches(true);
+
+        if (username != null && password != null) {
+            command.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
+        }
+
+        Git git = command.call()
 
         //def localRepo = new FileRepository(this.repoPath);
         //Git git = new Git(localRepo)
@@ -113,6 +120,7 @@ class GitRepository implements IRepository {
             if (maxLaneIdx < pos) maxLaneIdx = pos
 
             def renderedCommit = renderer.getRenderedCommit()
+
             renderedCommit.setId(commit.getId().name())
             renderedCommit.setAuthor(commit.getAuthorIdent().getName())
             sb.append(renderedCommit.svg)
