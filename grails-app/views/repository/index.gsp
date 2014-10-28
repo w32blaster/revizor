@@ -8,20 +8,35 @@
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
-				
-		<nav class="navbar navbar-default" role="navigation">
-			<ul class="nav navbar-nav">
-				<li><a href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li class="active"><g:link action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</nav>
-		
+
 		<div id="list-repository" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
+			<h2><g:message code="default.list.label" args="[entityName]" /></h2>
 			<g:if test="${flash.message}">
-				<div class="message" role="status">${flash.message}</div>
+                <div class="alert alert-info">${flash.message}</div>
 			</g:if>
+
+
+            <div class="container">
+                <div class="btn-group">
+
+                    <g:link url="${createLink(uri: '/')}" class="btn btn-default btn-primary">
+                        <span class="glyphicon glyphicon-home"></span>
+                        <g:message code="default.home.label" />
+                    </g:link>
+
+                    <g:link action="list" class="btn btn-default btn-primary active">
+                        <span class="glyphicon glyphicon-inbox"></span>
+                        <g:message code="default.list.label" args="[entityName]" />
+                    </g:link>
+
+                    <g:link action="create" class="btn btn-default btn-primary">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        <g:message code="default.new.label" args="[entityName]" />
+                    </g:link>
+                </div>
+
+
+
 			<table class="table">
 			<thead>
 					<tr>
@@ -63,5 +78,6 @@
 				<g:paginate total="${repositoryInstanceCount ?: 0}" />
 			</div>
 		</div>
+       </div>
 	</body>
 </html>

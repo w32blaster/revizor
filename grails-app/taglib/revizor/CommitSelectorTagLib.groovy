@@ -16,12 +16,13 @@ class CommitSelectorTagLib {
 
         def repo = attrs.repo.initImplementation();
         def list = repo.getListOfCommits();
+        def lstChecked = attrs.checkedItems ? attrs.checkedItems : []
 
         int count = 0;
         def isChecked = "";
         out << "<ul class='list-group'>"
         for (Commit rev : list) {
-            isChecked = (rev.id.equals(attrs.selected)) ? "checked" : ""
+            isChecked = (rev.id in lstChecked) ? "checked" : ""
             out << "<li class='list-group-item'><input type='checkbox' name='commits' value='${rev.id}' $isChecked />"
             out << "<span class='truncate'> ${rev.id.subSequence(0, 7)} ${rev.message }</span> "
             out << "<span class='label label-default'>${rev.author}</span></li>" /* rev.getId().getName() */

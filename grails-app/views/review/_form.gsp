@@ -24,7 +24,7 @@
     <label for="commits">
         <g:message code="review.commits.label" default="Commits" />
     </label>
-    <sc:selectCommitsForReview repo="${repository}" selected="${params.selected}" />
+    <sc:selectCommitsForReview repo="${repository}" checkedItems="${reviewInstance?.commits}" />
 </div>
 
 <div class="form-group ${hasErrors(bean: reviewInstance, field: 'description', 'error')} ">

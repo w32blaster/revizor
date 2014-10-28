@@ -8,21 +8,33 @@
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
 	<body>
-	
-		<nav class="navbar navbar-default" role="navigation">
-			<ul class="nav navbar-nav">
-				<li><a href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li class="active"><g:link action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</nav>
 		
 		<div id="show-repository" class="" role="main">
-			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
+			<h2><g:message code="default.show.label" args="[entityName]" /></h2>
 			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
+                <div class="alert alert-info">${flash.message}</div>
 			</g:if>
-			
+
+            <div class="container">
+                <div class="btn-group">
+
+                    <g:link url="${createLink(uri: '/')}" class="btn btn-default btn-primary">
+                        <span class="glyphicon glyphicon-home"></span>
+                        <g:message code="default.home.label" />
+                    </g:link>
+
+                    <g:link action="list" class="btn btn-default btn-primary">
+                        <span class="glyphicon glyphicon-inbox"></span>
+                        <g:message code="default.list.label" args="[entityName]" />
+                    </g:link>
+
+                    <g:link action="create" class="btn btn-default btn-primary">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        <g:message code="default.new.label" args="[entityName]" />
+                    </g:link>
+                </div>
+
+
 			<ol class="property-list repository">
 			
 				<g:if test="${repositoryInstance?.image}">
@@ -80,11 +92,14 @@
 			
 			<g:form url="[resource:repositoryInstance, action:'delete']" method="DELETE">
 				<fieldset class="buttons">
-					<g:link class="edit" action="edit" resource="${repositoryInstance}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+					<g:link class="btn btn-default btn-primary" action="edit" resource="${repositoryInstance}">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        <g:message code="default.button.edit.label" default="Edit" />
+                    </g:link>
+					<g:actionSubmit class="btn btn-default btn-danger" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
 				</fieldset>
 			</g:form>
-			
+			</div>
 		</div>
 	</body>
 </html>

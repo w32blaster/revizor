@@ -217,7 +217,7 @@ class ReviewController {
     }
 
     def edit(Review reviewInstance) {
-        respond reviewInstance
+        respond reviewInstance, model:[repository: Repository.read(params.id)]
     }
 
     @Transactional
