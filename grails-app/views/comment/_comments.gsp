@@ -16,7 +16,7 @@
     </g:each>
 </g:if>
 
-<g:form id='add-new-comment-form-id' role="form" url="[controller: 'comment', action:'save', format: 'html']">
+<g:form id='add-new-comment-form-id' role="form" url="[controller: 'comment', action:'save']">
     
     <g:javascript>
         function createNewComment() {

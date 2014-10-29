@@ -76,7 +76,7 @@ class CommentController {
             }
             '*' {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'commentInstance.label', default: 'Comment'), commentInstance.id])
-                redirect commentInstance
+                redirect (controller: 'review', action: 'show', id: params.redirectTo)
             }
         }
     }

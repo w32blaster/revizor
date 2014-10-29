@@ -22,8 +22,9 @@ class CommitSelectorTagLib {
         def isChecked = "";
         out << "<ul class='list-group'>"
         for (Commit rev : list) {
-            isChecked = (rev.id in lstChecked) ? "checked" : ""
-            out << "<li class='list-group-item'><input type='checkbox' name='commits' value='${rev.id}' $isChecked />"
+            isChecked = (rev.id.equals(attrs.selected) || rev.id in lstChecked) ? "checked" : ""
+
+            out << "<li class='list-group-item'><input type='checkbox' name='commits' value='${rev.id}' ${isChecked} />"
             out << "<span class='truncate'> ${rev.id.subSequence(0, 7)} ${rev.message }</span> "
             out << "<span class='label label-default'>${rev.author}</span></li>" /* rev.getId().getName() */
             count++;

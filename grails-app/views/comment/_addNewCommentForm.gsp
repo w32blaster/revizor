@@ -22,7 +22,7 @@
 		<g:hiddenField name="fileName" value="${fileName}"/>
 	</g:if>
 
-	<g:hiddenField name="redirectTo" value="review/${reviewId}"/>
+	<g:hiddenField name="redirectTo" value="${reviewId}"/>
 	<g:hiddenField name="author.id" value="${session.user.id}"/>
 	<g:hiddenField name="review.id" value="${reviewId}"/>
 	<g:hiddenField name="type" value="${commentType}"/>
