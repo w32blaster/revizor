@@ -27,6 +27,7 @@
 		<r:layoutResources />
 	</head>
 	<body>
+
 		<div id="page" class="container-full container-fluid">
 
 			<div id="header" class="row" role="header">
@@ -39,7 +40,7 @@
 						<div id="current-account-block" role="account-container">
                             <g:render template="/user/userAvatar" model="['user' : session.user, 'size': 32]" />
 
-							<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-cog"></span></a>
+							<a href="${createLink(controller: 'settings')}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-cog"></span></a>
 
 							<g:link  controller="login" action="doLogout" class="btn btn-default btn-sm" title="${message(code: 'default.log.out')}"><span class="glyphicon glyphicon-off"></span></g:link>
 							

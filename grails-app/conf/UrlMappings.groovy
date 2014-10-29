@@ -13,6 +13,8 @@ class UrlMappings {
             controller = "repository"
             action = "index"
         }
-        "500"(view:'/error')
+        "500"(view: '/error')
+
+        "/settings" (view: '/settings')
 	}
 }
