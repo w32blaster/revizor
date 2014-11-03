@@ -44,11 +44,15 @@ class GitRepository implements IRepository {
     def cloneRepository(String url, String username, String password) {
 
         def dirRepo = new File(this.repoHome)
-        dirRepo.delete();
+        if (dirRepo.exists()) {
+            dirRepo.delete()
+            dirRepo.mkdirs()
+        }
 
         CloneCommand command = Git.cloneRepository()
                 .setURI(url)
                 .setDirectory(dirRepo)
+                .setCloneSubmodules(true)
                 .setCloneAllBranches(true);
 
         if (username != null && password != null) {

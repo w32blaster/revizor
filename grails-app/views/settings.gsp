@@ -15,9 +15,31 @@
                 <h2>Settings</h2>
 
                 <div class="btn-group">
-                    <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
-                        <g:link class="btn btn-primary btn-sm" controller="${c.logicalPropertyName}">${c.naturalName}</g:link>
-                    </g:each>
+                    <g:link class="btn btn-default btn-primary" url="${createLink(uri: '/')}">
+                        <span class="glyphicon glyphicon-home"></span>
+                        <g:message code="default.home.label" default="Home"/>
+                    </g:link>
+
+                    <g:link class="btn btn-default btn-primary" controller="comment">
+                        <span class="glyphicon glyphicon-comment"></span>
+                        <g:message code="review.comments.header" default="Comments" />
+                    </g:link>
+
+                    <g:link class="btn btn-default btn-primary" controller="repository">
+                        <span class="glyphicon glyphicon-cloud"></span>
+                        <g:message code="repository.header" default="Repositories" />
+                    </g:link>
+
+                    <g:link class="btn btn-default btn-primary" controller="review">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        <g:message code="reviews.header" default="Reviews" />
+                    </g:link>
+
+                    <g:link class="btn btn-default btn-primary" controller="user">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <g:message code="users.header" default="Users" />
+                    </g:link>
+
                 </div>
 
             </div>

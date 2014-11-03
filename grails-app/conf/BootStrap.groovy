@@ -9,6 +9,9 @@ class BootStrap {
         def repoDir = new File(Constants.LOCAL_REPO_PATH)
         if (!repoDir.exists()) repoDir.mkdirs()
 
+        def dbDir = new File(Constants.LOCAL_DB_PATH)
+        if (!dbDir.exists()) dbDir.mkdirs()
+
         println "Checking the user"
         if (User.all.isEmpty()) {
 

@@ -150,7 +150,7 @@ class CommentController {
     }
 }
 
-enum CommentsFilter {
+public enum CommentsFilter {
     ALL("comments.all"),
     ONLY_MINE("comments.mine"),
     REPLIES_TO_ME("comments.replies"),

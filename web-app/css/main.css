@@ -76,11 +76,11 @@ html, body
 	background: none;
 }
 .line-deleted {
-	background-color: #fff1f1;
+	background-color: #FFDCDC;
 	color: #CF0000;
 }
 .line-added {
-	background-color: #f3feee;
+	background-color: #DDFCCF;
 	color: #036902;
 }
 

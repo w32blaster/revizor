@@ -11,8 +11,10 @@ public interface Constants {
 
     boolean IS_TREE_LOG_ENABLED = true;
 
-    String LOCAL_REPO_PATH = System.getProperty("user.home") + "/.repo";
-    
+    String REVIZOR_ROOT = System.getProperty("user.home") + "/.revizor";
+    String LOCAL_REPO_PATH = REVIZOR_ROOT + "/repo";
+    String LOCAL_DB_PATH = REVIZOR_ROOT + "/db";
+
     String REVIEW_SINGLE_VIEW = "single";
     String REVIEW_SIDE_BY_SIDE_VIEW = "side-by-side";
     

@@ -67,6 +67,10 @@ grails.project.dependency.resolution = {
         compile ":scaffolding:2.0.2"
         compile ':cache:1.1.1'
         compile ":markdown:1.1.1"
+
+        // to prepare self extracted executable JAR file. To run: grails prod build-standalone revizor.jar
+        // docs: http://grails-plugins.github.io/grails-standalone/docs/manual/guide/running.html
+        compile ":standalone:1.2.3"
         
         // plugins needed at runtime but not for compilation
         runtime ":hibernate:3.6.10.9" // or ":hibernate4:4.3.4"
@@ -90,3 +94,4 @@ grails.project.dependency.resolution = {
         //compile ":handlebars-asset-pipeline:1.3.0.1"
     }
 }
+grails.plugin.standalone.useJetty = true

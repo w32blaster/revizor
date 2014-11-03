@@ -16,7 +16,7 @@
     <label for="author">
         <g:message code="review.author.label" default="Author" />
     </label>
-    <g:render template="reviewer" model="['reviewer' : session.user]" />
+    <g:render template="reviewer" model="['reviewer' : reviewInstance?.author ? reviewInstance.author : session.user]" />
 </div>
 
 

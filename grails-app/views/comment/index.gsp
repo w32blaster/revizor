@@ -21,6 +21,11 @@
 				<div class="row">
 					<div class="btn-group">
 
+                        <g:link class="btn btn-default btn-primary" url="${createLink(uri: '/')}">
+                            <span class="glyphicon glyphicon-home"></span>
+                            <g:message code="default.home.label" default="Home"/>
+                        </g:link>
+
 						<!-- My comments -->
 						<% def cssClassMy = (params.filter == CommentsFilter.ONLY_MINE.toString()) ? 'active' : '' %>
 						<g:link action="index" params="[filter: CommentsFilter.ONLY_MINE]" class="btn btn-default btn-primary ${cssClassMy}">
