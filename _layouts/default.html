@@ -13,7 +13,7 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Revizor - code tool on JVM</title>
+    <title>{{ page.title }}</title>
   </head>
 
   <body>
@@ -21,8 +21,8 @@
 
     <header>
       <div class="inner">
-        <h1>Revizor</h1>
-        <h2>Revizor - code tool on JVM</h2>
+        <h1>{{ page.header }}</h1>
+        <h2>{{ page.title }}</h2>
 
       </div>
     </header>
@@ -31,56 +31,7 @@
       <div class="inner clearfix">
         <section id="main-content">
 
-            <h2>Revizor</h2>
-
-<p><strong>Revizor</strong> is a code review tool on JVM.</p>
-
-<h2>Main features</h2>
-
-<p>What makes the Revizor different?</p>
-
-<ul>
-<li>Absolutely free</li>
-<li>JVM based (written in Groovy)</li>
-<li>Easy to install (distributed with only one executable JAR/WAR)</li>
-<li>Open Source</li>
-</ul>
-
-
-<h2>How to install it?</h2>
-
-<ol>
-<li>Download JAR file</li>
-<li>Run the command:</li>
-</ol>
-
-
-<pre><code class="`"> java -jar revizor.jar
-</code></pre>
-
-<p>Or download WAR file and put it to your Tomcat or Jetty <em>webapp</em> directory.</p>
-
-<h2>Screenshots</h2>
-
-<p><strong>The dashboard</strong></p>
-
-<p><img src="images/screenshots/screenshot1.jpeg" alt="Revizor main view dashboard" />
-<a href="images/screenshots/screenshot1.jpeg">Full size</a></p>
-
-<p><strong>A review page</strong></p>
-
-<p><img src="images/screenshots/screenshot2.jpeg" alt="Revizor page with a review" />
-<a href="images/screenshots/screenshot3.jpeg">Full size</a></p>
-
-<p><strong>Revieving of a code</strong></p>
-
-<p><img src="images/screenshots/screenshot3.jpeg" alt="Revizor code reviwing" />
-<a href="images/screenshots/screenshot3.jpeg">Full size</a></p>
-
-<h2>Join us!</h2>
-
-<p>We are welcome to a new contributors!</p>
-
+            {{ content }}
 
         </section>
 
