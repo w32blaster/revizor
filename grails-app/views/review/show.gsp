@@ -17,7 +17,7 @@
         
             <div class="col-md-3">
 
-                    <sc:showFilesForReview 
+                    <ft:showFilesForReview
                         repo="${reviewInstance.repository}" 
                         commitID="${reviewInstance.commits[0]}" 
                         reviewId="${reviewInstance.id}"/>
