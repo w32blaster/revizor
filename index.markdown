@@ -1,17 +1,17 @@
 ---
 layout: default
-title: Revizor - code tool on JVM
+title: the code tool on JVM
 header: Revizor
 ---
 
 
-Revizor
------
+What is Revizor
+===========
 
 **Revizor** is a code review tool on JVM.
 
 Main features
-------
+===========
 
 What makes the Revizor different?
 
@@ -21,7 +21,7 @@ What makes the Revizor different?
 * Open Source
 
 How to install it?
------
+========
 
  1. Download JAR file 
  2. Run the command:
@@ -33,20 +33,23 @@ How to install it?
 Or download WAR file and put it to your Tomcat or Jetty *webapp* directory.
 
 Screenshots
-------
+======
 
-**The dashboard**
+The dashboard
+------------
 
 ![Revizor main view dashboard](images/screenshots/screenshot1.jpeg)
 [Full size](images/screenshots/screenshot1.jpeg)
 
 
-**A review page**
+A review page
+---------
 
 ![Revizor page with a review](images/screenshots/screenshot2.jpeg)
 [Full size](images/screenshots/screenshot3.jpeg)
 
-**Revieving of a code**
+Revieving of a code
+------------
 
 ![Revizor code reviwing](images/screenshots/screenshot3.jpeg)
 [Full size](images/screenshots/screenshot3.jpeg)
@@ -54,4 +57,4 @@ Screenshots
 Join us!
 ------
 
-We are welcome to a new contributors!
+We are happy to see new contributors!
