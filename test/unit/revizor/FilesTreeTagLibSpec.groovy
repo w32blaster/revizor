@@ -17,19 +17,19 @@ class FilesTreeTagLibSpec extends Specification {
     }
 
 
-    def "type of each file record is correctly recognyzed" () {
+    def "type of each file record is correctly recognized" () {
         when:
-        def status = tagLib.getTypeOfLine(fileDiffLine)
+            def status = tagLib.getTypeOfLine(fileDiffLine)
         then:
-        status == expectedStatus
+            status == expectedStatus
         where:
-        fileDiffLine                                          | expectedStatus
-        '--- a/grails-app/taglib/revizor/DiffTagLib.groovy'   | Constants.ACTION_MODIFIED
-        '--- a/grails-app/i18n/messages.properties'           | Constants.ACTION_MODIFIED
-        '+++ b/grails-app/taglib/revizor/Comment.groovy'      | Constants.ACTION_MODIFIED
-        '+++ b/grails-app/i18n/messages.properties'           | Constants.ACTION_MODIFIED
-        '--- /dev/null'                                       | Constants.ACTION_ADDED
-        '+++ /dev/null'                                       | Constants.ACTION_DELETED
+            fileDiffLine                                          | expectedStatus
+            '--- a/grails-app/taglib/revizor/DiffTagLib.groovy'   | Constants.ACTION_MODIFIED
+            '--- a/grails-app/i18n/messages.properties'           | Constants.ACTION_MODIFIED
+            '+++ b/grails-app/taglib/revizor/Comment.groovy'      | Constants.ACTION_MODIFIED
+            '+++ b/grails-app/i18n/messages.properties'           | Constants.ACTION_MODIFIED
+            '--- /dev/null'                                       | Constants.ACTION_ADDED
+            '+++ /dev/null'                                       | Constants.ACTION_DELETED
     }
 
     def "builds tree with only one added file"() {

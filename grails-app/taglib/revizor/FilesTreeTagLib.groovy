@@ -1,5 +1,8 @@
 package revizor
 
+import com.revizor.Comment
+import com.revizor.CommentType
+import com.revizor.Review
 import com.revizor.utils.Constants
 
 /**
@@ -35,7 +38,7 @@ class FilesTreeTagLib {
             out << "A repository is not specified"
         }
         else {
-            def diffEntities = getDiffLines(attrs.repo, attrs.commitID);
+            def diffEntities = DiffTagLib.getDiffLines(attrs.repo, attrs.commitID);
             def reviewId = attrs.reviewId
 
             def fileNames = [] as Set
@@ -53,14 +56,20 @@ class FilesTreeTagLib {
             // print fileNames
             out << '<div class="list-group">'
 
-            _recursivelyPrintTree(root, 0, hrefFileDetailsBase)
+            def review = Review.get(reviewId)
+
+            // build map "file name" <=> "comments for this file"
+            def mapCommentsToFile = Comment.findAllByReviewAndType(review, CommentType.LINE_OF_CODE)
+                    .groupBy { Comment comment -> comment.getFileName() }
+
+            _recursivelyPrintTree(root, 0, hrefFileDetailsBase, mapCommentsToFile)
 
             out << '</div>'
 
         }
     }
 
-    def _recursivelyPrintTree(node, level, hrefFileDetailsBase) {
+    def _recursivelyPrintTree(node, level, hrefFileDetailsBase, Map<String, Comment> mapCommentsToFile) {
         if (node.isLeaf) {
 
             def styleFileStatus
@@ -78,12 +87,17 @@ class FilesTreeTagLib {
                     break;
             }
 
+            def countOfComments = mapCommentsToFile.containsKey(node.fullPath) ?
+                    "(${mapCommentsToFile.get(node.fullPath).size()})"
+                    : ""
+
             out << """
 					<div class='tree-leaf' style='margin-left: ${level * INDENT_TREE}px;'>
 						<span class='${styleFileStatus} new'>
 							<a href="${hrefFileDetailsBase + node.fullPath}">
 								${node.name}
 							</a>
+                            ${countOfComments}
 						</span>
 					</div>
 				   """
@@ -101,7 +115,7 @@ class FilesTreeTagLib {
             out << " ${node.name}</div>"
 
             node.children.each { child ->
-                _recursivelyPrintTree(child, level + 1, hrefFileDetailsBase)
+                _recursivelyPrintTree(child, level + 1, hrefFileDetailsBase, mapCommentsToFile)
             }
         }
     }

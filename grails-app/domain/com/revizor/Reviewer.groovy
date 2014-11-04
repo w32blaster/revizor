@@ -18,6 +18,11 @@ class Reviewer {
         review: Review 
     ]
 
+    static mapping = {
+        reviewer lazy: false
+        review lazy: false
+    }
+
     static constraints = {
     }
 }

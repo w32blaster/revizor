@@ -1,13 +1,10 @@
 package com.revizor
 
-import static org.springframework.http.HttpStatus.*
-import org.junit.internal.runners.statements.FailOnTimeout;
+import com.revizor.utils.Constants
 import grails.transaction.Transactional
-import com.revizor.utils.Constants;
-import com.revizor.ReviwerStatus;
-import com.revizor.ReviewStatus;
-import com.revizor.Action
-import revizor.HelpTagLib;
+import revizor.HelpTagLib
+
+import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
 class ReviewController {
@@ -31,7 +28,7 @@ class ReviewController {
                 break;
 
             case ReviewFilter.WHERE_I_AM_REVIEWER:
-                list = Review.findAllByAuthor(session.user);
+                list = Reviewer.findAllByReviewer(session.user).collect { it.review }
                 break;
 
             case ReviewFilter.ARCHIVED:
@@ -260,7 +257,7 @@ class ReviewController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'reviewInstance.label', default: 'Review'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'Review.label', default: 'Review'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }
@@ -274,7 +271,7 @@ enum ReviewFilter {
     ALL("reviews.all"),
     ONLY_MINE("reviews.only.mine"),
     WHERE_I_AM_REVIEWER("reviews.where.i.reviewer"),
-    ARCHIVED("reviews.archived"),
+    ARCHIVED("reviews.archived");
 
     ReviewFilter(String value) { this.value = value }
 

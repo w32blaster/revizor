@@ -140,7 +140,7 @@ class DiffTagLib {
 		return "<pre class='prettyprint ${lang} reset-pre $additionalClass'>${XmlUtil.escapeXml(line)}</pre>"
 	}
 
-	private def getDiffLines(repository, commitID) {
+	public static getDiffLines(repository, commitID) {
 		def repo = repository.initImplementation();
 		return repo.getDiffForCommit(commitID);
 	} 
