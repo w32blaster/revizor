@@ -1,6 +1,6 @@
 ---
 layout: default
-title: the code tool on JVM
+title: the code review tool on JVM
 header: Revizor
 ---
 
@@ -8,7 +8,7 @@ header: Revizor
 What is Revizor
 ===========
 
-**Revizor** is a code review tool on JVM.
+**Revizor** is the code review tool running on JVM.
 
 Main features
 ===========
@@ -57,4 +57,4 @@ Revieving of a code
 Join us!
 ------
 
-We are happy to see new contributors!
+We are happy to meet new contributors!
