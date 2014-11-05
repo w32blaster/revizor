@@ -87,9 +87,11 @@ class FilesTreeTagLib {
                     break;
             }
 
-            def countOfComments = mapCommentsToFile.containsKey(node.fullPath) ?
-                    "(${mapCommentsToFile.get(node.fullPath).size()})"
-                    : ""
+            def countOfComments = ""
+            if (mapCommentsToFile.containsKey(node.fullPath)) {
+                def cnt = mapCommentsToFile.get(node.fullPath).size()
+                countOfComments = "<span title='${message(code: 'comments.in.file', args: [cnt])}'>(${cnt})</span>"
+            }
 
             out << """
 					<div class='tree-leaf' style='margin-left: ${level * INDENT_TREE}px;'>
