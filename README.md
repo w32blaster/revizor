@@ -1,7 +1,31 @@
-revizor
+Revizor
 =======
 
-Revizor is a code review tool written using Groovy on Grails. The project is still under construction, thus here are some screenshots.
+Revizor is a code review tool written using Groovy on Grails. 
+
+Development
+-----------
+
+Please, refer to the [Wiki page](https://github.com/w32blaster/revizor/wiki/How-to-prepare-developer-environment) to find all the 
+information regarding development
+
+Features
+---------
+
+The main features of the Revizor:
+
+# it is free
+# Open Source
+# running on JVM, build on Groovy & Grails
+# easy to install
+
+All the planned features are listed in (Issue Tracker)[https://github.com/w32blaster/revizor/issues]. Please, submit
+new one if you desire to see in the tool.
+
+Screenshots
+-----------
+
+The project is still under construction, thus here are some screenshots.
 
 **1. The main dashboard view**
 ![The main dashboard](http://ic.pics.livejournal.com/w32blaster/10219455/96917/96917_original.png)
