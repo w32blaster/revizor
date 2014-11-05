@@ -1,5 +1,8 @@
 package com.revizor
 
+import com.revizor.repos.IRepository
+import revizor.HelpTagLib
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -58,6 +61,26 @@ class RepositoryController {
 
     def create() {
         respond new Repository(params)
+    }
+
+    /**
+     * Pulls the latest changes from the origin (remote repo) and
+     * renders updated tree.
+     *
+     * @return history tree as HTML
+     */
+    def refreshRepository() {
+        if (!params.id && params.id.isInteger()) {
+            _notFound()
+            return
+        }
+
+        def repository = Repository.get(params.id)
+        IRepository repoImpl = repository.initImplementation();
+        repoImpl.updateRepo()
+
+        def html = sc.buildFlatListofCommits(repo: repository)
+        render HelpTagLib.toSingleLine(html)
     }
 
     @Transactional

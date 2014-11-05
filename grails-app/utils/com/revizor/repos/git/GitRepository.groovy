@@ -4,6 +4,8 @@ import com.revizor.repos.IRepository
 import org.eclipse.jgit.api.CloneCommand
 import org.eclipse.jgit.api.Git
 import com.revizor.utils.Constants
+import org.eclipse.jgit.api.PullCommand
+import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.internal.storage.file.FileRepository
 import org.eclipse.jgit.revplot.PlotCommit
 import org.eclipse.jgit.revplot.PlotCommitList
@@ -132,6 +134,22 @@ class GitRepository implements IRepository {
         }
 
         return [sb.toString(), commits, maxLaneIdx]
+    }
+
+    /**
+     * Pull the latest changes from an origin (remote repository). E.g update repo.
+     */
+    @Override
+    def updateRepo() {
+        def localRepo = new FileRepository(this.repoPath);
+        def git = new Git(localRepo);
+
+        PullCommand pullCmd = git.pull();
+        try {
+            pullCmd.call();
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

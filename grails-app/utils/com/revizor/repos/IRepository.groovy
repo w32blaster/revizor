@@ -43,5 +43,11 @@ public interface IRepository {
      *  [1]: array of Commit items
      *  [2]: the longest row size
      */
-    def getGraphSVG()
+    def getGraphSVG();
+
+    /**
+     * Pull the latest changes from an origin (remote repository). E.g update repo.
+     */
+    def updateRepo();
+
 }

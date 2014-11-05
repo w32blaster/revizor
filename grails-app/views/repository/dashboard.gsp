@@ -61,6 +61,8 @@
 						  </ul>
 						</div>
 
+						<g:render template="buttonUpdateRepository" model="['repoId': selectedRepo.ident() ]" />
+
 					</div>
 
 				</div>
@@ -68,6 +70,7 @@
 			<div class="row">
 				
 				<div id="repo-tree-id" class="col-md-12">
+
 					<sc:buildFlatListofCommits repo="${selectedRepo}" />
 
 				</div>
