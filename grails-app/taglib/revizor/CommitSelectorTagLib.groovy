@@ -20,17 +20,27 @@ class CommitSelectorTagLib {
 
         int count = 0;
         def isChecked = "";
-        out << "<ul class='list-group'>"
+        out << """<table class='table table-striped table-hover'>
+                    <thead>
+                        <th>#</th>
+                        <th> </th>
+                        <th>${message(code: 'commit.message')}</th>
+                        <th>${message(code: 'commit.author')}</th>
+                    </thead>
+                    <tbody>
+        """
         for (Commit rev : list) {
             isChecked = (rev.id.equals(attrs.selected) || rev.id in lstChecked) ? "checked" : ""
-
-            out << "<li class='list-group-item'><input type='checkbox' name='commits' value='${rev.id}' ${isChecked} />"
-            out << "<span class='truncate'> ${rev.id.subSequence(0, 7)} ${rev.message }</span> "
-            out << "<span class='label label-default'>${rev.author}</span></li>" /* rev.getId().getName() */
+            out << "<tr ${isChecked ? "class='active'" : ""}>"
+            out << "<td><input type='checkbox' name='commits' value='${rev.id}' ${isChecked} /></td>"
+            out << "<td>${rev.id.subSequence(0, 7)}</td>"
+            out << "<td class='truncate'>${rev.message }</span></td>"
+            out << "<td><span class='label label-default'>${rev.author}</span></td>" /* rev.getId().getName() */
+            out << "</tr>"
             count++;
             isChecked = ""
         }
-        out << "</ul>"
+        out << "</tbody></table>"
         out << "<tr><td colspan='2'>Had " + count + " commits overall on current branch</td></tr>"
     }
 

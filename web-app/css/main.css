@@ -157,6 +157,7 @@ html, body
 
 .listOfCommits {
     height: 400px;
+    overflow-x: hidden;
     overflow-y: auto;
 }
 .graph-line-text {
