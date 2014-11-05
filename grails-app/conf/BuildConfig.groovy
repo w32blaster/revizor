@@ -67,6 +67,7 @@ grails.project.dependency.resolution = {
         compile ":scaffolding:2.0.2"
         compile ':cache:1.1.1'
         compile ":markdown:1.1.1"
+        compile ":quartz:1.0.2"
 
         // to prepare self extracted executable JAR file. To run: grails prod build-standalone revizor.jar
         // docs: http://grails-plugins.github.io/grails-standalone/docs/manual/guide/running.html
