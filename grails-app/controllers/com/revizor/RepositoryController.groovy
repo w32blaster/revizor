@@ -1,16 +1,12 @@
 package com.revizor
 
+import com.revizor.repos.Commit
 import com.revizor.repos.IRepository
+import com.revizor.utils.Constants
+import grails.transaction.Transactional
 import revizor.HelpTagLib
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
-
-import org.eclipse.jgit.api.Git
-import com.revizor.utils.Constants
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder
-import org.eclipse.jgit.internal.storage.file.FileRepository
-
 
 @Transactional(readOnly = true)
 class RepositoryController {
@@ -18,6 +14,8 @@ class RepositoryController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def uploadService
+    def reviewService
+    def notificationService
 
     /**
      * Main enter point of the app. The root URL "/" is going here. 
@@ -77,7 +75,22 @@ class RepositoryController {
 
         def repository = Repository.get(params.id)
         IRepository repoImpl = repository.initImplementation();
-        repoImpl.updateRepo()
+        def updatedCommits = repoImpl.updateRepo()
+
+        updatedCommits.each { Commit commit ->
+
+            println("new commit! " + commit)
+
+            if (commit.message.contains(Constants.SMART_COMMIT_CREATE_REVIEW)) {
+                // smart commits detected
+                Review review = reviewService.createReviewFromSmartCommit(repository, commit)
+                if (review) {
+                    review.save(flush:true, failOnError: true)
+                    println("saved review!! ${review}")
+                    notificationService.create(review.author, Action.REVIEW_START, [review.author, review])
+                }
+            }
+        }
 
         def html = sc.buildFlatListofCommits(repo: repository)
         render HelpTagLib.toSingleLine(html)

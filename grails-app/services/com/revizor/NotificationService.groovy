@@ -29,7 +29,7 @@ class NotificationService {
             u.addToActors(NotificationObject.saveObject(actor, i));   
         }
 
-        u.save();
+        u.save(flush: true, failOnError: true);
     }
 
     def feed(max, offset) {

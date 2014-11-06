@@ -1,8 +1,5 @@
 package com.revizor
 
-import com.revizor.NotificationObject
-import com.revizor.User
-
 class Notification {
 
     // who performed an action (main actor)
@@ -41,9 +38,9 @@ enum Action {
     REVIEW_INVITED_REVIEWER("action.review.invite.reviewer"),
     REVIEW_FINISH_WITH_DECISION("action.review.reviewer.finished.reviewing"),
     REVIEW_REVIEWER_CHANGED_HIS_MIND("action.review.reviewer.changed.his.mind"),
-    REVIEW_START("action.review.start"),
+    REVIEW_START("action.review.start");
 
-    Action(String val) {
+    public Action(String val) {
         this.value = val;
     }
 

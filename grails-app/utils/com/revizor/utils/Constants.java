@@ -28,14 +28,5 @@ public interface Constants {
     int ROW_HEIGHT = 35; // in px
     String SPACE = " ";
 
-    byte CURVE_VERTICAL = 1;      // "|"
-    byte CURVE_SLASH = 2;         // "/"
-    byte CURVE_BACK_SLASH = 3;    // "\"
-    byte CURVE_VERTICAL_ACT = 4;      
-    byte CURVE_SLASH_ACT = 5;         
-    byte CURVE_BACK_SLASH_ACT = 6;
-    byte CURVE_BLANK = 7;
-    byte CURVE_MERGE_ACT = 8;
-    byte CURVE_MERGE = 9;
-    byte CURVE_ROOT = 10;
+    String SMART_COMMIT_CREATE_REVIEW = "+review";
 }

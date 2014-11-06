@@ -1,7 +1,4 @@
 package com.revizor
-
-import grails.util.GrailsNameUtils
-
 /**
  * One separate review by one or few commits
  */

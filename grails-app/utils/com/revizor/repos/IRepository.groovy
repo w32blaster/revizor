@@ -47,6 +47,9 @@ public interface IRepository {
 
     /**
      * Pull the latest changes from an origin (remote repository). E.g update repo.
+     * Returns fetched commits
+     *
+     * @return List of all the new Commits (as com.revizor.repos.Commit instances)
      */
     def updateRepo();
 

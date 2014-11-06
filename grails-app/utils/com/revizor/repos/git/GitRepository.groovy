@@ -12,18 +12,12 @@ import org.eclipse.jgit.revplot.PlotCommitList
 import org.eclipse.jgit.revplot.PlotLane
 import org.eclipse.jgit.revplot.PlotWalk
 import org.eclipse.jgit.revwalk.RevCommit
-import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
 import org.eclipse.jgit.lib.ObjectReader
 import org.eclipse.jgit.diff.DiffFormatter
-import org.eclipse.jgit.lib.Ref
-import org.eclipse.jgit.lib.RefDatabase;
-import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.api.ListBranchCommand.ListMode;
-
 import com.revizor.repos.Commit
 
 /**
@@ -84,13 +78,7 @@ class GitRepository implements IRepository {
                 .all()
                 .call()
 
-        return logs.collect { commit ->
-
-            new Commit(
-                id: commit.getId().name(),
-                author: commit.getAuthorIdent().getName(),
-                message: commit.getShortMessage()
-            )}
+        return _collectCommits(logs)
 
     }
 
@@ -129,6 +117,7 @@ class GitRepository implements IRepository {
 
             renderedCommit.setId(commit.getId().name())
             renderedCommit.setAuthor(commit.getAuthorIdent().getName())
+            renderedCommit.setAuthorEmail(commit.getAuthorIdent().getEmailAddress())
             sb.append(renderedCommit.svg)
             commits << renderedCommit
         }
@@ -144,11 +133,47 @@ class GitRepository implements IRepository {
         def localRepo = new FileRepository(this.repoPath);
         def git = new Git(localRepo);
 
+        // Firstly, get the local HEAD before fetching
+        ObjectId headIdBeforePulling = localRepo.resolve(org.eclipse.jgit.lib.Constants.HEAD);
+
         PullCommand pullCmd = git.pull();
         try {
             pullCmd.call();
         } catch (GitAPIException e) {
             e.printStackTrace();
+        }
+
+        ObjectId headIdAfterPulling = localRepo.resolve(org.eclipse.jgit.lib.Constants.HEAD);
+
+        if (headIdAfterPulling.compareTo(headIdBeforePulling) != 0) {
+            Iterable<RevCommit> logs = git.log()
+                    .addRange(headIdBeforePulling, headIdAfterPulling)
+                    .call();
+
+            return _collectCommits(logs)
+        }
+        else {
+            return []
+        }
+    }
+
+    /**
+     * Transform list of JGit commits to the list of com.revizor.repos.Commit commits,
+     * that the rest of the code deals regardless of repository type
+     *
+     * @param logs
+     * @return
+     */
+    private List<Commit> _collectCommits(Iterable<RevCommit> logs) {
+        return logs.collect { commit ->
+
+            new Commit(
+                    id: commit.getId().name(),
+                    author: commit.getAuthorIdent().getName(),
+                    authorEmail: commit.getAuthorIdent().getEmailAddress(),
+                    message: commit.getShortMessage(),
+                    fullMessage: commit.getFullMessage()
+            )
         }
     }
 

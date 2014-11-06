@@ -1,6 +1,6 @@
 package com.revizor
 
-import grails.util.GrailsNameUtils
+import revizor.Alias
 
 class User extends HasImage implements INotifiable {
 
@@ -13,7 +13,8 @@ class User extends HasImage implements INotifiable {
             comments: Comment,
             repositories: Repository,
             asReviewer: Reviewer,
-            reviewsAsAuthor: Review
+            reviewsAsAuthor: Review,
+            aliases: Alias
     ]
 
     static constraints = {

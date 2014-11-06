@@ -8,7 +8,7 @@ package com.revizor.utils;
  * To change this template use File | Settings | File Templates.
  */
 public class Utils {
-    
+
     // function for debugging purposes: prints graph to the console
     static printTree(commits) {
         commits.each { commit ->
