@@ -76,6 +76,7 @@ class ReviewService {
      * @return array:
      *  [0] - extracted header
      *  [1] - extracted message (or empty string in case of commit has only one line)
+     *  [2] - list of reviewers
      */
     def getHeaderAndMessage(Commit commit) {
         def lines = commit.fullMessage.readLines()
@@ -87,6 +88,7 @@ class ReviewService {
                                                     .join("\n")
                                                     .trim()
                                                     .replace(Constants.SMART_COMMIT_CREATE_REVIEW, "")
+
 
         return [header, message]
     }

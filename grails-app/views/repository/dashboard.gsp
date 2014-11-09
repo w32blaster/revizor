@@ -81,7 +81,7 @@
 	    <g:javascript>
 			(function($) {
 				$(document).ready(function(){
-					$('.graph-tooltip').tooltip()
+					$('.graph-tooltip').popover()
 				});
 			})(jQuery);
 

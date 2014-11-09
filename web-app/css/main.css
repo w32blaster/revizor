@@ -195,3 +195,8 @@ html, body
     from { -moz-transform: rotate(0deg);}
     to { -moz-transform: rotate(360deg);}
 }
+
+.graph-tooltip {
+    white-space:pre;
+    max-width: none;
+}
