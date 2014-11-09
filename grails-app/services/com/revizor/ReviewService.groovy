@@ -10,6 +10,29 @@ import revizor.Alias
 class ReviewService {
 
     Log log = LogFactory.getLog(this.class)
+    def notificationService
+
+    /**
+     * Runs through the given list of commits, and if it detects Smart Commits,
+     * then it creates new review for each of them
+     *
+     * @param lstCommits
+     * @return
+     */
+    def checkNewRevisionsForSmartCommits(List<Commit> lstCommits, Repository repository) {
+        lstCommits.each { Commit commit ->
+
+            if (commit.fullMessage.contains(Constants.SMART_COMMIT_CREATE_REVIEW)) {
+                // smart commits detected
+                println(">>>> Found commit $commit")
+                Review review = this.createReviewFromSmartCommit(repository, commit)
+                if (review) {
+                    review.save(flush:true, failOnError: true)
+                    notificationService.create(review.author, Action.REVIEW_START, [review.author, review])
+                }
+            }
+        }
+    }
 
     /**
      * Parses a commit message for a smart commit commands and
@@ -26,18 +49,15 @@ class ReviewService {
         }
 
         if(user) {
-
-            println "Full message ${commit.fullMessage}"
             def arr = getHeaderAndMessage(commit)
-
-            println "Ok, here is the title >>${arr[0]}<<, and here is the body >>>${arr[1]}<<< "
 
             return new Review(author: user,
                     title: arr[0],
                     description: arr[1],
                     commits: [commit.id],
                     status: ReviewStatus.OPEN,
-                    repository: repo)
+                    repository: repo,
+                    smartCommitId: commit.id)
         }
         else {
             log.warn("Were asked to create a new review, but the author ${commit.author} was not found in the Revizor database, thus " +
@@ -49,6 +69,8 @@ class ReviewService {
     /**
      * Extracts header and message from commit message. Expected the first line
      * without "+review" smart commit tag
+     *
+     * @see https://github.com/w32blaster/revizor/wiki/Smart-commits for more details
      *
      * @param commit
      * @return array:

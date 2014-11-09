@@ -118,6 +118,9 @@ class GitRepository implements IRepository {
             renderedCommit.setId(commit.getId().name())
             renderedCommit.setAuthor(commit.getAuthorIdent().getName())
             renderedCommit.setAuthorEmail(commit.getAuthorIdent().getEmailAddress())
+            renderedCommit.setFullMessage(commit.fullMessage)
+            renderedCommit.setMessage(commit.shortMessage)
+
             sb.append(renderedCommit.svg)
             commits << renderedCommit
         }

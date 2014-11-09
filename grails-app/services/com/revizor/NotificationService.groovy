@@ -1,9 +1,5 @@
 package com.revizor
 
-import grails.transaction.Transactional
-import com.revizor.Notification
-import com.revizor.NotificationObject
-
 class NotificationService {
 
     /*
@@ -29,7 +25,7 @@ class NotificationService {
             u.addToActors(NotificationObject.saveObject(actor, i));   
         }
 
-        u.save(flush: true, failOnError: true);
+        u.save();
     }
 
     def feed(max, offset) {

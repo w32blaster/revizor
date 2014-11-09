@@ -1,8 +1,6 @@
 package com.revizor
 
-import com.revizor.repos.Commit
 import com.revizor.repos.IRepository
-import com.revizor.utils.Constants
 import grails.transaction.Transactional
 import revizor.HelpTagLib
 
@@ -15,7 +13,6 @@ class RepositoryController {
 
     def uploadService
     def reviewService
-    def notificationService
 
     /**
      * Main enter point of the app. The root URL "/" is going here. 
@@ -67,6 +64,7 @@ class RepositoryController {
      *
      * @return history tree as HTML
      */
+    @Transactional
     def refreshRepository() {
         if (!params.id && params.id.isInteger()) {
             _notFound()
@@ -77,20 +75,8 @@ class RepositoryController {
         IRepository repoImpl = repository.initImplementation();
         def updatedCommits = repoImpl.updateRepo()
 
-        updatedCommits.each { Commit commit ->
-
-            println("new commit! " + commit)
-
-            if (commit.message.contains(Constants.SMART_COMMIT_CREATE_REVIEW)) {
-                // smart commits detected
-                Review review = reviewService.createReviewFromSmartCommit(repository, commit)
-                if (review) {
-                    review.save(flush:true, failOnError: true)
-                    println("saved review!! ${review}")
-                    notificationService.create(review.author, Action.REVIEW_START, [review.author, review])
-                }
-            }
-        }
+        println(">>>> new updatedCommits = $updatedCommits")
+        reviewService.checkNewRevisionsForSmartCommits(updatedCommits, repository);
 
         def html = sc.buildFlatListofCommits(repo: repository)
         render HelpTagLib.toSingleLine(html)

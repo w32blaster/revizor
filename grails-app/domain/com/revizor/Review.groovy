@@ -9,6 +9,8 @@ class Review implements INotifiable {
     String[] commits = []
     String description
     ReviewStatus status
+    // SHA of smart commit, that current review was created
+    String smartCommitId
 
     static belongsTo = [
             repository: Repository,

@@ -16,7 +16,6 @@ class Commit {
     String fullMessage
     int padding; // in px
 
-
     @Override
     public String toString() {
         return "Commit{" +

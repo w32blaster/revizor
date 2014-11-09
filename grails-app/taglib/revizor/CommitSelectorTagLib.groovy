@@ -1,5 +1,6 @@
 package revizor
 
+import com.revizor.Review
 import com.revizor.repos.Commit
 import com.revizor.utils.Constants
 
@@ -58,13 +59,13 @@ class CommitSelectorTagLib {
 
             def outHtml = "<table class='table table-condensed'>"
             def graphHtml = "<div id='history-graph' style='position: absolute; top: 3px'>" +
-                    "<svg height='${list.size() * Constants.ROW_HEIGHT}' width='${CURVE_WIDTH * maxLaneIdx + 10}' overflow='hidden'><g>${arrCommits[0]}</g></svg></div>"
+                    "<svg height='${list.size() * Constants.ROW_HEIGHT}' width='${CURVE_WIDTH * maxLaneIdx + 15}' overflow='hidden'><g>${arrCommits[0]}</g></svg></div>"
 
             list.each { Commit rev ->
 
                 outHtml <<= """
                         <tr title="${rev.id}" height="${Constants.ROW_HEIGHT}">
-                            <td><span class="graph-line-text" style="padding-left: ${rev.padding}px">${rev.message}</span></td>
+                            <td><span class="graph-line-text" style="padding-left: ${rev.padding}px">${_getCommitMessageHtml(rev)}</span></td>
                             <td><span class="label label-default" title="${rev.authorEmail}">${rev.author}</span><td>
                             <td><a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.id])}" class="btn btn-default btn-xs tree-context-button">
                                 <span class="glyphicon glyphicon-plus"></span>
@@ -77,5 +78,32 @@ class CommitSelectorTagLib {
 
             out << graphHtml + outHtml
 
+    }
+
+    /**
+     * Detects Smart Commits in a header and replaces them with appropriate links.
+     * For example, command "+review" will be wrapped to a review linked with current commit
+     *
+     * @param header
+     */
+    def _getCommitMessageHtml(Commit commit) {
+        def messageHtml = commit.message
+
+        // make Smart Commit clickable
+        if (commit.message.contains(Constants.SMART_COMMIT_CREATE_REVIEW)) {
+            def review = Review.findBySmartCommitId(commit.id)
+            if (review) {
+                def htmlLinkReview = "<a href='${g.createLink(controller: "review", action: "show", id: review?.ident(),)}'/>" +
+                        "<span class='label label-primary'>$Constants.SMART_COMMIT_CREATE_REVIEW</span></a>";
+                messageHtml = commit.message.replace(Constants.SMART_COMMIT_CREATE_REVIEW, htmlLinkReview)
+            }
+        }
+
+        // add link to full message
+        if (commit.fullMessage) {
+            messageHtml += " <a type='button' class='graph-tooltip' data-toggle='tooltip' data-placement='top' title='${commit.fullMessage}'>...</a>"
+        }
+
+        return messageHtml
     }
 }
