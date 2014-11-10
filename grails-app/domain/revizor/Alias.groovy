@@ -11,5 +11,6 @@ class Alias {
     ]
 
     static constraints = {
+        aliasEmail email: true, nullable: false
     }
 }

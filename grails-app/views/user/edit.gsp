@@ -27,9 +27,13 @@
 				</g:eachError>
 			</ul>
 			</g:hasErrors>
-			
+
+			<%-- Form "Upload Avatar" --%>
 			<g:render template="select_avatar" model="[id: userInstance?.ident()]"/>
-			
+
+			<%-- Form "Edit aliases" --%>
+			<g:render template="editAliases" model="[aliases: userInstance?.aliases, userId: userInstance?.ident()]"/>
+
 			<div class="input-group">
 				<g:form url="[resource:userInstance, action:'update']" method="PUT" >
 					<g:hiddenField name="version" value="${userInstance?.version}" />
