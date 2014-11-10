@@ -24,7 +24,6 @@ class ReviewService {
 
             if (commit.fullMessage.contains(Constants.SMART_COMMIT_CREATE_REVIEW)) {
                 // smart commits detected
-                println(">>>> Found commit $commit")
                 Review review = this.createReviewFromSmartCommit(repository, commit)
                 if (review) {
                     review.save(flush:true, failOnError: true)
@@ -42,28 +41,42 @@ class ReviewService {
      */
     def createReviewFromSmartCommit(repo, Commit commit) {
 
-        def user = User.findByEmail(commit.authorEmail)
-        if (!user) {
-            def alias = Alias.findByAliasEmail(commit.authorEmail)
-            user = alias?.user
-        }
+        User user = _getUserByEmailOrAlias(commit.authorEmail)
 
         if(user) {
             def arr = getHeaderAndMessage(commit)
 
-            return new Review(author: user,
+            Review review = new Review(author: user,
                     title: arr[0],
                     description: arr[1],
                     commits: [commit.id],
                     status: ReviewStatus.OPEN,
                     repository: repo,
                     smartCommitId: commit.id)
+
+            arr[2].each {reviewerEmail ->
+                User reviewerUser = _getUserByEmailOrAlias(reviewerEmail)
+                if (reviewerUser) {
+                    review.addToReviewers(new Reviewer(reviewer: reviewerUser, status: ReviwerStatus.INVITED))
+                }
+            }
+
+            return review
         }
         else {
             log.warn("Were asked to create a new review, but the author ${commit.author} was not found in the Revizor database, thus " +
                     "I don't know who is the author. The review was not created.")
             return null
         }
+    }
+
+    private User _getUserByEmailOrAlias(String strEmail) {
+        def user = User.findByEmail(strEmail)
+        if (!user) {
+            def alias = Alias.findByAliasEmail(strEmail)
+            user = alias?.user
+        }
+        return user
     }
 
     /**
@@ -89,8 +102,15 @@ class ReviewService {
                                                     .trim()
                                                     .replace(Constants.SMART_COMMIT_CREATE_REVIEW, "")
 
+        // list of reviewers. Expected format: "+review one@strEmail.com,two@strEmail.com[end of line or end of message]"
+        int since = commit.fullMessage.indexOf(Constants.SMART_COMMIT_CREATE_REVIEW)
+        def until = commit.fullMessage.indexOf("\n", since)
+        if (until == -1) until = commit.fullMessage.length()
 
-        return [header, message]
+        def argumentsAfterReviewTag = commit.fullMessage.substring(since, until)
+        def emails = argumentsAfterReviewTag.findAll( /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/ )
+
+        return [header, message, emails]
     }
 
 }

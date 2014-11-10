@@ -49,6 +49,9 @@ namely here: ${Constants.SMART_COMMIT_CREATE_REVIEW}
             arr[1] == "Here goes the rest text of a commit. But the\ncommit tag is placed on the last line,\nnamely here: "
     }
 
+
+
+
     void "test extracting header where commit message in only one line"() {
 
         given:
@@ -61,5 +64,39 @@ namely here: ${Constants.SMART_COMMIT_CREATE_REVIEW}
 
         and: "default message because the commit has only one line"
             arr[1] == "no description"
+    }
+
+    void "test extracting emails of reviewers"() {
+
+        given:
+            def singleline = "This is the single line commit message ${Constants.SMART_COMMIT_CREATE_REVIEW} max@email.com,alice@email.com"
+        when:
+            def arr = service.getHeaderAndMessage(new Commit(fullMessage: singleline))
+
+        then:
+            arr[0] == "This is the single line commit message"
+
+        and:
+            arr[1] == "no description"
+
+        and: 'both emails are extracted to list'
+            arr[2] == ['max@email.com', 'alice@email.com']
+    }
+
+    void "test extracting emails of reviewers separated with comma and blank"() {
+
+        given: ""
+            def singleline = "This is the single line commit message ${Constants.SMART_COMMIT_CREATE_REVIEW} max@email.com, alice@email.com"
+        when:
+            def arr = service.getHeaderAndMessage(new Commit(fullMessage: singleline))
+
+        then:
+            arr[0] == "This is the single line commit message"
+
+        and:
+            arr[1] == "no description"
+
+        and: 'both emails are extracted to list'
+            arr[2] == ['max@email.com', 'alice@email.com']
     }
 }

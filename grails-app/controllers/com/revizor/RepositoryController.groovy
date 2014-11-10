@@ -75,7 +75,6 @@ class RepositoryController {
         IRepository repoImpl = repository.initImplementation();
         def updatedCommits = repoImpl.updateRepo()
 
-        println(">>>> new updatedCommits = $updatedCommits")
         reviewService.checkNewRevisionsForSmartCommits(updatedCommits, repository);
 
         def html = sc.buildFlatListofCommits(repo: repository)
