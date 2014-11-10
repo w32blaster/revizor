@@ -62,7 +62,7 @@
 
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h3 class="panel-title">Panel primary</h3>
+        <h3 class="panel-title"><g:message code="user.aliases" /></h3>
     </div>
     <div class="panel-body">
 
@@ -89,11 +89,15 @@
             </tbody>
         </table>
 
-        <input id="newAliasEmail1" type="email" class="form-control"  placeholder="Enter email">
-
-        <button type="button" class="btn btn-default" onclick="addAlias();">
-            <span class="glyphicon glyphicon-plus"></span>
-        </button>
+        <div class="input-group">
+            <span class="input-group-addon">@</span>
+            <input id="newAliasEmail1" type="email" class="form-control"  placeholder="Enter email">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default" onclick="addAlias();">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </span>
+        </div>
 
     </div>
 </div>
