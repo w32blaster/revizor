@@ -88,7 +88,7 @@
 
                         container.get()[0].innerHTML = '<form id="${formId}" data-comment-container="' + commentContainerID + '">' + additionalFieldHtml + formHtml + '</form>';
                     }    
-                    
+
                     /**
                      * Method will be fired by the "Add new comment" form submitting
                      */

@@ -15,6 +15,10 @@
         <markdown:renderHtml>${comment.text.decodeHTML()}</markdown:renderHtml>
     </emoji:toHtml>
 
-    <button class="btn btn-default btn-xs btn-comment-reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</button>
+    <button class="btn btn-default btn-xs btn-comment-reply" onclick="">
+      <span class="glyphicon glyphicon-share-alt"></span>
+      <g:message code="comment.reply"  />
+    </button>
+
   </div>
 </div>
