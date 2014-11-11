@@ -3,36 +3,20 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main">
+		<meta name="layout" content="settingsMain">
 		<g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
 
-		
-		<div id="list-user" class="content scaffold-list" role="main">
+
 			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
-			<g:if test="${flash.message}">
-				<div class="message" role="status">${flash.message}</div>
-			</g:if>
 
-			<div class="container">
-				<div class="btn-group">
-					<g:link url="${createLink(uri: '/')}" class="btn btn-default btn-primary">
-						<span class="glyphicon glyphicon-home"></span>
-						<g:message code="default.home.label" />
-					</g:link>
+			<g:render template="/layouts/flashMessage" />
 
-					<g:link action="list" class="btn btn-default btn-primary active">
-						<span class="glyphicon glyphicon-inbox"></span>
-						<g:message code="default.list.label" args="[entityName]" />
-					</g:link>
+			<g:render template="/layouts/actionButton" />
 
-					<g:link action="create" class="btn btn-default btn-primary">
-						<span class="glyphicon glyphicon-plus"></span>
-						<g:message code="default.new.label" args="[entityName]" />
-					</g:link>
-				</div>
+
 
 					<table class="table">
 					<thead>
@@ -63,7 +47,6 @@
 					<div class="pagination">
 						<g:paginate total="${userInstanceCount ?: 0}" />
 					</div>
-				</div>
-		</div>
+
 	</body>
 </html>

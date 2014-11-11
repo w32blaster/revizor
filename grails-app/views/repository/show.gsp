@@ -3,37 +3,17 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main">
+		<meta name="layout" content="settingsMain">
 		<g:set var="entityName" value="${message(code: 'repository.label', default: 'Repository')}" />
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		
-		<div id="show-repository" class="" role="main">
+
 			<h2><g:message code="default.show.label" args="[entityName]" /></h2>
-			<g:if test="${flash.message}">
-                <div class="alert alert-info">${flash.message}</div>
-			</g:if>
 
-            <div class="container">
-                <div class="btn-group">
+			<g:render template="/layouts/flashMessage" />
 
-                    <g:link url="${createLink(uri: '/')}" class="btn btn-default btn-primary">
-                        <span class="glyphicon glyphicon-home"></span>
-                        <g:message code="default.home.label" />
-                    </g:link>
-
-                    <g:link action="list" class="btn btn-default btn-primary">
-                        <span class="glyphicon glyphicon-inbox"></span>
-                        <g:message code="default.list.label" args="[entityName]" />
-                    </g:link>
-
-                    <g:link action="create" class="btn btn-default btn-primary">
-                        <span class="glyphicon glyphicon-plus"></span>
-                        <g:message code="default.new.label" args="[entityName]" />
-                    </g:link>
-                </div>
-
+			<g:render template="/layouts/actionButton" />
 
 			<ol class="property-list repository">
 			
@@ -99,7 +79,7 @@
 					<g:actionSubmit class="btn btn-default btn-danger" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
 				</fieldset>
 			</g:form>
-			</div>
-		</div>
+
+
 	</body>
 </html>
