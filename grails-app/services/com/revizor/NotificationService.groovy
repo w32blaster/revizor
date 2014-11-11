@@ -1,9 +1,5 @@
 package com.revizor
 
-import grails.transaction.Transactional
-import com.revizor.Notification
-import com.revizor.NotificationObject
-
 class NotificationService {
 
     /*

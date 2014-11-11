@@ -1,6 +1,7 @@
 package com.revizor
 
 import com.revizor.repos.IRepository
+import grails.transaction.Transactional
 import org.apache.commons.logging.LogFactory
 
 /**
@@ -17,18 +18,21 @@ class PullCommitsJob {
     public static final int START_DELAY_MS = 30 * 1000;
 
     def log = LogFactory.getLog(this.class)
+    def reviewService
 
     static triggers = {
 
         simple  startDelay:START_DELAY_MS, repeatInterval: REPEAT_INTERVAL_MS, repeatCount: -1
     }
 
+    @Transactional
     def execute() {
 
         Repository.all.each { repo ->
             log.info("Pull job: update repo " + repo.getTitle())
             IRepository repoImpl = repo.initImplementation()
-            repoImpl.updateRepo()
+            def updatedCommits = repoImpl.updateRepo()
+            reviewService.checkNewRevisionsForSmartCommits(updatedCommits, repo);
         }
     }
 }

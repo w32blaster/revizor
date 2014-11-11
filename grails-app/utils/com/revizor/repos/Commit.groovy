@@ -11,6 +11,17 @@ class Commit {
     String id
     String svg
     String author
+    String authorEmail
     String message
+    String fullMessage
     int padding; // in px
+
+    @Override
+    public String toString() {
+        return "Commit{" +
+                "id='" + id + '\'' +
+                ", author='" + author + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

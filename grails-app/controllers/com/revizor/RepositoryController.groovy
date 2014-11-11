@@ -1,16 +1,10 @@
 package com.revizor
 
 import com.revizor.repos.IRepository
+import grails.transaction.Transactional
 import revizor.HelpTagLib
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
-
-import org.eclipse.jgit.api.Git
-import com.revizor.utils.Constants
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder
-import org.eclipse.jgit.internal.storage.file.FileRepository
-
 
 @Transactional(readOnly = true)
 class RepositoryController {
@@ -18,6 +12,7 @@ class RepositoryController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def uploadService
+    def reviewService
 
     /**
      * Main enter point of the app. The root URL "/" is going here. 
@@ -69,6 +64,7 @@ class RepositoryController {
      *
      * @return history tree as HTML
      */
+    @Transactional
     def refreshRepository() {
         if (!params.id && params.id.isInteger()) {
             _notFound()
@@ -77,7 +73,9 @@ class RepositoryController {
 
         def repository = Repository.get(params.id)
         IRepository repoImpl = repository.initImplementation();
-        repoImpl.updateRepo()
+        def updatedCommits = repoImpl.updateRepo()
+
+        reviewService.checkNewRevisionsForSmartCommits(updatedCommits, repository);
 
         def html = sc.buildFlatListofCommits(repo: repository)
         render HelpTagLib.toSingleLine(html)

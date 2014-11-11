@@ -6,6 +6,19 @@ import revizor.HelpTagLib
 
 import static org.springframework.http.HttpStatus.*
 
+enum ReviewFilter {
+    ALL("reviews.all"),
+    ONLY_MINE("reviews.only.mine"),
+    WHERE_I_AM_REVIEWER("reviews.where.i.reviewer"),
+    ARCHIVED("reviews.archived");
+
+    ReviewFilter(String value) { this.value = value }
+
+    private final String value
+    public String value() { return value }
+}
+
+
 @Transactional(readOnly = true)
 class ReviewController {
 
@@ -18,7 +31,7 @@ class ReviewController {
         def list
         def reviewFilter = params.filter as ReviewFilter
         switch(reviewFilter) {
-            
+
             case ReviewFilter.ALL:
                 list = Review.list(params);
                 break;
@@ -37,7 +50,7 @@ class ReviewController {
 
             default:
                 list = Review.list(params);
-                break;                
+                break;
         }
 
         def repos = Repository.list()
@@ -45,28 +58,28 @@ class ReviewController {
     }
 
     def show(Review reviewInstance) {
-		def view;
-		
-		switch (params.viewType) {
-			
-			case Constants.REVIEW_SINGLE_VIEW:
-				view = "showSingleView";
-				break
-				
-			case Constants.REVIEW_SIDE_BY_SIDE_VIEW:
-				view = "showSideBySideView";
-				break;
-				
-			default:
-				view = "show";
-				break;
-		} 
-		
+        def view;
+
+        switch (params.viewType) {
+
+            case Constants.REVIEW_SINGLE_VIEW:
+                view = "showSingleView";
+                break
+
+            case Constants.REVIEW_SIDE_BY_SIDE_VIEW:
+                view = "showSideBySideView";
+                break;
+
+            default:
+                view = "show";
+                break;
+        }
+
         respond reviewInstance, view: view, model:[fileName: params[Constants.PARAM_FILE_NAME]]
     }
 
     def create() {
-		if (!params.id) {
+        if (!params.id) {
             flash.error = "${message(code: 'controller.review.params.id.not.specified')}"
             redirect(action: "index")
         }
@@ -85,7 +98,7 @@ class ReviewController {
         def review = Review.get(params.review);
         if (!review) {
             render status: NOT_FOUND
-            return   
+            return
         }
 
         review.status = ReviewStatus.CLOSED;
@@ -95,7 +108,7 @@ class ReviewController {
             render status: 500
         }
         else {
-			notificationService.create(session.user, Action.REVIEW_CLOSE, [session.user, review])
+            notificationService.create(session.user, Action.REVIEW_CLOSE, [session.user, review])
             render status: OK
         }
     }
@@ -110,18 +123,18 @@ class ReviewController {
         def review = Review.get(params.review);
         if (!review) {
             render status: NOT_FOUND
-            return   
+            return
         }
 
         def reviewer = User.get(params.user);
         if (!reviewer) {
             render status: NOT_FOUND
-            return   
+            return
         }
 
         if (review.findReviewerByUser(reviewer)) {
             render(status: 400, text: 'this user is already assigned as a reviewer to this review')
-            return 
+            return
         }
 
         def reviewerObj = new Reviewer(reviewer: reviewer, status: ReviwerStatus.INVITED);
@@ -132,12 +145,12 @@ class ReviewController {
             render status: 500
         }
         else {
-            
+
             notificationService.create(session.user, Action.REVIEW_INVITED_REVIEWER, [session.user, reviewer, review])
 
             def htmlToRender = g.render(template: '/review/reviewer' , model: [
-                'reviewer': reviewer, 
-                'status' : ReviwerStatus.INVITED])
+                    'reviewer': reviewer,
+                    'status' : ReviwerStatus.INVITED])
 
             render HelpTagLib.toSingleLine(htmlToRender)
         }
@@ -153,13 +166,13 @@ class ReviewController {
         def review = Review.get(params.review);
         if (!review) {
             render status: NOT_FOUND
-            return   
+            return
         }
 
         def reviewStatus = ReviwerStatus.valueOfName(params.status);
         if (!reviewStatus) {
             render status: NOT_FOUND
-            return      
+            return
         }
 
         def reviewerObj = review.findReviewerByUser(session.user) ?: new Reviewer(reviewer: session.user);
@@ -169,7 +182,7 @@ class ReviewController {
         reviewerObj.status = reviewStatus;
         review.addToReviewers(reviewerObj);
         review.save(flush:true);
-        
+
         if (review.hasErrors()){
             render status: 500
         }
@@ -181,7 +194,7 @@ class ReviewController {
             else {
                 notificationService.create(session.user, Action.REVIEW_REVIEWER_CHANGED_HIS_MIND, [session.user, review, oldStatus.getThumbIconStyle(), reviewStatus.getThumbIconStyle()])
             }
-            
+
             render status: OK
         }
     }
@@ -193,15 +206,15 @@ class ReviewController {
             return
         }
 
-		if (!reviewInstance.validate()) {
-			respond reviewInstance.errors, view:'create'
+        if (!reviewInstance.validate()) {
+            respond reviewInstance.errors, view:'create'
             return
         }
 
-		def repository = Repository.read(params.repository)
-		reviewInstance.setRepository(repository)
+        def repository = Repository.read(params.repository)
+        reviewInstance.setRepository(repository)
         def r = reviewInstance.save(flush:true)
-		
+
         notificationService.create(session.user, Action.REVIEW_START, [session.user, r])
 
         request.withFormat {
@@ -263,18 +276,5 @@ class ReviewController {
             '*'{ render status: NOT_FOUND }
         }
     }
-	
-}
 
-
-enum ReviewFilter {
-    ALL("reviews.all"),
-    ONLY_MINE("reviews.only.mine"),
-    WHERE_I_AM_REVIEWER("reviews.where.i.reviewer"),
-    ARCHIVED("reviews.archived");
-
-    ReviewFilter(String value) { this.value = value }
-
-    private final String value
-    public String value() { return value }
 }

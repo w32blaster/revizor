@@ -1,7 +1,4 @@
 package com.revizor
-
-import grails.util.GrailsNameUtils
-
 /**
  * One separate review by one or few commits
  */
@@ -12,6 +9,8 @@ class Review implements INotifiable {
     String[] commits = []
     String description
     ReviewStatus status
+    // SHA of smart commit, that current review was created
+    String smartCommitId
 
     static belongsTo = [
             repository: Repository,
