@@ -37,7 +37,7 @@ class FilesTreeTagLibSpec extends Specification {
         given: 'only one file that was added'
             def files = [
                     '--- /dev/null',
-                    '+++ b/grails-app/views/review/_comments.gsp'
+                    '+++ b/grails-app/views/review/_commentsScript.gsp'
             ]
         when:
             def result = tagLib.buildMapOfFiles(files)
@@ -57,8 +57,8 @@ class FilesTreeTagLibSpec extends Specification {
             NodeFile review = new NodeFile('name': 'review', 'parent': view, 'children': [])
 
             // file
-            NodeFile file = new NodeFile('name': '_comments.gsp', 'isLeaf': true, 'parent': review,
-                    'status': Constants.ACTION_ADDED, 'fullPath': 'grails-app/views/review/_comments.gsp')
+            NodeFile file = new NodeFile('name': '_commentsScript.gsp', 'isLeaf': true, 'parent': review,
+                    'status': Constants.ACTION_ADDED, 'fullPath': 'grails-app/views/review/_commentsScript.gsp')
 
             review.children.add(file)
             view.children.add(review)
@@ -72,7 +72,7 @@ class FilesTreeTagLibSpec extends Specification {
 
         given: 'only one file that was removed'
             def files = [
-                    '--- a/grails-app/views/review/_comments.gsp',
+                    '--- a/grails-app/views/review/_commentsScript.gsp',
                     '+++ /dev/null'
             ]
         when:
@@ -93,8 +93,8 @@ class FilesTreeTagLibSpec extends Specification {
             NodeFile review = new NodeFile('name': 'review', 'parent': view, 'children': [])
 
             // file
-            NodeFile file = new NodeFile('name': '_comments.gsp', 'isLeaf': true, 'parent': review,
-                    'status': Constants.ACTION_DELETED, 'fullPath': 'grails-app/views/review/_comments.gsp')
+            NodeFile file = new NodeFile('name': '_commentsScript.gsp', 'isLeaf': true, 'parent': review,
+                    'status': Constants.ACTION_DELETED, 'fullPath': 'grails-app/views/review/_commentsScript.gsp')
 
             review.children.add(file)
             view.children.add(review)

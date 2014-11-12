@@ -1,6 +1,5 @@
 package com.revizor
 
-import grails.util.GrailsNameUtils
 import org.springframework.context.i18n.LocaleContextHolder as LCH
 
 /**
@@ -17,11 +16,15 @@ class Comment implements INotifiable {
     int lineOfCode
 	LineType typeOfLine
     CommentType type
-    Comment replyTo
 
     static belongsTo = [
             review: Review,
-            author: User
+            author: User,
+            replyTo: Comment
+    ]
+
+    static hasMany = [
+            replies: Comment
     ]
 
     static constraints = {

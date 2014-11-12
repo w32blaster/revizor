@@ -4,7 +4,7 @@
 	The body of only one comment 
 --%>
 
-<div class="media comment-container well" style="width: 800px;">
+<div class="media comment-container well" style="width: 800px; margin-left: ${10 * indent}px;">
   <a class="pull-left" href="${createLink(controller:'user', action:'show', id:comment.author?.ident())}">
       <g:render template="/user/userAvatar" model="['user' : comment.author, 'cssClass': 'avatar img-rounded media-object']" />
   </a>

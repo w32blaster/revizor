@@ -71,7 +71,7 @@ class CommentController {
 
         withFormat {
             html {
-                def htmlToRender = g.render(template: '/comment/comment' , model: ['comment': commentInstance])
+                def htmlToRender = g.render(template: '/comment/comment' , model: ['comment': commentInstance, 'indent': 0])
                 render HelpTagLib.toSingleLine(htmlToRender)
             }
             '*' {

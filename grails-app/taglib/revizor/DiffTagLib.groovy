@@ -98,11 +98,16 @@ class DiffTagLib {
 							
 							// add comment for this line of code, if they exist
 							out << "<div id='${commentContainerId}' class='code-line-comments' style='display:${commentsForTheLine ? "visible" : "none"};'>"
+
+							if(commentsForTheLine) {
+								out << cmt.printCommentsInHierarchy(['comments': commentsForTheLine])
+							}
+/*
 							if (commentsForTheLine) {
 								commentsForTheLine.each { comment ->
 									out << g.render(template: "/comment/comment", model: ['comment': comment])
 								}
-							}
+							}*/
 							out << "</div>"
 
 							// placeholder, where will be added the form to write a new comment or to reply to another
@@ -120,9 +125,9 @@ class DiffTagLib {
 
     }
 	
-	private String getButtonHtml(newCommentFormID, commentType, lineOfCode, idx, commentContainerID) {
+	private String getButtonHtml(newCommentFormID, lineType, lineOfCode, idx, commentContainerID) {
 		return """
-				<button id='show-form-btn-${idx}' class='btn-comment btn btn-default btn-xs' onclick='showForm(this, \"${newCommentFormID}\", \"${commentType}\", ${lineOfCode}, \"${commentContainerID}\");'>
+				<button id='show-form-btn-${idx}' class='btn-comment btn btn-default btn-xs' onclick='showForm(this, \"${newCommentFormID}\", \"${lineType}\", ${lineOfCode}, \"${commentContainerID}\", \"${CommentType.LINE_OF_CODE.name()}\");'>
 					<span class='glyphicon glyphicon-comment'></span>
 				</button>
 				"""
