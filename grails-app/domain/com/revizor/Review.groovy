@@ -27,6 +27,7 @@ class Review implements INotifiable {
         repository(nullable: false)
         author(nullable: false)
         reviewers(nullable: true)
+        smartCommitId(nullable: true)
     }
 
     def findReviewerByUser(user) {
