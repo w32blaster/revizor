@@ -15,10 +15,14 @@
         <markdown:renderHtml>${comment.text.decodeHTML()}</markdown:renderHtml>
     </emoji:toHtml>
 
-    <button class="btn btn-default btn-xs btn-comment-reply" onclick="">
+    <button class="btn btn-default btn-xs btn-comment-reply" onclick="showForm(this, 'new-reply-to-${comment.id}-form', null, null, 'replies-container-${comment.id}-id');">
       <span class="glyphicon glyphicon-share-alt"></span>
       <g:message code="comment.reply"  />
     </button>
 
   </div>
 </div>
+
+<div id="replies-container-${comment.id}-id" style="margin-left: 5px;"></div>
+
+<div id='new-reply-to-${comment.id}-form' class='panel' style='display:none; margin-left: 5px;' />
