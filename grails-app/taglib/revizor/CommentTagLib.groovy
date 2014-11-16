@@ -14,9 +14,13 @@ class CommentTagLib {
     }
 
     def _recursivelyPrintCommentReplies(indent, comments, out) {
+        println comments
         comments.each { Comment comment ->
             out << g.render(template: "/comment/comment", model: ['comment': comment, 'indent': indent])
-            _recursivelyPrintCommentReplies(++indent, comment.replies, out);
+            out << "<div id='replies-container-${comment.id}-id' style='margin-left: ${indent * 5}px;'>";
+            _recursivelyPrintCommentReplies(indent + 1, comment.replies, out);
+            out << "<div id='new-reply-to-${comment.id}-form' class='panel' style='display:none;' />"
+            out << "</div>";
         }
     }
 

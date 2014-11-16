@@ -22,7 +22,3 @@
 
   </div>
 </div>
-
-<div id="replies-container-${comment.id}-id" style="margin-left: 5px;"></div>
-
-<div id='new-reply-to-${comment.id}-form' class='panel' style='display:none; margin-left: 5px;' />
