@@ -146,11 +146,11 @@
                     <cmt:printCommentsInHierarchy comments="${comments}" />
                 </g:if>
 
-                <div id='new-comment-container-id' class='panel' style='display:none;'></div>
-                <button class="btn btn-primary" onclick="showForm(this, 'new-comment-form', null, null, 'new-comment-container-id');">Send comment</button>
+                <div id='new-comment-container-id' style='display:none; width: 800px;'></div>
+                <button class="btn btn-primary" onclick="showForm(this, 'new-comment-form', null, null, 'new-comment-container-id', null, 0);">Send comment</button>
 
                 <%-- Here will appear a form to add new comment --%>
-                <div id='new-comment-form' class='panel' style='display:none;'></div>
+                <div id='new-comment-form' class='panel' style='display:none; width: 800px;'></div>
 
             </div>
             </div>

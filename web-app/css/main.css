@@ -200,3 +200,12 @@ html, body
     white-space:pre;
     max-width: none;
 }
+.reply-indent {
+    padding-right: 5px;
+    padding-top: 30px;
+}
+.reply-indent SPAN {
+    padding: 1px;
+    color: #dcdcdc;
+    width: 15px;
+}

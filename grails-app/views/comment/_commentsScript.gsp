@@ -22,29 +22,34 @@
 	 * Show the form "Add new comment" under a selected line. It inserts the
 	 * html code from the common GSP template.
 	 */
-	function showForm(button, idContainer, lineType, lineNo, commentContainerID) {
-		var container = $("#" + idContainer);
-		container.show();
+	function showForm(button, idContainer, lineType, lineNo, commentContainerID, replyToCommentID, indent) {
 
-		var closeBtnHtml = '<button class="btn btn-default btn-xs" onclick="closeForm(\'' + button.id + '\' ,this, \'' + idContainer + '\')"><span class="glyphicon glyphicon-remove"></span></button>';
+		$('#${formId}').remove();
 
-		$(button).hide().parent().append($(closeBtnHtml));
+		var params = {
+		 		commentType: "${commentType}",
+                commit: "${review.commits[0]}",
+                fileName: "${fileName}",
+                reviewId: ${review.id},
+                replyTo: replyToCommentID,
+                lineNo: lineNo,
+                lineType: lineType,
+                indent: indent
+		};
 
-		<%-- Those values, that are not yet available during GSP generation, we need to add on the fly in JS --%>
+		$.ajax({
+		   type: "GET",
+		   url: "${createLink(controller: 'comment', action:'getAddNewFormLayout')}",
+		   data: params,
+		   success: function(formHtml)
+		   {
+				var container = $("#" + idContainer);
+				container.show();
+				$(button).hide();
 
-		var additionalFieldHtml = lineNo ? '<input type="hidden" name="lineOfCode" value="' + lineNo + '" id="lineOfCode">' +
-								'<input type="hidden" name="typeOfLine" value="' + lineType + '" id="typeOfLine">' : "";
-
-		var formHtml = '<h:renderInOneLine
-							template="/comment/addNewCommentForm"
-							model="[
-									'reviewId' : review.id,
-									'commentType' : commentType,
-									'commit' : review.commits[0],
-									'fileName' : fileName
-							]" />';
-
-		container.get()[0].innerHTML = '<form id="${formId}" data-comment-container="' + commentContainerID + '">' + additionalFieldHtml + formHtml + '</form>';
+				container.get()[0].innerHTML = '<form id="${formId}" data-comment-container="' + commentContainerID + '">' + formHtml + '</form>';
+		   }
+		 });
 	}
 
 	/**

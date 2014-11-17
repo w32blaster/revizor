@@ -6,25 +6,38 @@
 <div class="form-group" style="width: 800px;">
 
 	<g:if test="${commentType == CommentType.LINE_OF_CODE.name()}">
-		<h4><g:message code="review.comments.form.line.code" default="Your comment to this line of code" /></h4>
+		<b><g:message code="review.comments.form.line.code" default="Your comment to this line of code" /></b>
 	</g:if>
+	<g:elseif test="${replyToComment}">
+		<b>
+			<g:message code="review.comments.form.reply" default="Reply to" /> ${replyToComment.author.username}
+		</b>
+	</g:elseif>
 	<g:else>
-		<h4><g:message code="review.comments.form.title" default="Your comment to this review" /></h4>
+		<b><g:message code="review.comments.form.title" default="Your comment to this review" /></b>
 	</g:else>
 
 	<textarea data-provide="markdown" name="text" class="form-control" rows="5"></textarea>
 </div>
 
 <div class="form-group" style="width: 800px;">
-	
-	<g:if test="${commentType == CommentType.LINE_OF_CODE.name()}">
-		<g:hiddenField name="commit" value="${commit}"/>
-		<g:hiddenField name="fileName" value="${fileName}"/>
-	</g:if>
-
 	<g:hiddenField name="redirectTo" value="${reviewId}"/>
 	<g:hiddenField name="author.id" value="${session.user.id}"/>
 	<g:hiddenField name="review.id" value="${reviewId}"/>
 	<g:hiddenField name="type" value="${commentType}"/>
+	<g:hiddenField name="indent" value="${indent}"/>
+
+	<g:if test="${commentType == CommentType.LINE_OF_CODE.name()}">
+		<g:hiddenField name="commit" value="${commit}"/>
+		<g:hiddenField name="fileName" value="${fileName}"/>
+	</g:if>
+	<g:if test="${replyToComment}">
+		<g:hiddenField name="replyTo.id" value="${replyToComment.id}"/>
+	</g:if>
+	<g:if test="${lineNo}">
+		<g:hiddenField name="lineOfCode" value="${lineNo}" id="lineOfCode" />
+		<g:hiddenField name="typeOfLine" value="${lineType}" id="typeOfLine" />
+	</g:if>
+
 	<button type="button" name="submit-comment-review-btn" class="btn btn-default" onclick="createNewComment();">${message(code: 'review.comments.post', default: 'Post the comment')}</button>
 </div>

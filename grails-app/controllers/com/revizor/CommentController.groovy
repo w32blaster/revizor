@@ -71,14 +71,28 @@ class CommentController {
 
         withFormat {
             html {
-                def htmlToRender = g.render(template: '/comment/comment' , model: ['comment': commentInstance, 'indent': 0])
+                def htmlToRender = g.render(template: '/comment/comment' , model: ['comment': commentInstance, 'indent': params.indent as Integer])
                 render HelpTagLib.toSingleLine(htmlToRender)
             }
             '*' {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'commentInstance.label', default: 'Comment'), commentInstance.id])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'comments.one', default: 'Comment'), commentInstance.id])
                 redirect (controller: 'review', action: 'show', id: params.redirectTo)
             }
         }
+    }
+
+    /**
+     * Used to retrieve a HTML template to display a form "add new comment" in Ajax call.
+     *
+     * @return HTML of a form
+     */
+    def getAddNewFormLayout() {
+        if(params.replyTo) {
+            def replyToComment = Comment.get(params.replyTo);
+            params.replyToComment = replyToComment
+        }
+        def htmlToRender = g.render(template: '/comment/addNewCommentForm' , model: params)
+        render HelpTagLib.toSingleLine(htmlToRender)
     }
 
     def edit(Comment commentInstance) {
@@ -101,7 +115,7 @@ class CommentController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Comment.label', default: 'Comment'), commentInstance.id])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'comments.one', default: 'Comment'), commentInstance.id])
                 redirect commentInstance
             }
             '*'{ respond commentInstance, [status: OK] }
@@ -120,7 +134,7 @@ class CommentController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Comment.label', default: 'Comment'), commentInstance.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'comments.one', default: 'Comment'), commentInstance.id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
@@ -130,7 +144,7 @@ class CommentController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'commentInstance.label', default: 'Comment'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'comments.one', default: 'Comment'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }
@@ -155,7 +169,7 @@ public enum CommentsFilter {
     ONLY_MINE("comments.mine"),
     REPLIES_TO_ME("comments.replies"),
 
-    CommentsFilter(String value) { this.value = value }
+    CommentsFilter(String val) { this.value = val; }
 
     private final String value
     public String value() { return value }
