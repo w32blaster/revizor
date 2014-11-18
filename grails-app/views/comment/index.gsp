@@ -55,7 +55,7 @@
 						<g:link controller="review" action="show" id="${comment.review.id}" class="btn btn-default btn-xs">
 							${comment.review.title}
 						</g:link>
-					    <g:render template="/comment/comment" model="['comment' : comment]" />
+					    <g:render template="/comment/comment" model="['comment' : comment, 'indent': 0]" />
 					    </br>
 					</g:each>
 				</div>

@@ -1,12 +1,9 @@
 package com.revizor
 
-import revizor.CommentTagLib
-
-import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import revizor.HelpTagLib
-import com.revizor.Action
-import com.revizor.CommentType
+
+import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
 class CommentController {
@@ -31,8 +28,8 @@ class CommentController {
                 break;
 
             case CommentsFilter.REPLIES_TO_ME:
-                // to be implemented: https://github.com/w32blaster/revizor/issues/7
-                list = Comment.list(params);
+                def me = session.user
+                list = Comment.findAll { replyTo.author == me }
                 break;
 
             default:
