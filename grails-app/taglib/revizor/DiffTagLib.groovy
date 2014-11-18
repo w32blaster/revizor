@@ -100,7 +100,7 @@ class DiffTagLib {
 							out << "<div id='${commentContainerId}' class='code-line-comments' style='display:${commentsForTheLine ? "visible" : "none"};'>"
 
 							if(commentsForTheLine) {
-								out << cmt.printCommentsInHierarchy(['comments': commentsForTheLine])
+								out << cmt.printCommentsInHierarchy(['comments': commentsForTheLine, 'indent': 0])
 							}
 /*
 							if (commentsForTheLine) {

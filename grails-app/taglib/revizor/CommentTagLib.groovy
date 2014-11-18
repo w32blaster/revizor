@@ -14,6 +14,10 @@ class CommentTagLib {
         _recursivelyPrintCommentReplies(0, rootComments);
     }
 
+    def printOneComment = { attrs, body ->
+        _recursivelyPrintCommentReplies(attrs.indent, [attrs.comment]);
+    }
+
     def _recursivelyPrintCommentReplies(indent, comments) {
         comments
             .sort { it.ident() }

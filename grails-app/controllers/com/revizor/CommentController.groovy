@@ -1,6 +1,6 @@
 package com.revizor
 
-
+import revizor.CommentTagLib
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -71,7 +71,7 @@ class CommentController {
 
         withFormat {
             html {
-                def htmlToRender = g.render(template: '/comment/comment' , model: ['comment': commentInstance, 'indent': params.indent as Integer])
+                def htmlToRender = cmt.printOneComment(['comment': commentInstance, 'indent': params.indent as Integer])
                 render HelpTagLib.toSingleLine(htmlToRender)
             }
             '*' {
