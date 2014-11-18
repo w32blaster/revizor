@@ -153,7 +153,8 @@ class CommentController {
 
     def saveNotification(comment) {
         if (comment.replyTo) {
-            notificationService.create(session.user, Action.CREATE_COMMENT_REPLY_TO, [comment.author, comment.replyTo.author, comment], 2)
+            def to = (comment.author.ident() == comment.replyTo.author.ident()) ? g.message(code: "reply.to.himself") : comment.replyTo.author;
+            notificationService.create(session.user, Action.CREATE_COMMENT_REPLY_TO, [comment.author, to, comment, comment.review], 2)
         }
         else if (comment.type == CommentType.REVIEW) {
             notificationService.create(session.user, Action.CREATE_COMMENT_TO_REVIEW, [comment.author, comment, comment.review], 1)
