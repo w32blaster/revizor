@@ -167,7 +167,7 @@ class CommentController {
 public enum CommentsFilter {
     ALL("comments.all"),
     ONLY_MINE("comments.mine"),
-    REPLIES_TO_ME("comments.replies"),
+    REPLIES_TO_ME("comments.replies");
 
     CommentsFilter(String val) { this.value = val; }
 

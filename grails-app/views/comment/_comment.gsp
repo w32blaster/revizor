@@ -24,7 +24,7 @@
         <markdown:renderHtml>${comment.text.decodeHTML()}</markdown:renderHtml>
     </emoji:toHtml>
 
-    <button class="btn btn-default btn-xs btn-comment-reply" onclick="showForm(this, 'new-reply-to-${comment.id}-form', null, null, 'replies-container-${comment.id}-id', '${comment.id}', ${indent+1});">
+    <button class="btn btn-default btn-xs btn-comment-reply" onclick="showForm('new-reply-to-${comment.id}-form', null, null, 'replies-container-${comment.id}-id', '${comment.id}', ${indent+1});">
       <span class="glyphicon glyphicon-share-alt"></span>
       <g:message code="comment.reply"  />
     </button>

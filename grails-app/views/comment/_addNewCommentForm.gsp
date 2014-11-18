@@ -21,7 +21,6 @@
 </div>
 
 <div class="form-group" style="width: 800px;">
-	<g:hiddenField name="redirectTo" value="${reviewId}"/>
 	<g:hiddenField name="author.id" value="${session.user.id}"/>
 	<g:hiddenField name="review.id" value="${reviewId}"/>
 	<g:hiddenField name="type" value="${commentType}"/>
@@ -40,4 +39,5 @@
 	</g:if>
 
 	<button type="button" name="submit-comment-review-btn" class="btn btn-default" onclick="createNewComment();">${message(code: 'review.comments.post', default: 'Post the comment')}</button>
+	<a href="#" class="btn btn-link" onclick="closeForm();"><g:message code="cancel" /></a>
 </div>

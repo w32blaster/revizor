@@ -18,13 +18,17 @@
 		$("#" + buttonIdToRestore).show();
 	}
 
+	function closeForm() {
+		$('#${formId}').remove();
+	};
+
 	/**
 	 * Show the form "Add new comment" under a selected line. It inserts the
 	 * html code from the common GSP template.
 	 */
-	function showForm(button, idContainer, lineType, lineNo, commentContainerID, replyToCommentID, indent) {
+	function showForm(idContainer, lineType, lineNo, commentContainerID, replyToCommentID, indent) {
 
-		$('#${formId}').remove();
+		closeForm();
 
 		var params = {
 		 		commentType: "${commentType}",
@@ -45,8 +49,6 @@
 		   {
 				var container = $("#" + idContainer);
 				container.show();
-				$(button).hide();
-
 				container.get()[0].innerHTML = '<form id="${formId}" data-comment-container="' + commentContainerID + '">' + formHtml + '</form>';
 		   }
 		 });

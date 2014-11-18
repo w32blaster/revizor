@@ -127,7 +127,7 @@ class DiffTagLib {
 	
 	private String getButtonHtml(newCommentFormID, lineType, lineOfCode, idx, commentContainerID) {
 		return """
-				<button id='show-form-btn-${idx}' class='btn-comment btn btn-default btn-xs' onclick='showForm(this, \"${newCommentFormID}\", \"${lineType}\", ${lineOfCode}, \"${commentContainerID}\", \"${CommentType.LINE_OF_CODE.name()}\");'>
+				<button id='show-form-btn-${idx}' class='btn-comment btn btn-default btn-xs' onclick='showForm(\"${newCommentFormID}\", \"${lineType}\", ${lineOfCode}, \"${commentContainerID}\", \"${CommentType.LINE_OF_CODE.name()}\");'>
 					<span class='glyphicon glyphicon-comment'></span>
 				</button>
 				"""
