@@ -114,11 +114,13 @@ html, body
 #reviewers-container-id {
     margin-bottom: 10px; 
 }
- 
-.reviewer {
+ .reviewer{
+     max-width: 200px;
+ }
+.user-cell {
     margin: 3px;
 }
-.reviewer SPAN{
+.reviewer SPAN {
     margin-left: 3px;
 }
 .reviewer .accepted {
@@ -126,6 +128,19 @@ html, body
 }
 .reviewer .disaccepted {
     color: red;
+}
+.user-name-pos {
+    display: inline-table;
+    margin-left: 3px;
+}
+.position {
+    color: rgba(143, 143, 143, 0.8);
+    font-size: 0.7em;
+    line-height: 0;
+}
+.reviewer-status {
+    height: 32px;
+    vertical-align: middle;
 }
 .notification-link {
     font-weight: bold;

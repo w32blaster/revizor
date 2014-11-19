@@ -40,8 +40,18 @@
 					
 				</li>
 				</g:if>
-			
-				<g:if test="${userInstance?.comments}">
+
+				<g:if test="${userInstance?.position}">
+					<li class="form-group">
+						<span id="position-label" class="property-label"><g:message code="user.position" default="Position" /></span>
+
+						<span class="property-value" aria-labelledby="position-label"><g:fieldValue bean="${userInstance}" field="position"/></span>
+
+					</li>
+				</g:if>
+
+
+		<g:if test="${userInstance?.comments}">
 				<li class="form-group">
 					<span id="comments-label" class="property-label"><g:message code="user.comments.label" default="Comments" /></span>
 					

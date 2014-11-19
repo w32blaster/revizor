@@ -1,6 +1,8 @@
 package revizor
 
 import com.revizor.Comment
+import com.revizor.User
+import com.revizor.utils.Constants
 
 class CommentTagLib {
 
@@ -32,6 +34,16 @@ class CommentTagLib {
                     out << "<div id='new-reply-to-${comment.id}-form' class='panel' style='display:none;'></div>"
                 out << "</div>"
         }
+    }
+
+    def highlightUsername = {attrs, body ->
+
+        def highlightedBody = body().replaceAll(/${Constants.USERNAME_DELIMETER}[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/,
+                { String email ->
+                    def mentionedUser = User.findByEmail(email.substring(1));
+                    g.render(template: "/comment/mention", model: ['user': mentionedUser])
+                })
+        out << highlightedBody
     }
 
 }

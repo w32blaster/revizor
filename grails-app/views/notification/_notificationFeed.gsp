@@ -28,6 +28,9 @@
                 button.removeAttr("disabled");
             });
     });
+
+    	$('.mention-popover').popover();
+
 </g:javascript>
 
 <div id="${feedNontainerId}">

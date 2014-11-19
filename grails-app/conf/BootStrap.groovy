@@ -19,6 +19,7 @@ class BootStrap {
             new User(
                     email: 'admin@admin.com',
                     username: 'admin',
+                    position: 'Administrator',
                     password: 'admin123',
                     role: Role.ADMIN
             ).save(failOnError: true)

@@ -21,7 +21,8 @@
 		<g:javascript library="jquery" plugin="jquery"/>
         <g:javascript library="application"/>
 		<g:javascript library="bootstrap"/>
-		
+		<g:javascript library="mentions"/>
+
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
 				
 		<r:layoutResources />

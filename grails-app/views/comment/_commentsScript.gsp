@@ -50,15 +50,33 @@
 				var container = $("#" + idContainer);
 				container.show();
 				container.get()[0].innerHTML = '<form id="${formId}" data-comment-container="' + commentContainerID + '">' + formHtml + '</form>';
+				initMentionsInTextarea();
 		   }
 		 });
 	}
 
-	/**
-	 * Method will be fired by the "Add new comment" form submitting
-	 */
-	function createNewComment() {
-		var form = $('#${formId}');
+	function initMentionsInTextarea() {
+	<g:set var="allUsers" value="${com.revizor.User.getAll()}" />
+
+		$('#${formId} .form-control').mention({
+			delimiter: '~',
+			users: [
+		<g:each in="${allUsers}" var="user">
+				{
+					username: "${user.email}",
+					name: "${user.username}",
+					image: "${createLink(controller:'user', action:'avatar_image', id: user?.ident())}"
+				}<g:if test='${user != allUsers.last()}'>,</g:if>
+		</g:each>
+			]
+		});
+	}
+
+/**
+ * Method will be fired by the "Add new comment" form submitting
+ */
+function createNewComment() {
+    var form = $('#${formId}');
 		var idCommentContainer = form.data("comment-container");
 
 		$.ajax({
@@ -75,5 +93,7 @@
 
 		return false;
 	}
+
+	$('.mention-popover').popover();
 
 </r:script>

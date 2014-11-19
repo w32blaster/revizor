@@ -7,6 +7,7 @@ class User extends HasImage implements INotifiable {
     String email // we use it as an user ID, it must be unique
     String username // <-- this could be either nick name or real name
 	String password
+    String position // <-- job position within a team: Developer, Manager, CEO...
     Role role
 	
     static hasMany = [

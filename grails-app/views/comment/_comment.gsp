@@ -19,10 +19,12 @@
   </a>
   <div class="media-body">
     <h4 class="media-heading">${comment.author?.username}</h4>
-    
-    <emoji:toHtml size="22">
-        <markdown:renderHtml>${comment.text.decodeHTML()}</markdown:renderHtml>
-    </emoji:toHtml>
+
+    <cmt:highlightUsername>
+        <emoji:toHtml size="22">
+            <markdown:renderHtml>${comment.text.decodeHTML()}</markdown:renderHtml>
+        </emoji:toHtml>
+    </cmt:highlightUsername>
 
     <button class="btn btn-default btn-xs btn-comment-reply" onclick="showForm('new-reply-to-${comment.id}-form', null, null, 'replies-container-${comment.id}-id', '${comment.id}', ${indent+1});">
       <span class="glyphicon glyphicon-share-alt"></span>

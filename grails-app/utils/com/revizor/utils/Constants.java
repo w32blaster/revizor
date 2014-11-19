@@ -29,4 +29,6 @@ public interface Constants {
     String SPACE = " ";
 
     String SMART_COMMIT_CREATE_REVIEW = "+review";
+
+    char USERNAME_DELIMETER = '~';
 }

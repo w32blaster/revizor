@@ -28,6 +28,14 @@
 
 </div>
 
+<div class="form-group ${hasErrors(bean: userInstance, field: 'position', 'error')} ">
+	<label for="position">
+		<g:message code="user.position" default="position" />
+	</label>
+	<g:textField  class="form-control" name="position"  class="form-control" value="${userInstance?.position}" placeholder="Developer"/>
+
+</div>
+
 <div class="form-group ${hasErrors(bean: userInstance, field: 'comments', 'error')} ">
 	<label for="comments">
 		<g:message code="user.comments.label" default="Comments" />

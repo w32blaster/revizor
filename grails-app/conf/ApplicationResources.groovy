@@ -15,4 +15,10 @@ modules = {
         resource url:'css/bootstrap-markdown.min.css'
     }
 
+    mentions {
+        resource url: 'js/mentions/mention.js'
+        resource url: 'js/mentions/bootstrap-typeahead.js'
+        resource url: 'css/mentions/recommended-styles.css'
+    }
+
 }
