@@ -15,10 +15,17 @@
     </li>
 
     <li<g:if test="${controllerName == "user"}"> class="active"</g:if>>
-    <g:link controller="user">
-        <span class="glyphicon glyphicon-user"></span>
-        <g:message code="users.header" default="Users" />
-    </g:link>
+        <g:link controller="user">
+            <span class="glyphicon glyphicon-user"></span>
+            <g:message code="users.header" default="Users" />
+        </g:link>
+    </li>
+
+    <li<g:if test="${controllerName == "issueTracker"}"> class="active"</g:if>>
+        <g:link controller="issueTracker">
+            <span class="glyphicon glyphicon-tags"></span>
+            <g:message code="issue.tracker.label" default="Issue Tracker" />
+        </g:link>
     </li>
 
     <li>
