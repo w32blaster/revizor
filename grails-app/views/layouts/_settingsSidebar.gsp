@@ -28,6 +28,13 @@
         </g:link>
     </li>
 
+    <li<g:if test="${controllerName == "issue"}"> class="active"</g:if>>
+        <g:link controller="issue">
+            <span class="glyphicon glyphicon-tag"></span>
+            <g:message code="issue.tickets.label" default="Issue Tickets" />
+        </g:link>
+    </li>
+
     <li>
         <g:link url="${createLink(uri: '/')}">
             <span class="glyphicon glyphicon-home"></span>

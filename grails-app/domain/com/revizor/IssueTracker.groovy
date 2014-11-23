@@ -13,6 +13,10 @@ class IssueTracker {
     String username
     String password
 
+    static hasMany = [
+            usedIssueTickets: Issue // <-- list of issue tickets used in stored reviews
+    ]
+
     static constraints = {
 
     }
@@ -28,6 +32,12 @@ class IssueTracker {
             case IssueTrackerType.YOUTRACK:
                 return new YouTrackIssueTracker();
         }
+    }
+
+
+    @Override
+    public String toString() {
+        return "$title ($type)"
     }
 }
 
