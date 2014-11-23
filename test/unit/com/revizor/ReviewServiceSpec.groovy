@@ -2,12 +2,14 @@ package com.revizor
 
 import com.revizor.repos.Commit
 import com.revizor.utils.Constants
+import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
 /**
  * See the API for {@link grails.test.mixin.services.ServiceUnitTestMixin} for usage instructions
  */
+@Mock(IssueTracker)
 @TestFor(ReviewService)
 class ReviewServiceSpec extends Specification {
 
@@ -99,4 +101,194 @@ namely here: ${Constants.SMART_COMMIT_CREATE_REVIEW}
         and: 'both emails are extracted to list'
             arr[2] == ['max@email.com', 'alice@email.com']
     }
+
+    void "detects one issue ticket added as smart commit"() {
+        given:
+            def issueTracker = new IssueTracker(
+                    type: IssueTrackerType.YOUTRACK,
+                    title: "Testing issue tracker",
+                    url: "https://localhost",
+                    issueKeyPattern: "TRCKER-{1}\\d+",
+                    username: "user",
+                    password: "password"
+                )
+            issueTracker.save()
+
+        and:
+            def commit = new Commit(fullMessage: "The test message #TRCKER-9000")
+
+        when:
+            def issues = service.getIssueTickets(commit)
+
+        then:
+            issues.size() == 1
+            issues[0].key == "TRCKER-9000"
+            issues[0].tracker == issueTracker
+    }
+
+    void "detects few issues added as smart commit"() {
+        given:
+            def issueTracker = new IssueTracker(
+                    type: IssueTrackerType.YOUTRACK,
+                    title: "Testing issue tracker",
+                    url: "https://localhost",
+                    issueKeyPattern: "TRCKR-{1}\\d+",
+                    username: "user",
+                    password: "password"
+            )
+            issueTracker.save()
+
+        and:
+            def commit = new Commit(fullMessage: "The test message #TRCKR-9000 #TRCKR-9001")
+
+        when:
+            def issues = service.getIssueTickets(commit)
+
+        then: 'two tickets are found'
+            issues.size() == 2
+
+        and:
+            issues[0].key == "TRCKR-9000"
+            issues[0].tracker == issueTracker
+
+        and:
+            issues[1].key == "TRCKR-9001"
+            issues[1].tracker == issueTracker
+    }
+
+    void "detects few issues belongoin to different trackers added as smart commit"() {
+
+        given: 'one internal issue tracker'
+            def issueTrackerYouTrack = new IssueTracker(
+                    type: IssueTrackerType.YOUTRACK,
+                    title: "YouTrack issue tracker",
+                    url: "https://localhost",
+                    issueKeyPattern: "TRCKR-{1}\\d+",
+                    username: "user",
+                    password: "password"
+            )
+            issueTrackerYouTrack.save()
+
+        and: 'one public'
+            def issueTrackerGithub = new IssueTracker(
+                    type: IssueTrackerType.GITHUB,
+                    title: "GitHub issue tracker",
+                    url: "https://github.com/w32blaster/revizor/issues",
+                    issueKeyPattern: "\\d+", // <-- only number
+                    username: "user",
+                    password: "password"
+            )
+            issueTrackerGithub.save()
+
+        and:
+            def commit = new Commit(fullMessage: "Added new feature as described in #TRCKR-47 and related to #85 at github")
+
+        when:
+            def issues = service.getIssueTickets(commit)
+
+        then: 'two tickets are found'
+            issues.size() == 2
+
+        and: 'from Youtrack issue tracker'
+            issues[0].key == "TRCKR-47"
+            issues[0].tracker == issueTrackerYouTrack
+
+        and: 'from github'
+            issues[1].key == "85"
+            issues[1].tracker == issueTrackerGithub
+    }
+
+    void "detects few issues belonging to different trackers added as smart commit in several lines"() {
+
+        given: 'one internal issue tracker'
+            def issueTrackerYouTrack = new IssueTracker(
+                    type: IssueTrackerType.YOUTRACK,
+                    title: "YouTrack issue tracker",
+                    url: "https://localhost",
+                    issueKeyPattern: "TRCKR-{1}\\d+",
+                    username: "user",
+                    password: "password"
+            )
+            issueTrackerYouTrack.save()
+
+        and: 'one public'
+            def issueTrackerGithub = new IssueTracker(
+                    type: IssueTrackerType.GITHUB,
+                    title: "GitHub issue tracker",
+                    url: "https://github.com/w32blaster/revizor/issues",
+                    issueKeyPattern: "\\d+", // <-- only number
+                    username: "user",
+                    password: "password"
+            )
+            issueTrackerGithub.save()
+
+        and:
+
+        def multiline = """This is the first line of commit message.
+
+Here goes the rest text of a commit. And on the last
+line we can find tags for issue keys
+#TRCKR-47 #85
+                """
+        and:
+            def commit = new Commit(fullMessage: multiline)
+
+        when:
+            def issues = service.getIssueTickets(commit)
+
+        then: 'two tickets are found'
+            issues.size() == 2
+
+        and: 'from Youtrack issue tracker'
+            issues[0].key == "TRCKR-47"
+            issues[0].tracker == issueTrackerYouTrack
+
+        and: 'from github'
+            issues[1].key == "85"
+            issues[1].tracker == issueTrackerGithub
+    }
+
+
+    void "detects few issues belongoin to different trackers added as smart commit with similag patterns"() {
+
+        given: 'one internal issue tracker'
+            def issueTrackerYouTrack = new IssueTracker(
+                    type: IssueTrackerType.YOUTRACK,
+                    title: "YouTrack issue tracker",
+                    url: "https://localhost",
+                    issueKeyPattern: "\\d{4}-{1}\\d{2}",
+                    username: "user",
+                    password: "password"
+            )
+            issueTrackerYouTrack.save()
+
+        and: 'one public'
+            def issueTrackerGithub = new IssueTracker(
+                    type: IssueTrackerType.GITHUB,
+                    title: "GitHub issue tracker",
+                    url: "https://github.com/w32blaster/revizor/issues",
+                    issueKeyPattern: "\\d+", // <-- only number
+                    username: "user",
+                    password: "password"
+            )
+            issueTrackerGithub.save()
+
+        and:
+            def commit = new Commit(fullMessage: "Added new feature as described in #1402-68 and related to #85 at github")
+
+        when:
+            def issues = service.getIssueTickets(commit)
+
+        then: 'two tickets are found'
+            issues.size() == 2
+
+        and: 'from Youtrack issue tracker'
+            issues[0].key == "1402-68"
+            issues[0].tracker == issueTrackerYouTrack
+
+        and: 'from github'
+            issues[1].key == "85"
+            issues[1].tracker == issueTrackerGithub
+    }
+
 }

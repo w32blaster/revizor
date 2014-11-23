@@ -104,7 +104,18 @@
                                             <span id="commits-label" class="property-label">${reviewInstance?.commits.length}</span>                
                                         </dd>
                                     </g:if>
-                                
+
+                                    <g:if test="${reviewInstance?.issueTickets}">
+                                        <dt>Associated issue keys:</dt>
+                                        <dd>
+                                            <ol>
+                                            <g:each in="${reviewInstance?.issueTickets}" var="ticket">
+                                                <li><img height="32" width="32" src="${resource(dir: 'images/issue-trackers', file: ticket.tracker.type.getImageUrl())}" />  #${ticket.key}</li>
+                                            </g:each>
+                                            </ol>
+                                        </dd>
+                                    </g:if>
+
                                 </dl>
                             </div>
 

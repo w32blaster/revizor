@@ -20,6 +20,7 @@
                 <g:render template="reviewFilterButtons" />
 
                 <g:form url="[resource: reviewInstance, action:'save']" >
+
                     <fieldset class="form">
                         <g:render template="form"/>
                     </fieldset>

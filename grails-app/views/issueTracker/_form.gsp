@@ -7,7 +7,7 @@
 		<g:message code="issueTracker.issueKeyPattern.label" default="Issue Key Pattern" />
 		
 	</label>
-	<g:textField  name="issueKeyPattern" value="${issueTrackerInstance?.issueKeyPattern ? issueTrackerInstance?.issueKeyPattern : "#{1}[A-Z]+-{1}\\d+" }"/>
+	<g:textField  name="issueKeyPattern" value="${issueTrackerInstance?.issueKeyPattern ? issueTrackerInstance?.issueKeyPattern : "[A-Z]+-{1}\\d+" }"/>
 
 </div>
 

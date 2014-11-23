@@ -61,6 +61,11 @@ class ReviewService {
                 }
             }
 
+            // find all issue tickets in the commit message and associate them with current review
+            getIssueTickets(commit).each { issueTicket ->
+                review.addToIssueTickets(issueTicket)
+            }
+
             return review
         }
         else {
@@ -111,6 +116,35 @@ class ReviewService {
         def emails = argumentsAfterReviewTag.findAll( /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/ )
 
         return [header, message, emails]
+    }
+
+    /**
+     *
+     * Finds all the issues added to a commit message as a Smart Commit.
+     * Expected, that all the issue keys started with #-symbol.
+     *
+     * For example, in the commit message:
+     *    "add new feature #TROLOLO-37"
+     * current method will find ticket with key TROLOLO-37
+     *
+     * @param commit
+     * @return
+     */
+    def getIssueTickets(Commit commit) {
+        def issues = []
+        IssueTracker.all.each { issueTracker ->
+
+            def pattern = ~/#{1}${issueTracker.issueKeyPattern}($|\s+)/
+
+            commit.fullMessage.findAll(pattern).each { foundKey ->
+                issues << new Issue(
+                        key: foundKey.replace('#','').trim(),
+                        tracker: issueTracker)
+            }
+        }
+
+        println "Found issues: $issues "
+        return issues
     }
 
 }
