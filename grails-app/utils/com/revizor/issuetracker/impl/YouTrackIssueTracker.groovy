@@ -1,6 +1,8 @@
 package com.revizor.issuetracker.impl
 
+import com.revizor.IssueTracker
 import com.revizor.issuetracker.ITracker
+import com.revizor.issuetracker.IssueTicket
 
 /**
  * Realisation oj YouTrack
@@ -9,13 +11,19 @@ import com.revizor.issuetracker.ITracker
  */
 class YouTrackIssueTracker implements ITracker{
 
+    private IssueTracker tracker;
+
+    public YouTrackIssueTracker(IssueTracker issueTracker) {
+        this.tracker = issueTracker;
+    }
+
     @Override
     def before() {
         return null
     }
 
     @Override
-    def getIssueByKey(String key) {
+    IssueTicket getIssueByKey(String key) {
         return null
     }
 }

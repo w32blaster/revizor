@@ -1,12 +1,16 @@
 package com.revizor
 
-
+import com.revizor.issuetracker.ITracker
+import com.revizor.issuetracker.IssueTicket
+import revizor.HelpTagLib
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class IssueController {
+
+    def issueTrackerService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -48,6 +52,27 @@ class IssueController {
 
     def edit(Issue issueInstance) {
         respond issueInstance
+    }
+
+    @Transactional
+    def requestIssueDetails() {
+
+        def issue = Issue.get(params.id)
+        if (!issue) {
+            notFound()
+            return
+        }
+
+        IssueTicket ticket = issueTrackerService.serviceMethod(issue)
+
+        if (ticket) {
+            def htmlToRender = g.render(template: '/issue/issue', model: [issue: ticket])
+            render HelpTagLib.toSingleLine(htmlToRender)
+        }
+        else {
+            notFound()
+        }
+
     }
 
     @Transactional

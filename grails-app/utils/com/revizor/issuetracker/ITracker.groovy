@@ -9,5 +9,5 @@ interface ITracker {
 
     def before();
 
-    def getIssueByKey(String key);
+    IssueTicket getIssueByKey(String key);
 }

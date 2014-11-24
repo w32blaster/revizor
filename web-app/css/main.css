@@ -224,3 +224,19 @@ html, body
     color: #dcdcdc;
     width: 15px;
 }
+.issue-ticket {
+    margin: 5px;
+    padding: 10px;
+}
+.issue-ticket DIV {
+    margin-left: 40px;
+    position: relative;
+}
+.issue-ticket IMG {
+    margin-top: 5px;
+}
+.issue-author-avatar {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}

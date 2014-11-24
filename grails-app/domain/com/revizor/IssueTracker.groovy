@@ -1,6 +1,7 @@
 package com.revizor
 
 import com.revizor.issuetracker.ITracker
+import com.revizor.issuetracker.impl.GitHubIssueTracker
 import com.revizor.issuetracker.impl.JiraIssueTracker
 import com.revizor.issuetracker.impl.YouTrackIssueTracker
 
@@ -27,10 +28,17 @@ class IssueTracker {
     public ITracker initImplementation() {
         switch(this.type) {
             case IssueTrackerType.JIRA:
-                return new JiraIssueTracker();
+                return new JiraIssueTracker(this);
 
             case IssueTrackerType.YOUTRACK:
-                return new YouTrackIssueTracker();
+                return new YouTrackIssueTracker(this);
+
+            case IssueTrackerType.GITHUB:
+                return new GitHubIssueTracker(this);
+
+            default:
+                throw new RuntimeException("the type of current issue tracker is not detected. " +
+                        "Supported values: ${IssueTrackerType.values()}")
         }
     }
 

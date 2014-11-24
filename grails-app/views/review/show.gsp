@@ -108,11 +108,7 @@
                                     <g:if test="${reviewInstance?.issueTickets}">
                                         <dt>Associated issue keys:</dt>
                                         <dd>
-                                            <ol>
-                                            <g:each in="${reviewInstance?.issueTickets}" var="ticket">
-                                                <li><img height="32" width="32" src="${resource(dir: 'images/issue-trackers', file: ticket.tracker.type.getImageUrl())}" />  #${ticket.key}</li>
-                                            </g:each>
-                                            </ol>
+                                            <g:render template="issueTickets" model="['issueTickets': reviewInstance.issueTickets]" />
                                         </dd>
                                     </g:if>
 
