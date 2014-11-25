@@ -9,9 +9,11 @@
     <span class="glyphicon glyphicon-tags" style="margin-right: 10px;"></span>
 
     <g:each in="${issue.tags}" var="tag">
-        <span class="label label-primary">${tag}</span>
+        <span class="label label-default">${tag}</span>&nbsp;
     </g:each>
 
-    <img height="32" width="32" src="${issue.authorImgUrl}" class="issue-author-avatar" title="${issue.authorName}" />
-
+    <g:if test="${issue.authorImgUrl}">
+        <img height="32" width="32" src="${issue.authorImgUrl}" class="issue-author-avatar right" title="${issue.authorName}" />
+    </g:if>
+    <span class="issue-author right">${issue.authorName}</span>
 </div>

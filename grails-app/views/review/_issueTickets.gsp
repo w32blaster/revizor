@@ -34,7 +34,7 @@
 </r:script>
 
 <g:each in="${issueTickets}" var="issue">
-    <div id="issue-ticket-${issue.ident()}" class="issue-ticket bg-warning">
+    <div id="issue-ticket-${issue.ident()}" class="issue-ticket well">
         <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
     </div>
 </g:each>

@@ -104,18 +104,16 @@
                                             <span id="commits-label" class="property-label">${reviewInstance?.commits.length}</span>                
                                         </dd>
                                     </g:if>
-
-                                    <g:if test="${reviewInstance?.issueTickets}">
-                                        <dt>Associated issue keys:</dt>
-                                        <dd>
-                                            <g:render template="issueTickets" model="['issueTickets': reviewInstance.issueTickets]" />
-                                        </dd>
-                                    </g:if>
-
                                 </dl>
                             </div>
 
                             <div class="row">
+
+                                <g:if test="${reviewInstance?.issueTickets}">
+                                    <b>Associated issue keys:</b>
+                                    <g:render template="issueTickets" model="['issueTickets': reviewInstance.issueTickets]" />
+                                </g:if>
+
                                 <h3><g:message code="review.description.label" default="Description" /></h3>
                                 <markdown:renderHtml>${reviewInstance.description}</markdown:renderHtml>
                             </div>

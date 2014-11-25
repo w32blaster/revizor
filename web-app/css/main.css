@@ -227,6 +227,7 @@ html, body
 .issue-ticket {
     margin: 5px;
     padding: 10px;
+    max-width: 600px;
 }
 .issue-ticket DIV {
     margin-left: 40px;
@@ -235,8 +236,16 @@ html, body
 .issue-ticket IMG {
     margin-top: 5px;
 }
-.issue-author-avatar {
+.issue-ticket .right {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    right: 2px;
+    margin: 0;
+}
+.issue-author-avatar {
+    top: 2px;
+}
+.issue-ticket .issue-author {
+    font-size: 0.7em;
+    font-style: italic;
+    top: 38px;
 }
