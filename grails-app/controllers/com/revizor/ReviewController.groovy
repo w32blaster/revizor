@@ -1,5 +1,6 @@
 package com.revizor
 
+import com.revizor.issuetracker.ITracker
 import com.revizor.utils.Constants
 import grails.transaction.Transactional
 import revizor.HelpTagLib

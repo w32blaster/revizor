@@ -1,5 +1,6 @@
 package com.revizor
 
+import com.revizor.issuetracker.ITracker
 import com.revizor.repos.Commit
 import com.revizor.utils.Constants
 import org.apache.commons.logging.Log
@@ -27,7 +28,16 @@ class ReviewService {
                 Review review = this.createReviewFromSmartCommit(repository, commit)
                 if (review) {
                     review.save(flush:true, failOnError: true)
+
+                    // show notification about new review
                     notificationService.create(review.author, Action.REVIEW_START, [review.author, review])
+
+                    // notify Issue Tracker(s) that we created a review
+                    review.getIssueTickets().each { Issue issue ->
+                        ITracker issueTracker = issue.tracker.initImplementation();
+                        issueTracker.before()
+                        issueTracker.notifyTrackerReviewCreated(issue.key, review)
+                    }
                 }
             }
         }
@@ -143,7 +153,6 @@ class ReviewService {
             }
         }
 
-        println "Found issues: $issues "
         return issues
     }
 

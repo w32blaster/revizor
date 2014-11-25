@@ -7,11 +7,18 @@ import grails.transaction.Transactional
 @Transactional
 class IssueTrackerService {
 
-    IssueTicket serviceMethod(Issue issue) {
+    /**
+     * Gets remote information about a given issue
+     *
+     * @param issue
+     * @return
+     */
+    IssueTicket getIssueTicket(Issue issue) {
         ITracker issueTracker = issue.tracker.initImplementation()
 
         // make a remote call to Tracker's API and retrieve the details about the given issue
         issueTracker.before()
         return issueTracker.getIssueByKey(issue.key)
     }
+
 }

@@ -1,11 +1,10 @@
 package com.revizor
 
-import com.revizor.issuetracker.ITracker
 import com.revizor.issuetracker.IssueTicket
+import grails.transaction.Transactional
 import revizor.HelpTagLib
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class IssueController {
@@ -63,7 +62,7 @@ class IssueController {
             return
         }
 
-        IssueTicket ticket = issueTrackerService.serviceMethod(issue)
+        IssueTicket ticket = issueTrackerService.getIssueTicket(issue)
 
         if (ticket) {
             def htmlToRender = g.render(template: '/issue/issue', model: [issue: ticket])

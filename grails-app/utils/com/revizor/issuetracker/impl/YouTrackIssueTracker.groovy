@@ -2,12 +2,15 @@ package com.revizor.issuetracker.impl
 
 import com.revizor.IssueTracker
 import com.revizor.IssueTrackerType
+import com.revizor.Review
 import com.revizor.issuetracker.ITracker
 import com.revizor.issuetracker.IssueTicket
 import grails.plugins.rest.client.RestBuilder
 import groovy.util.slurpersupport.GPathResult
+import org.springframework.context.ApplicationContext
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
+import org.springframework.web.context.request.RequestContextHolder
 
 /**
  * Realisation oj YouTrack
@@ -19,9 +22,13 @@ class YouTrackIssueTracker implements ITracker{
     private IssueTracker tracker;
     private cookies
     def rest = new RestBuilder(connectTimeout:1000, readTimeout:20000)
+    private ApplicationContext context
+    private Locale locale
 
-    public YouTrackIssueTracker(IssueTracker issueTracker) {
+    public YouTrackIssueTracker(IssueTracker issueTracker, ApplicationContext ctx, Locale locale) {
         this.tracker = issueTracker;
+        this.context = ctx;
+        this.locale = locale;
     }
 
     @Override
@@ -37,14 +44,13 @@ class YouTrackIssueTracker implements ITracker{
         }
 
         cookies = resp.headers.get("Set-Cookie");
-        println cookies
     }
 
     @Override
     IssueTicket getIssueByKey(String key) {
 
 
-        def resp = rest.get(tracker.url + "/rest/issue/${key}?wikifyDescription=true") {
+        def resp = rest.get(tracker.url + "/rest/issue/${key}") {
             getHeaders().add("Cookie", cookies[0])
         }
 
@@ -63,5 +69,44 @@ class YouTrackIssueTracker implements ITracker{
                 authorName: mapFields.get("ReporterFullName"),
                 trackerLogoUrl: IssueTrackerType.YOUTRACK.imageUrl
         )
+    }
+
+    /**
+     * Notify tracker that a review is created in a Tracker's specific way.
+     * Some trackers have section "reviews", so it could be saved there.
+     * Otherwise this message could be appended to the description body or
+     * left in the comments.
+     *
+     * @param key
+     * @return
+     */
+    @Override
+    def notifyTrackerReviewCreated(String key, Review review) {
+
+        def session = RequestContextHolder.currentRequestAttributes().getSession()
+        Object[] args = [ review.getTitle(), session.baseUrl, review.author.username ] as Object[]
+        def commentText = this.context.getMessage("youtrack.review.created.wiki.markup",
+                args,
+                this.locale)
+
+        MultiValueMap<String, String> form = new LinkedMultiValueMap<String, String>()
+        form.add("comment", commentText)
+        def resp = rest.post("${tracker.url}/rest/issue/${key}/execute") {
+            contentType("application/x-www-form-urlencoded")
+            header("Cookie", cookies[0])
+            body(form)
+        }
+    }
+
+    /**
+     * Notify tracker that a review was closed in a specific tracker's way.
+     * If API allows to get access to Ticket's history, it could be saved there.
+     * Otherwise, any other place, like comments.
+     * @param key
+     * @return
+     */
+    @Override
+    def notifyTrackerReviewClosed(String key, Review review) {
+        return null
     }
 }

@@ -110,7 +110,7 @@
                             <div class="row">
 
                                 <g:if test="${reviewInstance?.issueTickets}">
-                                    <b>Associated issue keys:</b>
+                                    <b><g:message code="review.associated.issues" /></b>
                                     <g:render template="issueTickets" model="['issueTickets': reviewInstance.issueTickets]" />
                                 </g:if>
 
