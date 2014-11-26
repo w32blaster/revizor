@@ -5,7 +5,6 @@ import com.revizor.issuetracker.impl.GitHubIssueTracker
 import com.revizor.issuetracker.impl.JiraIssueTracker
 import com.revizor.issuetracker.impl.YouTrackIssueTracker
 import org.springframework.context.i18n.LocaleContextHolder as LCH
-import org.springframework.context.i18n.LocaleContextHolder
 
 class IssueTracker {
 

@@ -29,6 +29,10 @@
                                checkedItems="${reviewInstance?.commits}" />
 </div>
 
+
+<g:render template="issueTickets" model="['issueTickets': reviewInstance.issueTickets, 'isEdit': true, 'reviewId': reviewInstance?.ident()]" />
+
+
 <div class="form-group ${hasErrors(bean: reviewInstance, field: 'description', 'error')} ">
 	<label for="description">
 		<g:message code="review.description.label" default="Description" />

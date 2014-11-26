@@ -111,7 +111,7 @@
 
                                 <g:if test="${reviewInstance?.issueTickets}">
                                     <b><g:message code="review.associated.issues" /></b>
-                                    <g:render template="issueTickets" model="['issueTickets': reviewInstance.issueTickets]" />
+                                    <g:render template="issueTickets" model="['issueTickets': reviewInstance.issueTickets, 'isEdit': false]" />
                                 </g:if>
 
                                 <h3><g:message code="review.description.label" default="Description" /></h3>

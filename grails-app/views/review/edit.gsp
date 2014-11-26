@@ -27,6 +27,7 @@
                 <g:render template="reviewFilterButtons" />
 
                 <div class="input-group">
+
                     <g:form url="[resource:reviewInstance, action:'update']" method="PUT" >
                         <g:hiddenField name="version" value="${reviewInstance?.version}" />
                         <g:hiddenField name="repository" value="${repository?.id}" />

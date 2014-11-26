@@ -1,6 +1,7 @@
 package com.revizor
 
 import com.revizor.issuetracker.IssueTicket
+import grails.converters.JSON
 import grails.transaction.Transactional
 import revizor.HelpTagLib
 
@@ -11,7 +12,7 @@ class IssueController {
 
     def issueTrackerService
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", assignReviewWithAnIssue: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -71,7 +72,36 @@ class IssueController {
         else {
             notFound()
         }
+    }
 
+    @Transactional
+    def assignReviewWithAnIssue(Issue issueInstance) {
+        if (issueInstance == null) {
+            notFound()
+            return
+        }
+
+        if (issueInstance.hasErrors()) {
+            response.status = 500
+            render(issueInstance.errors as JSON)
+            return
+        }
+
+        def reviewId = params.getProperty("assignToReview")
+        if (reviewId == null) {
+            response.status = 500
+            render "The review ID must be specified"
+            return
+        }
+
+        issueInstance.save flush:true
+
+        def reviewInstance = Review.get(reviewId)
+        reviewInstance?.addToIssueTickets(issueInstance)
+        reviewInstance?.save(flush: true)
+
+        def htmlToRender = g.render(template: '/review/issueTicketLoading', model: [issueId: issueInstance.ident()])
+        render ([HelpTagLib.toSingleLine(htmlToRender), issueInstance.ident()] as JSON)
     }
 
     @Transactional

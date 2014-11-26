@@ -3,7 +3,8 @@ package com.revizor
 /**
  * Issue represent an issue ticket from the selected Tracker.
  * One review may be associated with one (or few) issues in a registered
- * Trackers.
+ * Trackers. One record in this table means one association (when a review
+ * is linked to any issue ticket)
  */
 class Issue {
 
