@@ -17,6 +17,9 @@ class LoginController {
 		}
 		else {
 			session.user = cmd.getUser()
+			def pathContext = webRequest.currentRequest.contextPath
+			def fullUrl = request.getRequestURL()
+			session.baseUrl = fullUrl.substring(0, fullUrl.indexOf(pathContext) + pathContext.length())
 			redirect controller: 'repository'
 		}
 	}

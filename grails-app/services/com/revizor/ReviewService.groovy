@@ -1,5 +1,6 @@
 package com.revizor
 
+import com.revizor.issuetracker.ITracker
 import com.revizor.repos.Commit
 import com.revizor.utils.Constants
 import org.apache.commons.logging.Log
@@ -27,7 +28,16 @@ class ReviewService {
                 Review review = this.createReviewFromSmartCommit(repository, commit)
                 if (review) {
                     review.save(flush:true, failOnError: true)
+
+                    // show notification about new review
                     notificationService.create(review.author, Action.REVIEW_START, [review.author, review])
+
+                    // notify Issue Tracker(s) that we created a review
+                    review.getIssueTickets().each { Issue issue ->
+                        ITracker issueTracker = issue.tracker.initImplementation();
+                        issueTracker.before()
+                        issueTracker.notifyTrackerReviewCreated(issue.key, review)
+                    }
                 }
             }
         }
@@ -59,6 +69,11 @@ class ReviewService {
                 if (reviewerUser) {
                     review.addToReviewers(new Reviewer(reviewer: reviewerUser, status: ReviwerStatus.INVITED))
                 }
+            }
+
+            // find all issue tickets in the commit message and associate them with current review
+            getIssueTickets(commit).each { issueTicket ->
+                review.addToIssueTickets(issueTicket)
             }
 
             return review
@@ -111,6 +126,34 @@ class ReviewService {
         def emails = argumentsAfterReviewTag.findAll( /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/ )
 
         return [header, message, emails]
+    }
+
+    /**
+     *
+     * Finds all the issues added to a commit message as a Smart Commit.
+     * Expected, that all the issue keys started with #-symbol.
+     *
+     * For example, in the commit message:
+     *    "add new feature #TROLOLO-37"
+     * current method will find ticket with key TROLOLO-37
+     *
+     * @param commit
+     * @return
+     */
+    def getIssueTickets(Commit commit) {
+        def issues = []
+        IssueTracker.all.each { issueTracker ->
+
+            def pattern = ~/#{1}${issueTracker.issueKeyPattern}($|\s+)/
+
+            commit.fullMessage.findAll(pattern).each { foundKey ->
+                issues << new Issue(
+                        key: foundKey.replace('#','').trim(),
+                        tracker: issueTracker)
+            }
+        }
+
+        return issues
     }
 
 }

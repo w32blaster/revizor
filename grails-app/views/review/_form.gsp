@@ -16,7 +16,7 @@
     <label for="author">
         <g:message code="review.author.label" default="Author" />
     </label>
-    <g:render template="reviewer" model="['reviewer' : reviewInstance?.author ? reviewInstance.author : session.user]" />
+    <g:render name="author" template="reviewer" model="['reviewer' : reviewInstance?.author ? reviewInstance.author : session.user]" />
 </div>
 
 
@@ -28,6 +28,10 @@
                                selected="${params.selected}"
                                checkedItems="${reviewInstance?.commits}" />
 </div>
+
+
+<g:render template="issueTickets" model="['issueTickets': reviewInstance?.issueTickets, 'isEdit': isEdit, 'reviewId': reviewInstance?.ident()]" />
+
 
 <div class="form-group ${hasErrors(bean: reviewInstance, field: 'description', 'error')} ">
 	<label for="description">

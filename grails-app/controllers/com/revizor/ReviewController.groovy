@@ -1,5 +1,6 @@
 package com.revizor
 
+import com.revizor.issuetracker.ITracker
 import com.revizor.utils.Constants
 import grails.transaction.Transactional
 import revizor.HelpTagLib
@@ -84,7 +85,7 @@ class ReviewController {
             redirect(action: "index")
         }
         else {
-            respond new Review(params), model:[repository: Repository.read(params.id)]
+            respond new Review(params), model:[repository: Repository.read(params.id), isEdit: false]
         }
     }
 
@@ -109,6 +110,14 @@ class ReviewController {
         }
         else {
             notificationService.create(session.user, Action.REVIEW_CLOSE, [session.user, review])
+
+            // notify Issue Tracker(s) that user just closed a review
+            review.getIssueTickets().each { Issue issue ->
+                ITracker issueTracker = issue.tracker.initImplementation();
+                issueTracker.before()
+                issueTracker.notifyTrackerReviewClosed(issue.key, review)
+            }
+
             render status: OK
         }
     }
@@ -227,7 +236,7 @@ class ReviewController {
     }
 
     def edit(Review reviewInstance) {
-        respond reviewInstance, model:[repository: Repository.read(params.id)]
+        respond reviewInstance, model:[repository: reviewInstance.repository, isEdit: true]
     }
 
     @Transactional

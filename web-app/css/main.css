@@ -224,3 +224,31 @@ html, body
     color: #dcdcdc;
     width: 15px;
 }
+.issue-ticket {
+    margin: 5px;
+    padding: 10px;
+    max-width: 600px;
+}
+.issue-ticket DIV {
+    margin-left: 40px;
+    position: relative;
+}
+.issue-ticket IMG {
+    margin-top: 5px;
+}
+.issue-ticket .right {
+    position: absolute;
+    right: 2px;
+    margin: 0;
+}
+.issue-author-avatar {
+    top: 2px;
+}
+.issue-ticket .issue-author {
+    font-size: 0.7em;
+    font-style: italic;
+    top: 38px;
+}
+.delete-issue-ticket-btn {
+    margin-left: 7px;
+}

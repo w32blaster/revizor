@@ -19,7 +19,8 @@ class Review implements INotifiable {
 
     static hasMany = [
             reviewers: Reviewer,
-            comments: Comment
+            comments: Comment,
+            issueTickets: Issue
     ]
 
     static constraints = {
