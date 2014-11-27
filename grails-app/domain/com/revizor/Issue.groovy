@@ -15,5 +15,27 @@ class Issue {
     ]
 
     static constraints = {
+        key(nullable: false)
+        tracker(nullable: false)
+    }
+
+
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        Issue issue = (Issue) o
+
+        if (key != issue.key) return false
+        if (tracker.ident() != issue.tracker.ident()) return false
+
+        return true
+    }
+
+    int hashCode() {
+        int result
+        result = key.hashCode()
+        result = 31 * result + tracker.ident().hashCode()
+        return result
     }
 }
