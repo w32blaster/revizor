@@ -10,17 +10,10 @@
 
 	<div id="edit-review" class="content scaffold-edit" role="main">
 		<h2><g:message code="default.edit.label" args="[entityName]" /></h2>
-			<g:if test="${flash.message}">
-                <div class="alert alert-info">${flash.message}</div>
-			</g:if>
-			<g:hasErrors bean="${reviewInstance}">
-                <g:eachError bean="${reviewInstance}" var="error">
-                    <div class="alert alert-danger" role="alert" <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>>
-                        <g:message error="${error}"/>
-                    </div>
-                </g:eachError>
-            </g:hasErrors>
 
+            <g:render template="/layouts/flashMessage" />
+
+            <g:render template="/layouts/showErrors" model="[instance: reviewInstance]" />
 
             <div class="container">
 

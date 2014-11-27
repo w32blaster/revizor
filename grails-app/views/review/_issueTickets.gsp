@@ -22,12 +22,12 @@
                 container.append(html);
             })
             .fail(function(errorObj, b, errorName) {
+                container.empty();
                 if(errorObj.status == 404) {
-                    container.empty();
-                    container.append("issue not found");
+                    container.append("Issue not found");
                 }
                 else {
-                    alert( "Error, can't load issue " + issueId );
+                    container.append("<p class='text-danger'>Cannot load issue. " + errorName + "</p>");
                 }
             });
     }

@@ -30,7 +30,7 @@
 </div>
 
 
-<g:render template="issueTickets" model="['issueTickets': reviewInstance.issueTickets, 'isEdit': true, 'reviewId': reviewInstance?.ident()]" />
+<g:render template="issueTickets" model="['issueTickets': reviewInstance?.issueTickets, 'isEdit': isEdit, 'reviewId': reviewInstance?.ident()]" />
 
 
 <div class="form-group ${hasErrors(bean: reviewInstance, field: 'description', 'error')} ">

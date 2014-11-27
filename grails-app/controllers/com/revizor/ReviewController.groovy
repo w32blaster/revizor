@@ -85,7 +85,7 @@ class ReviewController {
             redirect(action: "index")
         }
         else {
-            respond new Review(params), model:[repository: Repository.read(params.id)]
+            respond new Review(params), model:[repository: Repository.read(params.id), isEdit: false]
         }
     }
 
@@ -236,7 +236,7 @@ class ReviewController {
     }
 
     def edit(Review reviewInstance) {
-        respond reviewInstance, model:[repository: Repository.read(params.id)]
+        respond reviewInstance, model:[repository: reviewInstance.repository, isEdit: true]
     }
 
     @Transactional

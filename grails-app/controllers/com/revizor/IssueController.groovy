@@ -1,5 +1,6 @@
 package com.revizor
 
+import com.revizor.issuetracker.ITracker
 import com.revizor.issuetracker.IssueTicket
 import grails.converters.JSON
 import grails.transaction.Transactional
@@ -99,6 +100,11 @@ class IssueController {
         def reviewInstance = Review.get(reviewId)
         reviewInstance?.addToIssueTickets(issueInstance)
         reviewInstance?.save(flush: true)
+
+        // notify Issue Tracker(s) that user just closed a review
+        ITracker issueTracker = issueInstance.tracker.initImplementation();
+        issueTracker.before()
+        issueTracker.notifyTrackerReviewCreated(issueInstance.key, reviewInstance)
 
         def htmlToRender = g.render(template: '/review/issueTicketLoading', model: [issueId: issueInstance.ident()])
         render ([HelpTagLib.toSingleLine(htmlToRender), issueInstance.ident()] as JSON)
