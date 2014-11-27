@@ -3,6 +3,7 @@ package com.revizor.issuetracker.impl
 import com.revizor.IssueTracker
 import com.revizor.IssueTrackerType
 import com.revizor.Review
+import com.revizor.Reviewer
 import com.revizor.issuetracker.ITracker
 import com.revizor.issuetracker.IssueTicket
 import grails.plugins.rest.client.RestBuilder
@@ -84,7 +85,11 @@ class YouTrackIssueTracker implements ITracker{
     def notifyTrackerReviewCreated(String key, Review review) {
 
         def session = RequestContextHolder.currentRequestAttributes().getSession()
-        Object[] args = [ review.getTitle(), session.baseUrl, review.author.username ] as Object[]
+        Object[] args = [ review.ident(),
+                          review.getTitle(),
+                          session.baseUrl + "/review/show/" + review.ident(),
+                          review.author.username ] as Object[]
+
         def commentText = this.context.getMessage("youtrack.review.created.wiki.markup",
                 args,
                 this.locale)
@@ -107,6 +112,30 @@ class YouTrackIssueTracker implements ITracker{
      */
     @Override
     def notifyTrackerReviewClosed(String key, Review review) {
-        return null
+
+        def session = RequestContextHolder.currentRequestAttributes().getSession()
+
+        def reviewersResultInWikiMarkup = "\n\n"
+        review.reviewers.each { Reviewer reviewer ->
+            reviewersResultInWikiMarkup += " * '''${reviewer.reviewer.username}''': ${reviewer.status}\n"
+        }
+
+        Object[] args = [ review.author.username,
+                          review.ident(),
+                          review.getTitle(),
+                          session.baseUrl + "/review/show/" + review.ident(),
+                          reviewersResultInWikiMarkup ] as Object[]
+
+        def commentText = this.context.getMessage("youtrack.review.closed.wiki.markup",
+                args,
+                this.locale)
+
+        MultiValueMap<String, String> form = new LinkedMultiValueMap<String, String>()
+        form.add("comment", commentText)
+        def resp = rest.post("${tracker.url}/rest/issue/${key}/execute") {
+            contentType("application/x-www-form-urlencoded")
+            header("Cookie", cookies[0])
+            body(form)
+        }
     }
 }

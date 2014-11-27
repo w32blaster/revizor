@@ -110,6 +110,14 @@ class ReviewController {
         }
         else {
             notificationService.create(session.user, Action.REVIEW_CLOSE, [session.user, review])
+
+            // notify Issue Tracker(s) that user just closed a review
+            review.getIssueTickets().each { Issue issue ->
+                ITracker issueTracker = issue.tracker.initImplementation();
+                issueTracker.before()
+                issueTracker.notifyTrackerReviewClosed(issue.key, review)
+            }
+
             render status: OK
         }
     }
