@@ -50,6 +50,35 @@ class Review implements INotifiable {
 	public String getNotificationName() {
 		return "${this.id}: ${this.title}";
 	}
+
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        Review review = (Review) o
+
+        if (author != review.author) return false
+        if (description != review.description) return false
+        if (id != review.id) return false
+        if (repository != review.repository) return false
+        if (smartCommitId != review.smartCommitId) return false
+        if (status != review.status) return false
+        if (title != review.title) return false
+        if (version != review.version) return false
+
+        return true
+    }
+
+    int hashCode() {
+        int result
+        result = title.hashCode()
+        result = 31 * result + (description != null ? description.hashCode() : 0)
+        result = 31 * result + status.hashCode()
+        result = 31 * result + (smartCommitId != null ? smartCommitId.hashCode() : 0)
+        result = 31 * result + id.hashCode()
+        result = 31 * result + version.hashCode()
+        return result
+    }
 }
 
 enum ReviewStatus {

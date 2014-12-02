@@ -33,6 +33,13 @@
         <g:message code="reviews.archived" default="My reviews" />
     </g:link>
 
+    <!-- reviews grouped by Issue Ticket -->
+    <% def cssClassGrouped = (params.filter == ReviewFilter.GROUPED_BY_ISSUE_TICKETS.toString()) ? 'active' : '' %>
+    <g:link action="index" params="[filter: ReviewFilter.GROUPED_BY_ISSUE_TICKETS]" class="btn btn-default btn-primary ${cssClassGrouped}">
+        <span class="glyphicon glyphicon-tags"></span>
+        <g:message code="reviews.grouped.by.issue.tickets" default="by Isssue Tickets" />
+    </g:link>
+
     <!-- All reviews -->
     <% def cssClassAll = (params.filter == ReviewFilter.ALL.toString()) ? 'active' : '' %>
     <g:link action="index" params="[filter: ReviewFilter.ALL]" class="btn btn-default btn-primary ${cssClassAll}">

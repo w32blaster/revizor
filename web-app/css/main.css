@@ -116,6 +116,7 @@ html, body
 }
  .reviewer{
      max-width: 200px;
+     margin-bottom: 0;
  }
 .user-cell {
     margin: 3px;

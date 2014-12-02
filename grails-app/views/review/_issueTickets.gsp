@@ -36,7 +36,11 @@
 
         var assignUrl = "${createLink(controller: 'issue', action: 'assignReviewWithAnIssue')}/";
         $('#assign-issue-btn-id').click(function() {
-            var data = {'tracker.id': $('#select-issue-tracker').val(), 'key': $('#issue-key-id').val(), 'assignToReview': ${reviewId}};
+            var data = {
+                'tracker.id': $('#select-issue-tracker').val(),
+                'key': $('#issue-key-id').val(),
+                'assignToReview': ${reviewId},
+                'review.id': ${reviewId}};
             $.post( assignUrl, data )
                 .done(function(arrData) {
                     var container = $('#issue-ticket-container-id')

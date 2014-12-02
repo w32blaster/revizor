@@ -40,38 +40,14 @@
 			  </ul>
 			</div>
 
-			<table class="table">
-				<thead>
-					<tr>
-					
-						<g:sortableColumn property="title" title="${message(code: 'review.title.label', default: 'Title')}" />
-					
-						<th><g:message code="review.repository.label" default="Repository" /></th>
-					
-						<th><g:message code="review.author.label" default="Author" /></th>
-						
-					
-					</tr>
-				</thead>
-				<tbody>
-					<g:each in="${reviewInstanceList}" status="i" var="reviewInstance">
-						<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-						
-							<td><g:link action="show" id="${reviewInstance.id}">${fieldValue(bean: reviewInstance, field: "title")}</g:link></td>
-						
-							<td class="reviewer">
-							    <g:if test="${reviewInstance?.repository.image}">
-							        <img height="32" width="32" class="avatar img-rounded" src="${createLink(controller:'repository', action: 'logo_image', id: reviewInstance?.repository.ident())}" />
-							    </g:if>
-								<span class="property-value" aria-labelledby="reviewers-label">${reviewInstance.repository.title}</span>
-							</td>
-						
-							<td><g:render template="reviewer" model="['reviewer' : reviewInstance.author]" /></td>					
-							
-						</tr>
-					</g:each>
-				</tbody>
-			</table>
+			<g:if test="${params.filter == ReviewFilter.GROUPED_BY_ISSUE_TICKETS.toString()}">
+				<g:render template="tableReviewsGroupedByIssues" />
+			</g:if>
+			<g:else>
+				<g:render template="tableReviews" />
+			</g:else>
+
+
 			<div class="pagination">
 				<g:paginate total="${reviewInstanceCount ?: 0}" />
 			</div>

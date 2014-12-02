@@ -1,6 +1,7 @@
 package com.revizor
 
 import com.revizor.issuetracker.ITracker
+import com.revizor.issuetracker.IssueTicket
 import com.revizor.utils.Constants
 import grails.transaction.Transactional
 import revizor.HelpTagLib
@@ -11,7 +12,8 @@ enum ReviewFilter {
     ALL("reviews.all"),
     ONLY_MINE("reviews.only.mine"),
     WHERE_I_AM_REVIEWER("reviews.where.i.reviewer"),
-    ARCHIVED("reviews.archived");
+    ARCHIVED("reviews.archived"),
+    GROUPED_BY_ISSUE_TICKETS("reviews.archived");
 
     ReviewFilter(String value) { this.value = value }
 
@@ -31,6 +33,7 @@ class ReviewController {
         params.max = Math.min(max ?: 10, 100)
         def list
         def reviewFilter = params.filter as ReviewFilter
+        def groupedIssues = []
         switch(reviewFilter) {
 
             case ReviewFilter.ALL:
@@ -42,11 +45,17 @@ class ReviewController {
                 break;
 
             case ReviewFilter.WHERE_I_AM_REVIEWER:
-                list = Reviewer.findAllByReviewer(session.user).collect { it.review }
+                list = Reviewer.findAllByReviewer(session.user).collect { it.review };
                 break;
 
             case ReviewFilter.ARCHIVED:
                 list = Review.findAllByAuthorAndStatus(session.user, ReviewStatus.CLOSED);
+                break;
+
+            case ReviewFilter.GROUPED_BY_ISSUE_TICKETS:
+                groupedIssues = Issue.findAll().groupBy { it.key }
+                def reviewsWithIssues = Issue.findAll().collect { it.review }
+                list = Review.list(params).findAll{ !reviewsWithIssues.contains(it) }
                 break;
 
             default:
@@ -55,7 +64,11 @@ class ReviewController {
         }
 
         def repos = Repository.list()
-        respond list, model:[reviewInstanceCount: Review.count(), reviewFilter: reviewFilter, repos: repos]
+        respond list, model:[
+                reviewInstanceCount: Review.count(),
+                reviewFilter: reviewFilter,
+                repos: repos,
+                groupedIssues: groupedIssues]
     }
 
     def show(Review reviewInstance) {

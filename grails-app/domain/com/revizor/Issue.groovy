@@ -11,12 +11,14 @@ class Issue {
     String key
 
     static belongsTo = [
-            tracker: IssueTracker
+            tracker: IssueTracker,
+            review: Review
     ]
 
     static constraints = {
         key(nullable: false)
         tracker(nullable: false)
+        review(nullable: false)
     }
 
 

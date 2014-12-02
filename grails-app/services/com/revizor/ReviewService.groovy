@@ -72,7 +72,7 @@ class ReviewService {
             }
 
             // find all issue tickets in the commit message and associate them with current review
-            getIssueTickets(commit).each { issueTicket ->
+            getIssueTickets(commit, review).each { issueTicket ->
                 review.addToIssueTickets(issueTicket)
             }
 
@@ -140,7 +140,7 @@ class ReviewService {
      * @param commit
      * @return
      */
-    def getIssueTickets(Commit commit) {
+    def getIssueTickets(Commit commit, Review review) {
         def issues = []
         IssueTracker.all.each { issueTracker ->
 
@@ -149,7 +149,8 @@ class ReviewService {
             commit.fullMessage.findAll(pattern).each { foundKey ->
                 issues << new Issue(
                         key: foundKey.replace('#','').trim(),
-                        tracker: issueTracker)
+                        tracker: issueTracker,
+                        review: review)
             }
         }
 

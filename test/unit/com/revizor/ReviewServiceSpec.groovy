@@ -249,14 +249,14 @@ line we can find tags for issue keys
     }
 
 
-    void "detects few issues belongoin to different trackers added as smart commit with similag patterns"() {
+    void "detects few issues belonging to different trackers added as smart commit with similar patterns"() {
 
         given: 'one internal issue tracker'
             def issueTrackerYouTrack = new IssueTracker(
                     type: IssueTrackerType.YOUTRACK,
                     title: "YouTrack issue tracker",
                     url: "https://localhost",
-                    issueKeyPattern: "\\d{4}-{1}\\d{2}",
+                    issueKeyPattern: "\\d{4}-{1}\\d{2}", // <-- for example, 1408-21
                     username: "user",
                     password: "password"
             )
