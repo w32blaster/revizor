@@ -213,8 +213,17 @@ html, body
 }
 
 .graph-tooltip {
-    white-space:pre;
+    background-color: #e8e8e8;
+    border: 1px solid #b5b4b4;
+    color: #b5b4b4;
+    font-weight: bold;
+    height: 5px;
     max-width: none;
+    padding: 0 5px;
+    white-space: pre;
+    width: 10px;
+    cursor: pointer;
+    font-size: 0.6em;
 }
 .reply-indent {
     padding-right: 5px;

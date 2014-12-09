@@ -101,7 +101,7 @@ class CommitSelectorTagLib {
 
         // add link to full message
         if (commit.fullMessage.length() > (commit.message.length() + 1)) {
-            messageHtml += " <a type='button' class='graph-tooltip' data-toggle='popover' data-placement='top' data-html='true' data-container='body' data-content='${commit.fullMessage.replace('\n', "<br>").encodeAsHTML()}'>...</a>"
+            messageHtml += " <a type='button' class='graph-tooltip' data-toggle='popover' tabindex='0' data-trigger='focus' data-placement='top' data-html='true' data-container='body' title='${commit.author}' data-content='${commit.fullMessage.replace('\n', "<br>").encodeAsHTML()}'>•••</a>"
         }
 
         return messageHtml

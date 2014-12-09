@@ -78,13 +78,10 @@
 			</div>
 		</div>	
 
-	    <g:javascript>
+	    <r:script>
 			(function($) {
-				$(document).ready(function(){
-					$('.graph-tooltip').popover()
-				});
+				$('.graph-tooltip').popover();
 			})(jQuery);
-
-		</g:javascript>
+		</r:script>
 	</body>
 </html>

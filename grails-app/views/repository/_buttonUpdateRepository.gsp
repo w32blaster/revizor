@@ -20,6 +20,7 @@
                 $.get( refreshRepositoryUrl )
                     .done(function(html) {
                         $('#repo-tree-id').append(html);
+                        $('.graph-tooltip').popover();
                     })
                     .fail(function() {
                         alert( "Error, can't load updated tree" );
