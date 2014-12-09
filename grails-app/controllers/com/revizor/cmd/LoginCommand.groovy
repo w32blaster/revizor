@@ -1,6 +1,7 @@
 package com.revizor.cmd
 
-import com.revizor.User;
+import com.revizor.User
+import com.revizor.security.BCrypt;
 
 @grails.validation.Validateable
 class LoginCommand {
@@ -22,7 +23,8 @@ class LoginCommand {
 			if (!obj.getUser()) return "user.not.found"	
 		})
 		password(blank:false, validator: { val, obj ->
-			if (obj.user && obj.user.password != val) { 
+			def isMatching = BCrypt.checkpw(val, obj.user.password)
+			if (obj.user && !isMatching) {
 				return "user.password.invalid" 	
 			}
 		})

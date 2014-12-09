@@ -1,6 +1,6 @@
 package com.revizor
 
-
+import com.revizor.security.BCrypt
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -41,6 +41,9 @@ class UserController {
             return
         }
 
+        // hash and salt the password
+        userInstance.password = BCrypt.hashpw(userInstance.password, BCrypt.gensalt());
+
         userInstance.save flush:true
 
         request.withFormat {
@@ -57,7 +60,17 @@ class UserController {
     }
 
     @Transactional
-    def update(User userInstance) {
+    def update() {
+        User userInstance = User.get(params.id)
+        if(params.password) {
+            params.password = BCrypt.hashpw(params.password, BCrypt.gensalt());
+        }
+        else {
+            params.remove('password')
+        }
+        // apply data binding
+        userInstance.properties = params
+
         if (userInstance == null) {
             notFound()
             return

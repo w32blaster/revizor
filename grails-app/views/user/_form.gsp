@@ -15,24 +15,22 @@
 		<g:message code="user.username.label" default="username" />
 		
 	</label>
-	<g:textField class="form-control" name="username"  class="form-control" value="${userInstance?.username}"/>
+	<g:textField class="form-control" name="username" value="${userInstance?.username}"/>
 
 </div>
 
 <div class="form-group ${hasErrors(bean: userInstance, field: 'password', 'error')} ">
 	<label for="password">
 		<g:message code="user.password.label" default="Password" />
-		
 	</label>
-	<g:passwordField class="form-control" name="password"  class="form-control" />
-
+	<g:passwordField class="form-control" name="password" value="" />
 </div>
 
 <div class="form-group ${hasErrors(bean: userInstance, field: 'position', 'error')} ">
 	<label for="position">
 		<g:message code="user.position" default="position" />
 	</label>
-	<g:textField  class="form-control" name="position"  class="form-control" value="${userInstance?.position}" placeholder="Developer"/>
+	<g:textField  class="form-control" name="position"  value="${userInstance?.position}" placeholder="Developer"/>
 
 </div>
 
