@@ -55,8 +55,16 @@ class IssueController {
         respond issueInstance
     }
 
+    def requestIssueDetailsBig() {
+        requestIssueDetails(false)
+    }
+
+    def requestIssueDetailsSmall() {
+        requestIssueDetails(true)
+    }
+
     @Transactional
-    def requestIssueDetails() {
+    private def requestIssueDetails(isSmall) {
 
         def issue = Issue.get(params.id)
         if (!issue) {
@@ -67,7 +75,8 @@ class IssueController {
         IssueTicket ticket = issueTrackerService.getIssueTicket(issue)
 
         if (ticket) {
-            def htmlToRender = g.render(template: '/issue/issue', model: [issue: ticket])
+            def template = isSmall ? '/issue/issueHeader' : '/issue/issue'
+            def htmlToRender = g.render(template: template, model: [issue: ticket, key: issue.key])
             render HelpTagLib.toSingleLine(htmlToRender)
         }
         else {

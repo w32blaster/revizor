@@ -4,7 +4,7 @@
 --%>
 <img height="32" width="32" src="${resource(dir: 'images/issue-trackers', file: issue.trackerLogoUrl)}" class="pull-left"/>
 <div>
-    <b><a href="${issue.issueUrl}">${issue.title}</a></b>
+    <b><a href="${issue.issueUrl}">${key}: ${issue.title}</a></b>
     <br/>
     <g:if test="${issue.tags}">
         <span class="glyphicon glyphicon-tags" style="margin-right: 10px;"></span>
