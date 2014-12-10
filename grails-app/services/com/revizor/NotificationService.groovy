@@ -4,6 +4,8 @@ import org.springframework.web.context.request.RequestContextHolder
 
 class NotificationService {
 
+    static transactional = true
+
     /*
     * Creates one record to the notification feed
     *
@@ -16,7 +18,7 @@ class NotificationService {
     * Please refer to the comments in files Notification.groovy and NotificationObject.groovy
     */
     def create(who, action, actors, actorIndexToBeUsedForDetails = -1) {
-        def u = new Notification(
+        Notification u = new Notification (
                 object: who,
                 time: new Date(),
                 action: action,
@@ -24,10 +26,10 @@ class NotificationService {
             );
 
         actors.eachWithIndex { actor, i ->
-            u.addToActors(NotificationObject.saveObject(actor, i));   
+            u.addToActors(NotificationObject.saveObject(actor, i));
         }
 
-        u.save();
+        u.save(flush: true);
     }
 
     def feed(max, offset) {
