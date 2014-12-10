@@ -1,9 +1,8 @@
 package revizor
 
-import com.revizor.Notification
 import com.revizor.NotificationObject
-import grails.util.GrailsNameUtils
 import com.revizor.utils.Constants
+import grails.util.GrailsNameUtils
 
 class NotificationTagLib {
 
@@ -27,10 +26,13 @@ class NotificationTagLib {
 
             def actors = notification.actors.sort { it.idx }
 
-            def messageParams = actors.collect { getHtmlMessage(it) }
-            def msg = g.message(code: notification.action.value(), args: messageParams, encodeAs: 'None')
-            def details = (notification.detailedActorIndex > -1) ? getDetailedHtmlBlock(actors.get(notification.detailedActorIndex)) : null
             def isItShownForMe = notificationService.isNotificationForMe(notification)
+            def messageCode = (notification.object.ident() == session.user.ident()) ?
+                    notification.action.messageByMe() :
+                    isItShownForMe ? notification.action.messageForMe() : notification.action.message()
+            def messageParams = actors.collect { getHtmlMessage(it) }
+            def msg = g.message(code: messageCode, args: messageParams, encodeAs: 'None', default: "Notification message not found")
+            def details = (notification.detailedActorIndex > -1) ? getDetailedHtmlBlock(actors.get(notification.detailedActorIndex)) : null
 
             out << g.render(template: "/notification/notification", model: [
                 'mainActor': notification.object, 
@@ -42,14 +44,14 @@ class NotificationTagLib {
     }
 
     /**
-     * Returns the HTML for the detailes. Some actors need to be added to the notification as detailed view
+     * Returns the HTML for the details. Some actors need to be added to the notification as detailed view
      */
     private String getDetailedHtmlBlock(object) {
         def actorObject = object.resoreInstance();
         return actorObject.getDetailsAsHtml()
     }
 
-    private String getHtmlMessage(object) {
+    private String getHtmlMessage(NotificationObject object) {
 		def actorObject = object.resoreInstance();
 		
 		if (!actorObject) {
@@ -59,9 +61,9 @@ class NotificationTagLib {
 			return actorObject
 		}
 		else {
-			def classSimpleName = GrailsNameUtils.getShortName(actorObject.class).toLowerCase();
-			def href = g.createLink(controller: classSimpleName, action: 'show', id: actorObject.ident())
-			return "<a href='${href}' class='notification-link'>${actorObject.getNotificationName()}</a>"
+            def classSimpleName = GrailsNameUtils.getShortName(actorObject.class).toLowerCase();
+            def href = g.createLink(controller: classSimpleName, action: 'show', id: actorObject.ident())
+            return "<a href='${href}' class='notification-link'>${actorObject.getNotificationName()}</a>"
 		}
     }
 }
