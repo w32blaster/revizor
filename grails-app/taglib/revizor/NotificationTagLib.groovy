@@ -30,10 +30,12 @@ class NotificationTagLib {
             def messageParams = actors.collect { getHtmlMessage(it) }
             def msg = g.message(code: notification.action.value(), args: messageParams, encodeAs: 'None')
             def details = (notification.detailedActorIndex > -1) ? getDetailedHtmlBlock(actors.get(notification.detailedActorIndex)) : null
+            def isItShownForMe = notificationService.isNotificationForMe(notification)
 
             out << g.render(template: "/notification/notification", model: [
                 'mainActor': notification.object, 
                 'message': msg,
+                'forMe':isItShownForMe,
                 'details': details])
         }
 

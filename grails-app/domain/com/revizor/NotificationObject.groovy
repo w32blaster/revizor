@@ -1,7 +1,4 @@
 package com.revizor
-
-import com.revizor.Notification
-
 /**
  * Notification object is an entity with whom an actor performs an action.
  *

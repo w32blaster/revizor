@@ -1,5 +1,7 @@
 package com.revizor
 
+import org.springframework.web.context.request.RequestContextHolder
+
 class NotificationService {
 
     /*
@@ -37,5 +39,26 @@ class NotificationService {
         }
 
         return all
+    }
+
+    /**
+     * Detects, is this notification is related to currently logged user
+     * in order to mark is as "to me".
+     *
+     * For example, "user X (main actor) replied to user Y (actor1) with a comment: blabla".
+     * This notification is show for user Y but not to the X. Thus, current
+     * method returns TRUE only if actor1 type is USER and user Y is currently logged in.
+     *
+     * @param notification
+     */
+    def isNotificationForMe(Notification notification){
+        def session = RequestContextHolder.currentRequestAttributes().getSession()
+
+        // find whether current notification is about an action with actors, where these actors contain current user
+        def me = notification.actors.find { NotificationObject no ->
+            (no.type == ObjectType.USER && no.objectId == session.user.ident() && no.objectId != notification.object.ident())
+        }
+
+        return (me != null)
     }
 }

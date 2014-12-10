@@ -166,7 +166,9 @@ html, body
 .notification BLOCKQUOTE{
     font-size: 14px;
 }
-
+.notification-to-me {
+    background-color: #FFFFED;
+}
 #load-more-btn {
     margin-top: 10px;
 }
