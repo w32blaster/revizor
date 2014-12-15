@@ -64,7 +64,8 @@ class CommentController {
         commentInstance.text = commentInstance.text.encodeAsHTML()
         commentInstance.save flush:true
 
-        saveNotification(commentInstance)
+        def notification = saveNotification(commentInstance)
+        sendEmail(notification)
 
         withFormat {
             html {
@@ -75,6 +76,36 @@ class CommentController {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'comments.one', default: 'Comment'), commentInstance.id])
                 redirect (controller: 'review', action: 'show', id: params.redirectTo)
             }
+        }
+    }
+
+    /**
+     * Sends email for the given notification
+     *
+     * @param notification
+     */
+    def sendEmail(Notification notification) {
+
+        def html = ntl.oneNotification([notification: notification])
+
+        notification.actors
+                .findAll { NotificationObject no ->
+                        (no.type == ObjectType.USER && no.objectId != session.user.ident() && no.objectId != notification.object.ident())
+                    }
+                .each { NotificationObject no ->
+                    User userToBeNotified = no.resoreInstance()
+                    def emailHtml = HelpTagLib.toSingleLine(g.render(template: "/email", model: [short: 'trololo', message: html]))
+                    _sendEmail(userToBeNotified.email, emailHtml)
+                }
+    }
+
+    private _sendEmail(toAddress, emailHtml) {
+        sendMail {
+            async true
+            from "no-reply@revizor.com"
+            to toAddress
+            subject "Revizor: notification"
+            html " ${emailHtml} "
         }
     }
 
@@ -151,14 +182,15 @@ class CommentController {
     def saveNotification(comment) {
         if (comment.replyTo) {
             def to = (comment.author.ident() == comment.replyTo.author.ident()) ? g.message(code: "reply.to.himself") : comment.replyTo.author;
-            notificationService.create(session.user, Action.CREATE_COMMENT_REPLY_TO, [comment.author, to, comment, comment.review], 2)
+            return notificationService.create(session.user, Action.CREATE_COMMENT_REPLY_TO, [comment.author, to, comment, comment.review], 2)
         }
         else if (comment.type == CommentType.REVIEW) {
-            notificationService.create(session.user, Action.CREATE_COMMENT_TO_REVIEW, [comment.author, comment, comment.review], 1)
+            return notificationService.create(session.user, Action.CREATE_COMMENT_TO_REVIEW, [comment.author, comment, comment.review], 1)
         }
         else if (comment.type == CommentType.LINE_OF_CODE) {
-            notificationService.create(session.user, Action.CREATE_COMMENT_TO_LINE_OF_CODE, [comment.author, comment, comment.fileName, comment.review], 1)
+            return notificationService.create(session.user, Action.CREATE_COMMENT_TO_LINE_OF_CODE, [comment.author, comment, comment.fileName, comment.review], 1)
         }
+
     }
 }
 

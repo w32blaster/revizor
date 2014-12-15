@@ -30,6 +30,8 @@ class NotificationService {
         }
 
         u.save(flush: true);
+
+        return u
     }
 
     def feed(max, offset) {

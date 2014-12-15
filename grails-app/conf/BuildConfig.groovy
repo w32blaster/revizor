@@ -69,6 +69,7 @@ grails.project.dependency.resolution = {
         compile ":quartz:1.0.2"
         compile ":rest-client-builder:2.0.3"
         compile ":cache:1.1.8"
+        compile ":mail:1.0.7"
 
         // to prepare self extracted executable JAR file. To run: grails prod build-standalone revizor.jar
         // docs: http://grails-plugins.github.io/grails-standalone/docs/manual/guide/running.html

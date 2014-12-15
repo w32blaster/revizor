@@ -34,7 +34,7 @@
 </g:javascript>
 
 <div id="${feedNontainerId}">
-    <notification:feed />
+    <ntl:feed />
 </div>
 
 <button id="${buttonId}" class="btn btn-default btn-primary center-block">

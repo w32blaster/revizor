@@ -22,7 +22,8 @@ class HelpTagLib {
     }
 
     public static String toSingleLine(html) {
-       // remove whitespaces between tags
+        html = html.replace("\n\n", "")
+        // remove whitespaces between tags
         html = (html =~ />{1}\s+<{1}/).replaceAll("><")
 
         // TODO: replace this with trim()

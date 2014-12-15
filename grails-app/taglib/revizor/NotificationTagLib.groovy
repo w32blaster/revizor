@@ -6,7 +6,7 @@ import grails.util.GrailsNameUtils
 
 class NotificationTagLib {
 
-    static namespace = "notification"
+    static namespace = "ntl"
     
     def notificationService
 
@@ -23,24 +23,33 @@ class NotificationTagLib {
          * for details.
          */
         notifications.each { notification ->
+            out << oneNotification(['notification': notification])
+        }
 
-            def actors = notification.actors.sort { it.idx }
+    }
 
-            def isItShownForMe = notificationService.isNotificationForMe(notification)
-            def messageCode = (notification.object.ident() == session.user.ident()) ?
-                    notification.action.messageByMe() :
-                    isItShownForMe ? notification.action.messageForMe() : notification.action.message()
-            def messageParams = actors.collect { getHtmlMessage(it) }
-            def msg = g.message(code: messageCode, args: messageParams, encodeAs: 'None', default: "Notification message not found")
-            def details = (notification.detailedActorIndex > -1) ? getDetailedHtmlBlock(actors.get(notification.detailedActorIndex)) : null
+    /**
+     * Prints only one notification
+     */
+    def oneNotification = { attrs, body ->
 
-            out << g.render(template: "/notification/notification", model: [
-                'mainActor': notification.object, 
+
+        def notification = attrs.notification
+        def actors = notification.actors.sort { it.idx }
+
+        def isItShownForMe = notificationService.isNotificationForMe(notification)
+        def messageCode = (notification.object.ident() == session.user.ident()) ?
+                notification.action.messageByMe() :
+                isItShownForMe ? notification.action.messageForMe() : notification.action.message()
+        def messageParams = actors.collect { getHtmlMessage(it) }
+        def msg = g.message(code: messageCode, args: messageParams, encodeAs: 'None', default: "Notification message not found")
+        def details = (notification.detailedActorIndex > -1) ? getDetailedHtmlBlock(actors.get(notification.detailedActorIndex)) : null
+
+        out << g.render(template: "/notification/notification", model: [
+                'mainActor': notification.object,
                 'message': msg,
                 'forMe':isItShownForMe,
                 'details': details])
-        }
-
     }
 
     /**
@@ -53,16 +62,16 @@ class NotificationTagLib {
 
     private String getHtmlMessage(NotificationObject object) {
 		def actorObject = object.resoreInstance();
-		
+
 		if (!actorObject) {
-			return "";	
+			return "";
 		}
 		else if (actorObject instanceof String) {
 			return actorObject
 		}
 		else {
             def classSimpleName = GrailsNameUtils.getShortName(actorObject.class).toLowerCase();
-            def href = g.createLink(controller: classSimpleName, action: 'show', id: actorObject.ident())
+            def href = g.createLink(controller: classSimpleName, action: 'show', id: actorObject.ident(), absolute: true)
             return "<a href='${href}' class='notification-link'>${actorObject.getNotificationName()}</a>"
 		}
     }

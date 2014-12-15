@@ -124,3 +124,15 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+grails {
+    mail {
+        host = "smtp.zone.ee"
+        port = 1025
+        username = "ilja@2rooms.net"
+        password = '******'
+        props = ["mail.smtp.auth": "true",
+                 "mail.smtp.port": "1025",
+                 "mail.smtp.starttls.enable": "false"]
+
+    } }
