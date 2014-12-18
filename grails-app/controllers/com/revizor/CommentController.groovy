@@ -66,6 +66,11 @@ class CommentController {
 
         def notification = this.saveNotification(commentInstance)
 
+        // notify author, that someone left a comment under his review
+        def headerToAuthor = message(code: "notification.subject.comment.was.left.in.your.review", args: [commentInstance.author.username, commentInstance.review.title])
+        notificationService.sendNotificationViaEmail(notification, headerToAuthor, commentInstance.review.author.email)
+
+        // notify user if someone replied him
         if (commentInstance.replyTo) {
             def header = message(code: "notification.subject.replied.to.you", args: [commentInstance.replyTo.author.username])
             notificationService.sendNotificationViaEmail(notification, header)
