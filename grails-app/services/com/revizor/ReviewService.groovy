@@ -6,12 +6,15 @@ import com.revizor.utils.Constants
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import revizor.Alias
+import org.springframework.context.i18n.LocaleContextHolder as LCH
 
 
 class ReviewService {
 
     Log log = LogFactory.getLog(this.class)
     def notificationService
+    def groovyPageRenderer
+    def messageSource
 
     /**
      * Runs through the given list of commits, and if it detects Smart Commits,
@@ -31,6 +34,19 @@ class ReviewService {
 
                     // show notification about new review
                     notificationService.create(review.author, Action.REVIEW_START, [review.author, review])
+
+                    // send email to author
+                    Object[] args = [review.title] as Object[]
+                    def bodyText = messageSource.getMessage("notification.subject.review.was.create.smart.commit", args, LCH.getLocale())
+                    def header = messageSource.getMessage("notification.subject", null, LCH.getLocale())
+                    notificationService.sendPlainEmail(header, review.author.email, bodyText)
+
+                    // send email to reviewers
+                    review.reviewers.each { Reviewer reviewer ->
+                        Object[] argsReviewer = [review.author.username, review.title] as Object[]
+                        def bodyTextReviewer = messageSource.getMessage("notification.subject.you.were.invited", argsReviewer, LCH.getLocale())
+                        notificationService.sendPlainEmail(header, reviewer.reviewer.email, bodyTextReviewer)
+                    }
 
                     // notify Issue Tracker(s) that we created a review
                     review.getIssueTickets().each { Issue issue ->

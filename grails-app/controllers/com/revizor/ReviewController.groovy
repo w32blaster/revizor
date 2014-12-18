@@ -1,7 +1,6 @@
 package com.revizor
 
 import com.revizor.issuetracker.ITracker
-import com.revizor.issuetracker.IssueTicket
 import com.revizor.utils.Constants
 import grails.transaction.Transactional
 import revizor.HelpTagLib
@@ -168,7 +167,10 @@ class ReviewController {
         }
         else {
 
-            notificationService.create(session.user, Action.REVIEW_INVITED_REVIEWER, [session.user, reviewer, review])
+            def notification = notificationService.create(session.user, Action.REVIEW_INVITED_REVIEWER, [session.user, reviewer, review])
+
+            def header = message(code: "notification.subject.you.were.invited", args: [review.author.username, review.title])
+            notificationService.sendNotificationViaEmail(notification, header)
 
             def htmlToRender = g.render(template: '/review/reviewer' , model: [
                     'reviewer': reviewer,

@@ -64,8 +64,12 @@ class CommentController {
         commentInstance.text = commentInstance.text.encodeAsHTML()
         commentInstance.save flush:true
 
-        def notification = saveNotification(commentInstance)
-        sendEmail(notification)
+        def notification = this.saveNotification(commentInstance)
+
+        if (commentInstance.replyTo) {
+            def header = message(code: "notification.subject.replied.to.you", args: [commentInstance.replyTo.author.username])
+            notificationService.sendNotificationViaEmail(notification, header)
+        }
 
         withFormat {
             html {
@@ -79,35 +83,7 @@ class CommentController {
         }
     }
 
-    /**
-     * Sends email for the given notification
-     *
-     * @param notification
-     */
-    def sendEmail(Notification notification) {
 
-        def html = ntl.oneNotification([notification: notification])
-
-        notification.actors
-                .findAll { NotificationObject no ->
-                        (no.type == ObjectType.USER && no.objectId != session.user.ident() && no.objectId != notification.object.ident())
-                    }
-                .each { NotificationObject no ->
-                    User userToBeNotified = no.resoreInstance()
-                    def emailHtml = HelpTagLib.toSingleLine(g.render(template: "/email", model: [short: 'trololo', message: html]))
-                    _sendEmail(userToBeNotified.email, emailHtml)
-                }
-    }
-
-    private _sendEmail(toAddress, emailHtml) {
-        sendMail {
-            async true
-            from "no-reply@revizor.com"
-            to toAddress
-            subject "Revizor: notification"
-            html " ${emailHtml} "
-        }
-    }
 
     /**
      * Used to retrieve a HTML template to display a form "add new comment" in Ajax call.

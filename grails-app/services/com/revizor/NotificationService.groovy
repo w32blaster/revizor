@@ -1,8 +1,14 @@
 package com.revizor
 
+import grails.gsp.PageRenderer
 import org.springframework.web.context.request.RequestContextHolder
+import revizor.HelpTagLib
+import revizor.NotificationTagLib
 
 class NotificationService {
+
+    def grailsApplication
+    PageRenderer groovyPageRenderer
 
     static transactional = true
 
@@ -35,7 +41,7 @@ class NotificationService {
     }
 
     def feed(max, offset) {
-        
+
         def all = Notification.withCriteria{
             maxResults max
             firstResult offset
@@ -55,7 +61,7 @@ class NotificationService {
      *
      * @param notification
      */
-    def isNotificationForMe(Notification notification){
+    def isNotificationForMe(Notification notification) {
         def session = RequestContextHolder.currentRequestAttributes().getSession()
 
         // find whether current notification is about an action with actors, where these actors contain current user
@@ -64,5 +70,53 @@ class NotificationService {
         }
 
         return (me != null)
+    }
+
+    /**
+     * Sends email for the given notification
+     *
+     * @param notification
+     */
+    def sendNotificationViaEmail(Notification notification, header, toAddress) {
+
+        def ntl = grailsApplication.mainContext.getBean(NotificationTagLib.class.getName());
+        def html = ntl.oneNotification([notification: notification])
+        def emailHtml = groovyPageRenderer.render(template: "/email", model: [header: header, message: html])
+
+        if (toAddress) {
+            this.sendEmail(header, toAddress, HelpTagLib.toSingleLine(emailHtml))
+        }
+        else {
+            def session = RequestContextHolder.currentRequestAttributes().getSession()
+            notification
+                    .actors
+                    .findAll { NotificationObject no ->
+                (no.type == ObjectType.USER && no.objectId != session.user.ident() && no.objectId != notification.object.ident())
+            }
+            .each { NotificationObject no ->
+                User userToBeNotified = no.resoreInstance()
+                this.sendEmail(header, userToBeNotified.email, HelpTagLib.toSingleLine(emailHtml))
+            }
+        }
+    }
+
+    def sendEmail(header, toAddress, emailHtml) {
+        sendMail {
+            async true
+            from "no-reply@revizor.com"
+            to toAddress
+            subject header
+            html " ${emailHtml} "
+        }
+    }
+
+    def sendPlainEmail(header, toAddress, text) {
+        sendMail {
+            async true
+            from "no-reply@revizor.com"
+            to toAddress
+            subject header
+            body text
+        }
     }
 }
