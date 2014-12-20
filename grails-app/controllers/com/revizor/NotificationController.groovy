@@ -12,7 +12,7 @@ class NotificationController {
      */
     def loadMore = {
         def offset = params.int('offset')
-        def notificationsHtml = notification.feed(offset: offset)
+        def notificationsHtml = ntl.feed(offset: offset)
 
         render notificationsHtml
     }
