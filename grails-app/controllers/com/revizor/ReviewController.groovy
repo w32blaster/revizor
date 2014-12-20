@@ -170,7 +170,7 @@ class ReviewController {
             def notification = notificationService.create(session.user, Action.REVIEW_INVITED_REVIEWER, [session.user, reviewer, review])
 
             def header = message(code: "notification.subject.you.were.invited", args: [review.author.username, review.title])
-            notificationService.sendNotificationViaEmail(notification, header)
+            notificationService.sendNotificationViaEmail(notification, header, null)
 
             def htmlToRender = g.render(template: '/review/reviewer' , model: [
                     'reviewer': reviewer,

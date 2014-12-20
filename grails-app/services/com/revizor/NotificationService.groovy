@@ -89,6 +89,7 @@ class NotificationService {
             this.sendEmail(header, toAddress, HelpTagLib.toSingleLine(emailHtml))
         }
         else {
+            // send this notification to all actors (except currently logged user)
             def session = RequestContextHolder.currentRequestAttributes().getSession()
             notification
                     .actors
