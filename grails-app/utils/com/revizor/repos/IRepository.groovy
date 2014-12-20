@@ -36,6 +36,14 @@ public interface IRepository {
     def getDiffForCommit(String commitID);
 
     /**
+     * Returns com.revizor.repos.Commit populated with necessary meta-information
+     *
+     * @param commitID
+     * @return
+     */
+    def getCommitInfo(String commitID);
+
+    /**
      * Draw the history graph (plot) using specific tools for a repository.
      *
      * @return array of three items:

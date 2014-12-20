@@ -115,7 +115,7 @@ class GitRepository implements IRepository {
 
             def renderedCommit = renderer.getRenderedCommit()
 
-            renderedCommit.setId(commit.getId().name())
+            renderedCommit.setId(commit.getName())
             renderedCommit.setAuthor(commit.getAuthorIdent().getName())
             renderedCommit.setAuthorEmail(commit.getAuthorIdent().getEmailAddress())
             renderedCommit.setFullMessage(commit.fullMessage)
@@ -129,7 +129,7 @@ class GitRepository implements IRepository {
     }
 
     /**
-     * Pull the latest changes from an origin (remote repository). E.g update repo.
+     * Pull the latest changes from an origin (remote repository). I.e. update repo.
      */
     @Override
     def updateRepo() {
@@ -175,7 +175,8 @@ class GitRepository implements IRepository {
                     author: commit.getAuthorIdent().getName(),
                     authorEmail: commit.getAuthorIdent().getEmailAddress(),
                     message: commit.getShortMessage(),
-                    fullMessage: commit.getFullMessage()
+                    fullMessage: commit.getFullMessage(),
+                    commitDate: new Date(commit.getCommitTime())
             )
         }
     }
@@ -218,4 +219,23 @@ class GitRepository implements IRepository {
         return output
     }
 
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    def getCommitInfo(String commitID) {
+        def localRepo = new FileRepository(this.repoPath);
+        def git = new Git(localRepo);
+
+        // docs: http://download.eclipse.org/jgit/docs/jgit-2.0.0.201206130900-r/apidocs/org/eclipse/jgit/lib/Repository.html#resolve%28java.lang.String%29
+        ObjectId parentID = localRepo.resolve("$commitID~1^{commit}");
+        ObjectId childID = localRepo.resolve("$commitID^{commit}");
+
+        Iterable<RevCommit> logs = git
+                .log()
+                .addRange(parentID, childID)
+                .call()
+
+        return _collectCommits(logs)[0];
+    }
 }

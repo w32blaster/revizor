@@ -56,11 +56,15 @@ class FilesTreeTagLib {
             // print fileNames
             out << '<div class="list-group">'
 
-            def review = Review.get(reviewId)
+            def mapCommentsToFile = [:]
+            if (reviewId) {
+                def review = Review.get(reviewId)
 
-            // build map "file name" <=> "comments for this file"
-            def mapCommentsToFile = Comment.findAllByReviewAndType(review, CommentType.LINE_OF_CODE)
-                    .groupBy { Comment comment -> comment.getFileName() }
+                // build map "file name" <=> "comments for this file"
+                mapCommentsToFile = Comment.findAllByReviewAndType(review, CommentType.LINE_OF_CODE)
+                        .groupBy { Comment comment -> comment.getFileName() }
+
+            }
 
             _recursivelyPrintTree(root, 0, hrefFileDetailsBase, mapCommentsToFile)
 

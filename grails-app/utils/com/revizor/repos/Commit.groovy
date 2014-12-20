@@ -14,6 +14,7 @@ class Commit {
     String authorEmail
     String message
     String fullMessage
+    Date commitDate
     int padding; // in px
 
     @Override
