@@ -73,7 +73,7 @@ class CommentController {
         // notify user if someone replied him
         if (commentInstance.replyTo) {
             def header = message(code: "notification.subject.replied.to.you", args: [commentInstance.replyTo.author.username])
-            notificationService.sendNotificationViaEmail(notification, header)
+            notificationService.sendNotificationViaEmail(notification, header, null)
         }
 
         withFormat {

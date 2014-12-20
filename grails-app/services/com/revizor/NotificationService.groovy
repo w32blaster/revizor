@@ -76,6 +76,8 @@ class NotificationService {
      * Sends email for the given notification
      *
      * @param notification
+     * @param header
+     * @param toAddress - if NULL, then the notification will be sent to actors
      */
     def sendNotificationViaEmail(Notification notification, header, toAddress) {
 

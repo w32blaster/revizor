@@ -2,14 +2,14 @@
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
 
-// grails.config.locations = [ "classpath:${appName}-config.properties",
-//                             "classpath:${appName}-config.groovy",
-//                             "file:${userHome}/.grails/${appName}-config.properties",
-//                             "file:${userHome}/.grails/${appName}-config.groovy"]
+grails.config.locations = [
+                             "classpath:${appName}-config.groovy",
+                             "file:./${appName}-config.groovy"
+]
 
-// if (System.properties["${appName}.config.location"]) {
-//    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
-// }
+if (System.properties["${appName}.config.location"]) {
+    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
+}
 
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 
@@ -124,15 +124,3 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
-
-grails {
-    mail {
-        host = "smtp.zone.ee"
-        port = 1025
-        username = "ilja@2rooms.net"
-        password = '******'
-        props = ["mail.smtp.auth": "true",
-                 "mail.smtp.port": "1025",
-                 "mail.smtp.starttls.enable": "false"]
-
-    } }

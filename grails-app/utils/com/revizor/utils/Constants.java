@@ -23,7 +23,7 @@ public interface Constants {
     byte ACTION_MODIFIED = 3;
     
     String PARAM_FILE_NAME = "fileName";
-    int MAX_PER_REQUEST = 5;
+    int MAX_PER_REQUEST = 10;
 
     int ROW_HEIGHT = 35; // in px
     String SPACE = " ";
