@@ -28,8 +28,6 @@
 
         <div class="row">
 
-
-
             <small>
                 <g:link controller="repository" action="dashboard" id="${repositoryInstance.ident()}" class="btn btn-default btn-success btn-xs">
                     <span class="glyphicon glyphicon-arrow-left"></span>

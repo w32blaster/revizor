@@ -27,9 +27,9 @@
     <div class="col-md-9">
 
         <small>
-            <g:link controller="repository" action="dashboard" id="${repositoryInstance.ident()}" class="btn btn-default btn-success btn-xs">
+            <g:link url="${urlPrefix}" class="btn btn-default btn-success btn-xs">
                 <span class="glyphicon glyphicon-arrow-left"></span>
-                <span class="glyphicon glyphicon-home"></span>
+                <span class="glyphicon glyphicon-th-list"></span> <g:message code="commit.summary" />
             </g:link>
         </small>
 
