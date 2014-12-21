@@ -88,7 +88,10 @@ class ReviewController {
                 break;
         }
 
-        respond reviewInstance, view: view, model:[fileName: params[Constants.PARAM_FILE_NAME]]
+        respond reviewInstance, view: view, model:[
+                fileName: params[Constants.PARAM_FILE_NAME],
+                urlPrefix: g.createLink(controller: 'review', action: 'show', id: reviewInstance.ident())
+        ]
     }
 
     def create() {

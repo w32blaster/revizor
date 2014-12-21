@@ -51,7 +51,8 @@ class FilesTreeTagLib {
             }
 
             NodeFile root = this.buildMapOfFiles(fileNames);
-            def hrefFileDetailsBase = g.createLink(controller: 'review', action: 'show', id: reviewId) + "/" + Constants.REVIEW_SINGLE_VIEW + "?" + Constants.PARAM_FILE_NAME + '='
+            println("---> attrs.urlPrefix=${attrs.urlPrefix}")
+            def hrefFileDetailsBase = attrs.urlPrefix + "/" + Constants.REVIEW_SINGLE_VIEW + "?" + Constants.PARAM_FILE_NAME + '='
 
             // print fileNames
             out << '<div class="list-group">'

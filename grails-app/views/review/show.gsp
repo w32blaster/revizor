@@ -20,7 +20,8 @@
                     <ft:showFilesForReview
                         repo="${reviewInstance.repository}" 
                         commitID="${reviewInstance.commits[0]}" 
-                        reviewId="${reviewInstance.id}"/>
+                        reviewId="${reviewInstance.id}"
+                        urlPrefix="${urlPrefix}"/>
 
             </div>
             

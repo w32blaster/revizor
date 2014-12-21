@@ -33,7 +33,8 @@ class DiffTagLib {
 				
 				if (isShown) {
 
-					def comments = Comment.findAllByReviewAndTypeAndFileName(attrs.review, CommentType.LINE_OF_CODE, attrs.fileName)
+					def isReview = (attrs.review != null)
+					def comments = isReview ? Comment.findAllByReviewAndTypeAndFileName(attrs.review, CommentType.LINE_OF_CODE, attrs.fileName) : []
 					def mapComments = comments.groupBy({ comment -> comment.lineOfCode });
 					
 					def fileName = extractFileName(file[0])
@@ -72,7 +73,7 @@ class DiffTagLib {
 							if (line.startsWith('-')) {
 								commentContainerId += range.original + "-" + LineType.ORIGINAL
 								type = Constants.ACTION_DELETED
-								out << "<td>${getButtonHtml(newCommentFormId, LineType.ORIGINAL, range.original, i, commentContainerId)}</td>"
+								out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.ORIGINAL, range.original, i, commentContainerId)}</td>"
 								out << "<td class='line-deleted'>${range.original}</td>"
 								out << "<td> </td>"
 								commentsForTheLine = findCommentsForLine(mapComments, range.original++, LineType.ORIGINAL)
@@ -80,14 +81,14 @@ class DiffTagLib {
 							else if (line.startsWith('+')) {
 								commentContainerId += range.new + "-" + LineType.NEW
 								type = Constants.ACTION_ADDED
-								out << "<td>${getButtonHtml(newCommentFormId, LineType.NEW, range.new, i, commentContainerId)}</td>"
+								out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.NEW, range.new, i, commentContainerId)}</td>"
 								out << "<td> </td>"
 								out << "<td><span class='line-added'>${range.new}</span></td>"
 								commentsForTheLine = findCommentsForLine(mapComments, range.new++, LineType.NEW)
 							}
 							else {
 								commentContainerId += range.original + "-" + LineType.UNMODIFIED
-								out << "<td>${getButtonHtml(newCommentFormId, LineType.UNMODIFIED, range.original, i, commentContainerId)}</td>"
+								out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.UNMODIFIED, range.original, i, commentContainerId)}</td>"
 								out << "<td>${range.original}</td>"
 								out << "<td>${range.new++}</td>"
 								commentsForTheLine = findCommentsForLine(mapComments, range.original++, LineType.UNMODIFIED)
@@ -102,12 +103,7 @@ class DiffTagLib {
 							if(commentsForTheLine) {
 								out << cmt.printCommentsInHierarchy(['comments': commentsForTheLine, 'indent': 0])
 							}
-/*
-							if (commentsForTheLine) {
-								commentsForTheLine.each { comment ->
-									out << g.render(template: "/comment/comment", model: ['comment': comment])
-								}
-							}*/
+
 							out << "</div>"
 
 							// placeholder, where will be added the form to write a new comment or to reply to another
@@ -125,13 +121,16 @@ class DiffTagLib {
 
     }
 	
-	private String getButtonHtml(newCommentFormID, lineType, lineOfCode, idx, commentContainerID) {
+	private String getButtonHtml(isReview, newCommentFormID, lineType, lineOfCode, idx, commentContainerID) {
+
 		// the function "showForm" in the _commentsScript.gsp
-		return """
+		return isReview ?
+				"""
 				<button id='show-form-btn-${idx}' class='btn-comment btn btn-default btn-xs' onclick='showForm(\"${newCommentFormID}\", \"${lineType}\", ${lineOfCode}, \"${commentContainerID}\", null, 0);'>
 					<span class='glyphicon glyphicon-comment'></span>
 				</button>
 				"""
+				: " "
 	}
 
 	private String printStyledLineOfCode(String line, byte type, String extension) {

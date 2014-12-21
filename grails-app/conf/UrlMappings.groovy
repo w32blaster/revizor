@@ -9,7 +9,7 @@ class UrlMappings {
 		
 		"/review/show/$id/$viewType"(controller: "review", action: "show")
 
-        "/observe/show/$repositoryId/$changeset/$fileName?"(controller: "observeChangeset", action: "show")
+        "/observe/show/$repositoryId/$changeset/$viewType?"(controller: "observeChangeset", action: "show")
 
         "/" {
             controller = "repository"

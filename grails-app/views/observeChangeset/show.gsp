@@ -19,7 +19,8 @@
 
         <ft:showFilesForReview
                 repo="${repositoryInstance}"
-                commitID="${commit.id}" />
+                commitID="${commit.id}"
+                urlPrefix="${urlPrefix}"/>
 
     </div>
 
