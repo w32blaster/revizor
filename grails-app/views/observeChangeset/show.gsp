@@ -35,12 +35,26 @@
                 </g:link>
             </small>
 
-            <h3>Changeset: ${commit.id}</h3>
+            <g:render template="createReviewButton" />
+
+            <g:if test="${flash.message}">
+                <div class="message" role="status">${flash.message}</div>
+            </g:if>
+
+            <h3><g:message code="changeset.header" args="[commit.message]" /></h3>
 
             <table class="table">
                 <tr>
+                    <th>SHA</th>
+                    <td>${commit.id}</td>
+                </tr>
+                <tr>
                     <th><g:message code="repository.label"/></th>
-                    <td>${repositoryInstance.title}</td>
+                    <td>
+                        <g:if test="${repositoryInstance.image}">
+                            <img height="32" width="32" class="avatar img-rounded" src="${createLink(controller:'repository', action: 'logo_image', id: repositoryInstance.ident())}" />
+                        </g:if>
+                        ${repositoryInstance.title}</td>
                 </tr>
                 <tr>
                     <th><g:message code="commit.author"/></th>
@@ -62,16 +76,6 @@
 
         </div>
 
-        <g:if test="${flash.message}">
-            <div class="message" role="status">${flash.message}</div>
-        </g:if>
-
-        <div class="row">
-
-            Create review?
-            <p>Details about this changeset...</p>
-
-        </div>
 
     </div>
 </div>

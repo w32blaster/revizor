@@ -28,7 +28,7 @@
 
         <small>
             <g:link url="${urlPrefix}" class="btn btn-default btn-success btn-xs">
-                <span class="glyphicon glyphicon-arrow-left"></span>
+                <span class="glyphicon glyphicon-arrow-left"></span> &nbsp;
                 <span class="glyphicon glyphicon-th-list"></span> <g:message code="commit.summary" />
             </g:link>
         </small>
@@ -48,10 +48,12 @@
         </g:if>
 
 
-    <!-- Print the Diff of the considered file -->
+        <!-- Print the Diff of the considered file -->
         <r:script>
             prettyPrint();
         </r:script>
+
+        <g:render template="createReviewButton" />
 
         <sc:showDiffForCommit
                 repo="${repositoryInstance}"
