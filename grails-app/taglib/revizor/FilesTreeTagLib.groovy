@@ -51,7 +51,6 @@ class FilesTreeTagLib {
             }
 
             NodeFile root = this.buildMapOfFiles(fileNames);
-            println("---> attrs.urlPrefix=${attrs.urlPrefix}")
             def hrefFileDetailsBase = attrs.urlPrefix + "/" + Constants.REVIEW_SINGLE_VIEW + "?" + Constants.PARAM_FILE_NAME + '='
 
             // print fileNames
@@ -98,9 +97,11 @@ class FilesTreeTagLib {
                 countOfComments = "<span title='${message(code: 'comments.in.file', args: [cnt])}'>(${cnt})</span>"
             }
 
+            def selectedNodeCSSstyle = (params.fileName == node.fullPath) ? "selected" : ""
+
             out << """
 					<div class='tree-leaf' style='margin-left: ${level * INDENT_TREE}px;'>
-						<span class='${styleFileStatus} new'>
+						<span class='${styleFileStatus} ${selectedNodeCSSstyle}'>
 							<a href="${hrefFileDetailsBase + node.fullPath}">
 								${node.name}
 							</a>

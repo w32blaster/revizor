@@ -53,8 +53,8 @@ html, body
 .tree-leaf .modified {
       
 }
-.tree-leaf .new {
-    text-weight: bold;
+.tree-leaf .selected {
+    font-weight: bold;
 }
 .tree-node {
     font-size: 0.8em;
