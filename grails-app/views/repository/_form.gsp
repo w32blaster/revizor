@@ -9,6 +9,9 @@
 	</label>
 	<g:textField class="form-control" name="url" value="${repositoryInstance?.url}"/>
 
+	<a href="https://github.com/w32blaster/revizor/wiki/Clone-a-repository" target="_blank" title="<g:message code="wiki.clone.repository" />">
+		<span class="glyphicon glyphicon-info-sign"></span>
+	</a>
 </div>
 
 <div class="form-group ${hasErrors(bean: repositoryInstance, field: 'title', 'error')} ">
@@ -46,25 +49,13 @@
         <g:message code="repository.password.label" default="Password" />
     </label>
     <g:passwordField class="form-control" name="password" pattern="${repositoryInstance.constraints.password.matches}" value="${repositoryInstance?.password}"/>
+
+		<span id="password-tooltip-id" class="glyphicon glyphicon-exclamation-sign text-danger"
+			  data-toggle="tooltip"
+			  data-placement="top"
+			  title="<g:message code="password.stored.as.plain.text"/>" ></span>
 </div>
 
-
-<div class="form-group ${hasErrors(bean: repositoryInstance, field: 'members', 'error')} ">
-	<label for="members">
-		<g:message code="repository.members.label" default="Members" />
-	</label>
-	
-<ul class="one-to-many">
-<g:each in="${repositoryInstance?.members?}" var="r">
-    <li><g:link controller="user" action="show" id="${r.id}">${r?.encodeAsHTML()}</g:link></li>
-</g:each>
-<li class="add">
-<g:link controller="user" action="create" params="['repository.id': repositoryInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'review.label', default: 'Member')])}</g:link>
-</li>
-</ul>
-
-
-</div>
 
 <div class="form-group ${hasErrors(bean: repositoryInstance, field: 'type', 'error')} required">
 	<label for="type">
@@ -74,4 +65,11 @@
 	<g:select name="type" from="${com.revizor.RepositoryType?.values()}" keys="${com.revizor.RepositoryType.values()*.name()}" required="" value="${repositoryInstance?.type?.name()}" />
 
 </div>
+
+
+<r:script>
+	(function($) {
+		$('#password-tooltip-id').tooltip();
+	})(jQuery);
+</r:script>
 

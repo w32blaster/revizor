@@ -56,6 +56,6 @@ class Repository extends HasImage implements INotifiable {
 }
 
 enum RepositoryType {
-    GIT,
-    MERCURIAL
+    GIT
+    //MERCURIAL
 }

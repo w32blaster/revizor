@@ -57,7 +57,7 @@
 
 						    <li role="presentation" class="divider"></li>
     						<li role="presentation"><a role="menuitem" tabindex="-1" href="${createLink(controller: 'repository', action: 'create')}">
-    							<g:message code="repository.create.new" /></a></li>
+								<span class="glyphicon glyphicon-plus"></span> <g:message code="repository.create.new" />...</a></li>
 						  </ul>
 						</div>
 

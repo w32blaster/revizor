@@ -19,7 +19,6 @@
 
                 <g:render template="reviewFilterButtons" />
 
-                <div class="input-group">
 
                     <g:form url="[resource:reviewInstance, action:'update']" method="PUT" >
                         <g:hiddenField name="version" value="${reviewInstance?.version}" />
@@ -32,8 +31,7 @@
                         </fieldset>
                     </g:form>
                 </div>
-
-		    </div>
+                <p />
         </div>
 	</body>
 </html>

@@ -33,7 +33,7 @@ class CommitSelectorTagLib {
         for (Commit rev : list) {
             isChecked = (rev.id.equals(attrs.selected) || rev.id in lstChecked) ? "checked" : ""
             out << "<tr ${isChecked ? "class='active'" : ""}>"
-            out << "<td><input type='checkbox' name='commits' value='${rev.id}' ${isChecked} /></td>"
+            out << "<td><input class='commit-checkbox' type='checkbox' name='commits' value='${rev.id}' ${isChecked} /></td>"
             out << "<td>${rev.id.subSequence(0, 7)}</td>"
             out << "<td class='truncate'>${rev.message }</span></td>"
             out << "<td><span class='label label-default'>${rev.author}</span></td>" /* rev.getId().getName() */

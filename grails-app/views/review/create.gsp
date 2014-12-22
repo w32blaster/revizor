@@ -30,12 +30,17 @@
                     <g:hiddenField name="author.id" value="${session.user.id}" />
 
                     <fieldset class="buttons">
-                        <g:submitButton class="btn btn-default btn-success" name="create" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+                        <g:submitButton class="btn btn-default btn-primary" name="create" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+                        <a href="<g:createLink controller="repository" action="dashboard" id="${params.id}" />" class="btn btn-link"><g:message code="cancel" /></a>
                     </fieldset>
 
                 </g:form>
             </div>
+            <p />
 
         </div>
+
 	</body>
 </html>
+
+
