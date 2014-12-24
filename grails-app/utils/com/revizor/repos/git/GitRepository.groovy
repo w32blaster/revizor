@@ -1,24 +1,26 @@
 package com.revizor.repos.git
 
+import com.jcraft.jsch.Session
+import com.revizor.repos.Commit
 import com.revizor.repos.IRepository
+import com.revizor.utils.Constants
 import org.eclipse.jgit.api.CloneCommand
 import org.eclipse.jgit.api.Git
-import com.revizor.utils.Constants
 import org.eclipse.jgit.api.PullCommand
+import org.eclipse.jgit.api.TransportConfigCallback
 import org.eclipse.jgit.api.errors.GitAPIException
+import org.eclipse.jgit.diff.DiffEntry
+import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.internal.storage.file.FileRepository
+import org.eclipse.jgit.lib.ObjectId
+import org.eclipse.jgit.lib.ObjectReader
 import org.eclipse.jgit.revplot.PlotCommit
 import org.eclipse.jgit.revplot.PlotCommitList
 import org.eclipse.jgit.revplot.PlotLane
 import org.eclipse.jgit.revplot.PlotWalk
 import org.eclipse.jgit.revwalk.RevCommit
-import org.eclipse.jgit.diff.DiffEntry
-import org.eclipse.jgit.lib.ObjectId
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
+import org.eclipse.jgit.transport.*
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
-import org.eclipse.jgit.lib.ObjectReader
-import org.eclipse.jgit.diff.DiffFormatter
-import com.revizor.repos.Commit
 
 /**
  * Implementation for the GIT repositories
@@ -53,6 +55,25 @@ class GitRepository implements IRepository {
 
         if (username != null && password != null) {
             command.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
+        }
+
+        if (url.startsWith("ssh://")) {
+
+            final SshSessionFactory sshSessionFactory = new JschConfigSessionFactory() {
+                @Override
+                protected void configure( OpenSshConfig.Host host, Session session ) {
+                    if (password) session.setPassword(password);
+                }
+
+            };
+
+            command.setTransportConfigCallback( new TransportConfigCallback() {
+                @Override
+                public void configure( Transport transport ) {
+                    SshTransport sshTransport = ( SshTransport )transport;
+                    sshTransport.setSshSessionFactory(sshSessionFactory);
+                }
+            } );
         }
 
         Git git = command.call()
@@ -115,7 +136,7 @@ class GitRepository implements IRepository {
 
             def renderedCommit = renderer.getRenderedCommit()
 
-            renderedCommit.setId(commit.getName())
+            renderedCommit.setId(commit.getId().name())
             renderedCommit.setAuthor(commit.getAuthorIdent().getName())
             renderedCommit.setAuthorEmail(commit.getAuthorIdent().getEmailAddress())
             renderedCommit.setFullMessage(commit.fullMessage)
