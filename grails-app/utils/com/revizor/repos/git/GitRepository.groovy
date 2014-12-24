@@ -43,8 +43,9 @@ class GitRepository implements IRepository {
 
         def dirRepo = new File(this.repoHome)
         if (dirRepo.exists()) {
-            dirRepo.delete()
-            dirRepo.mkdirs()
+            throw new RuntimeException("""The installation directory ${dirRepo.getAbsolutePath()} exists
+                                             and there is another repository. To proceed please select another
+                                             directory name or remove the repository that is hosted on in this directory.""")
         }
 
         CloneCommand command = Git.cloneRepository()

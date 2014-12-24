@@ -1,6 +1,7 @@
 package com.revizor
 
 import com.revizor.repos.IRepository
+import com.revizor.utils.Constants
 import grails.transaction.Transactional
 import revizor.HelpTagLib
 
@@ -142,7 +143,14 @@ class RepositoryController {
             return
         }
 
+        def directoryPath = Constants.LOCAL_REPO_PATH + File.separator + repositoryInstance.getFolderName()
         repositoryInstance.delete flush:true
+
+        // remove the directory, where old repository was hosted
+        def isSuccess = new File(directoryPath).deleteDir()
+        if (!isSuccess) {
+            throw new RuntimeException("Cant delete directory ${directoryPath}")
+        }
 
         request.withFormat {
             form multipartForm {
