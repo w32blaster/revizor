@@ -264,3 +264,6 @@ html, body
 .delete-issue-ticket-btn {
     margin-left: 7px;
 }
+.form-container {
+    max-width: 600px;
+}

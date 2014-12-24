@@ -20,6 +20,7 @@
 
             <g:render template="/user/select_avatar" model="[id: repositoryInstance?.ident()]"/>
 
+			<div class="form-container">
 			<g:form url="[resource:repositoryInstance, action:'update']" method="PUT" >
 				<g:hiddenField name="version" value="${repositoryInstance?.version}" />
 				<fieldset class="form">
@@ -29,6 +30,7 @@
 					<g:actionSubmit class="btn btn-default btn-primary" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />
 				</fieldset>
 			</g:form>
+			</div>
 
 	</body>
 </html>

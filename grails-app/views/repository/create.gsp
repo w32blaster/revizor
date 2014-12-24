@@ -16,14 +16,15 @@
 			<g:render template="/layouts/actionButton" />
 
 
-			<div class="input-group">
-				<g:form url="[resource:repositoryInstance, action:'save']" >
+			<div class="form-container">
+				<g:form url="[resource:repositoryInstance, action:'save']" class="form-horizontal" >
 					<fieldset class="form">
                         <g:hiddenField name="hasImage" value="false"/>
 						<g:render template="form"/>
 					</fieldset>
 					<fieldset class="buttons">
 						<button id="clone-repo-btn" name="create" type="submit" class="btn btn-default btn-primary">
+							<span class="glyphicon glyphicon-plus"></span>
 							${message(code: 'default.button.create.label', default: 'Create')}
 						</button>
 					</fieldset>
