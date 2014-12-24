@@ -8,7 +8,7 @@
 
             var refreshRepositoryUrl = "${createLink(controller: 'repository', action: 'refreshRepository', id: repoId )}";
 
-            $('#updateRepositoryButton').on('click', function () {
+            $('#update-repository-button').on('click', function () {
                 var $btn = $(this).button('toggle');
                 $btn.attr('disabled','disabled');
                 $btn.children().toggleClass("glyphicon-refresh-animate");
@@ -35,6 +35,6 @@
     })(jQuery);
 </g:javascript>
 
-<button id="updateRepositoryButton" class="btn btn-primary">
+<button id="update-repository-button" class="btn btn-primary">
     <span class="glyphicon glyphicon-refresh"></span>
 </button>

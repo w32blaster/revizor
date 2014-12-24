@@ -23,10 +23,20 @@
 						<g:render template="form"/>
 					</fieldset>
 					<fieldset class="buttons">
-						<g:submitButton name="create" class="btn btn-default btn-primary" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+						<button id="clone-repo-btn" name="create" type="submit" class="btn btn-default btn-primary">
+							${message(code: 'default.button.create.label', default: 'Create')}
+						</button>
 					</fieldset>
 				</g:form>
 			</div>
+
+			<r:script>
+				$('#clone-repo-btn').on('click', function () {
+					var $btn = $(this).button('toggle');
+					$btn.attr('disabled','disabled');
+					$btn.html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
+				});
+			</r:script>
 
 	</body>
 </html>
