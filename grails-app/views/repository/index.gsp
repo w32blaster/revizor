@@ -33,7 +33,13 @@
 				<tbody>
 				<g:each in="${repositoryInstanceList}" status="i" var="repositoryInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-						<td><g:link action="show" id="${repositoryInstance.id}">${fieldValue(bean: repositoryInstance, field: "url")}</g:link></td>
+						<td>
+							<g:link action="show" id="${repositoryInstance.id}">
+								<hs:maskPassword>
+									${fieldValue(bean: repositoryInstance, field: "url")}
+								</hs:maskPassword>
+							</g:link>
+						</td>
 						<td>${fieldValue(bean: repositoryInstance, field: "title")}</td>
 						<td>${fieldValue(bean: repositoryInstance, field: "folderName")}</td>
 						<td>${fieldValue(bean: repositoryInstance, field: "type")}</td>
