@@ -14,8 +14,8 @@
 			<g:render template="/layouts/showErrors" model="[instance: userInstance]"/>
 
 			<g:render template="/layouts/actionButton" />
-			
-			<div class="input-group">
+
+			<div class="form-container">
 				<g:form url="[resource:userInstance, action:'save']"  >
 					<fieldset class="form">
                         <g:hiddenField name="hasImage" value="false"/>

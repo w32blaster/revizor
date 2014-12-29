@@ -25,7 +25,11 @@
 				<li class="form-group">
 					<span id="url-label" class="property-label"><g:message code="repository.url.label" default="Url" /></span>
 					
-						<span class="property-value" aria-labelledby="url-label"><g:fieldValue bean="${repositoryInstance}" field="url"/></span>
+						<span class="property-value" aria-labelledby="url-label">
+							<hs:maskPassword>
+								<g:fieldValue bean="${repositoryInstance}" field="url"/>
+							</hs:maskPassword>
+						</span>
 					
 				</li>
 				</g:if>

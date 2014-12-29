@@ -16,7 +16,7 @@
 
 		<g:render template="/layouts/actionButton" />
 
-		<div class="input-group">
+		<div class="form-container">
 			<g:form url="[resource:issueTrackerInstance, action:'update']" method="PUT" >
 				<g:hiddenField name="version" value="${issueTrackerInstance?.version}" />
 				<fieldset class="form">

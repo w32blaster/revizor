@@ -5,7 +5,7 @@
 <div class="form-group ${hasErrors(bean: repositoryInstance, field: 'url', 'error')} ">
 	<label for="url" class="col-lg-3">
 		<g:message code="repository.url.label" default="Url" />
-		<a href="https://github.com/w32blaster/revizor/wiki/Clone-a-repository" target="_blank" title="<g:message code="wiki.clone.repository" />">
+		<a href="${grailsApplication.config.links.wiki.clone}" target="_blank" title="<g:message code="wiki.clone.repository" />">
 			<span class="glyphicon glyphicon-info-sign"></span>
 		</a>
 	</label>

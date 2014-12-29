@@ -16,6 +16,7 @@
 
 	<g:render template="/layouts/actionButton" />
 
+	<div class="form-container">
 			<g:form class="form-horizontal"  url="[resource:issueInstance, action:'save']" >
 				<fieldset class="form">
 					<g:render template="form"/>
@@ -24,6 +25,7 @@
 					<g:submitButton name="create" class="btn btn-primary" value="${message(code: 'default.button.create.label', default: 'Create')}" />
 				</fieldset>
 			</g:form>
+		</div>
 
 	</body>
 </html>

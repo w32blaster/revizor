@@ -2,44 +2,49 @@
 
 
 <div class="form-group ${hasErrors(bean: userInstance, field: 'email', 'error')} ">
-	<label for="email">
+	<label for="email" class="col-lg-3">
 		<g:message code="user.email.label" default="Email" />
 		
 	</label>
-	<g:field type="email" name="email" class="form-control" value="${userInstance?.email}"/>
-
+	<div class="col-lg-9">
+		<g:field type="email" name="email" class="form-control" value="${userInstance?.email}" placeholder="user@example.com"/>
+	</div>
 </div>
 
 <div class="form-group ${hasErrors(bean: userInstance, field: 'username', 'error')} ">
-	<label for="username">
+	<label for="username" class="col-lg-3">
 		<g:message code="user.username.label" default="username" />
 		
 	</label>
-	<g:textField class="form-control" name="username" value="${userInstance?.username}"/>
-
+	<div class="col-lg-9">
+		<g:textField class="form-control" name="username" value="${userInstance?.username}"/>
+	</div>
 </div>
 
 <div class="form-group ${hasErrors(bean: userInstance, field: 'password', 'error')} ">
-	<label for="password">
+	<label for="password" class="col-lg-3">
 		<g:message code="user.password.label" default="Password" />
 	</label>
-	<g:passwordField class="form-control" name="password" value="" />
+	<div class="col-lg-9">
+		<g:passwordField class="form-control" name="password" value="" />
+	</div>
 </div>
 
 <div class="form-group ${hasErrors(bean: userInstance, field: 'position', 'error')} ">
-	<label for="position">
+	<label for="position" class="col-lg-3">
 		<g:message code="user.position" default="position" />
 	</label>
-	<g:textField  class="form-control" name="position"  value="${userInstance?.position}" placeholder="Developer"/>
-
+	<div class="col-lg-9">
+		<g:textField  class="form-control" name="position"  value="${userInstance?.position}" placeholder="Developer"/>
+	</div>
 </div>
 
+<%--
 <div class="form-group ${hasErrors(bean: userInstance, field: 'comments', 'error')} ">
-	<label for="comments">
-		<g:message code="user.comments.label" default="Comments" />
-		
+	<label for="comments" class="col-lg-3">
+		<g:message code="user.comments.label" default="Comments" id="comments" />
 	</label>
-	
+
 <ul class="one-to-many">
 <g:each in="${userInstance?.comments?}" var="c">
     <li><g:link controller="comment" action="show" id="${c.id}">${c?.encodeAsHTML()}</g:link></li>
@@ -49,23 +54,25 @@
 </li>
 </ul>
 
-
 </div>
 
 <div class="form-group ${hasErrors(bean: userInstance, field: 'repositories', 'error')} ">
-	<label for="repositories">
+	<label for="repositories" class="col-lg-3">
 		<g:message code="user.repositories.label" default="Repositories" />
 	</label>
-	<g:select  class="form-control" name="repositories" from="${com.revizor.Repository.list()}" multiple="multiple" optionKey="id" size="5" value="${userInstance?.repositories*.id}" class="many-to-many"/>
-
+	<div class="col-lg-9">
+		<g:select  class="form-control" name="repositories" from="${com.revizor.Repository.list()}" multiple="multiple" optionKey="id" size="5" value="${userInstance?.repositories*.id}" class="many-to-many"/>
+	</div>
 </div>
+--%>
 
 <div class="form-group ${hasErrors(bean: userInstance, field: 'role', 'error')} required">
-	<label for="role">
+	<label for="role" class="col-lg-3">
 		<g:message code="user.role.label" default="Role" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select  class="form-control" name="role" from="${com.revizor.Role?.values()}" keys="${com.revizor.Role.values()*.name()}" required="" value="${userInstance?.role?.name()}" />
-
+	<div class="col-lg-9">
+		<g:select  class="form-control" name="role" from="${com.revizor.Role?.values()}" keys="${com.revizor.Role.values()*.name()}" required="" value="${userInstance?.role?.name()}" />
+	</div>
 </div>
 
