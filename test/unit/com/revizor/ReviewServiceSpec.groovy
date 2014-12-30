@@ -102,6 +102,23 @@ namely here: ${Constants.SMART_COMMIT_CREATE_REVIEW}
             arr[2] == ['max@email.com', 'alice@email.com']
     }
 
+    void "test extracting emails of reviewers separated only with blank space"() {
+
+        given: ""
+            def singleline = "This is the single line commit message ${Constants.SMART_COMMIT_CREATE_REVIEW} max@email.com alice@email.com"
+        when:
+            def arr = service.getHeaderAndMessage(new Commit(fullMessage: singleline))
+
+        then:
+            arr[0] == "This is the single line commit message"
+
+        and:
+            arr[1] == "no description"
+
+        and: 'both emails are extracted to list'
+            arr[2] == ['max@email.com', 'alice@email.com']
+    }
+
     void "detects one issue ticket added as smart commit"() {
         given:
             def issueTracker = new IssueTracker(
