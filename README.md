@@ -1,6 +1,8 @@
 Revizor
 =======
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/w32blaster/revizor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Revizor is a code review tool written using Groovy on Grails. 
 
 Development
