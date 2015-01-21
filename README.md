@@ -37,16 +37,13 @@ Screenshots
 The project is still under construction, thus here are some screenshots.
 
 **1. The main dashboard view**
-![The main dashboard](http://ic.pics.livejournal.com/w32blaster/10219455/96917/96917_original.png)
+![The main dashboard](http://w32blaster.github.io/revizor/images/screenshots/screenshot1.jpeg)
 
-**2. The list of all the avalable reviews**
-![The list of all the avaialbe reviews](http://ic.pics.livejournal.com/w32blaster/10219455/97118/97118_original.png)
+**2. The comments to a code**
+![The comments to a code](http://w32blaster.github.io/revizor/images/screenshots/screenshot3.jpeg)
 
-**3. The comments to a code**
-![The comments to a code](http://ic.pics.livejournal.com/w32blaster/10219455/97365/97365_original.png)
-
-**4. Review details view**
-![Review details view](http://ic.pics.livejournal.com/w32blaster/10219455/97572/97572_original.png)
+**3. Review details view**
+![Review details view](http://w32blaster.github.io/revizor/images/screenshots/screenshot2.jpeg)
 
 Any feedback or contribution is highly appreciated!
 
