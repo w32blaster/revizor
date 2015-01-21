@@ -8,6 +8,8 @@ Revizor
 
 [Official website.](http://w32blaster.github.io/revizor/)
 
+[Downloads](https://github.com/w32blaster/revizor/releases)
+
 Revizor is a code review tool written using Groovy on Grails. 
 
 Development
