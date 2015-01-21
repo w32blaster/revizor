@@ -1,7 +1,12 @@
+
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/w32blaster/revizor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Revizor
 =======
+
+![Revizor logo](http://w32blaster.github.io/revizor/images/revizor-logo4-160.png)
+
+[Official website.](http://w32blaster.github.io/revizor/)
 
 Revizor is a code review tool written using Groovy on Grails. 
 
