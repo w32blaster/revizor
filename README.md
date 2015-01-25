@@ -23,10 +23,11 @@ Features
 
 The main features of the Revizor:
 
-* it is free
-* Open Source
+* it is free and Open Source
 * running on JVM, build on Groovy & Grails
-* easy to install
+* easy to install and run (only one command)
+* [Smart Commits](https://github.com/w32blaster/revizor/wiki/Smart-commits)
+* [Integrations](https://github.com/w32blaster/revizor/wiki/Integrations)
 
 All the planned features are listed in [Issue Tracker](https://github.com/w32blaster/revizor/issues). Please, submit
 new one if you desire to see in the tool.
