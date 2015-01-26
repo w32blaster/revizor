@@ -34,16 +34,9 @@
                       </g:link>
                   </small>
                     
-                    <%-- 
-                    
-                    Is not implemented yet.
-                    Issue: https://github.com/w32blaster/revizor/issues/8
 
-				  	<g:render template="viewTypeButtons"></g:render>
-				  	
-                    --%>
-				
-				
+				<g:render template="viewTypeButtons"></g:render>
+
 				<g:if test="${flash.message}">
 					<div class="alert alert-warning">${flash.message}</div>
 				</g:if>
