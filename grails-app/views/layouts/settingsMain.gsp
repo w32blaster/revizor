@@ -32,7 +32,7 @@
     <div id="header" class="row" role="header">
       <div class="col-md-12">
         <a href="${createLink(uri: '/')}" class="inline-block">
-          <img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/>
+          <img src="${resource(dir: 'images', file: 'revizor-logo4-43.png')}" alt="Revizor logo"/>
         </a>
 
         <g:if test="${session.user}">
