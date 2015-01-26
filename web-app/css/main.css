@@ -267,3 +267,7 @@ html, body
 .form-container {
     max-width: 600px;
 }
+.graph-label {
+    position: relative;
+    z-index: 3;
+}

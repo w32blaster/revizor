@@ -65,7 +65,7 @@ class CommitSelectorTagLib {
                 def urlToObserveChangeset = g.createLink(controller: "observe", action: "show") + "/${attrs.repo.ident()}/${rev.id}/"
                 outHtml <<= """
                         <tr title="${rev.id}" height="${Constants.ROW_HEIGHT}">
-                            <td><span class="graph-line-text" style="padding-left: ${rev.padding}px"><a href="${urlToObserveChangeset}">${_getCommitMessageHtml(rev)}</a></span></td>
+                            <td><span class="graph-line-text" style="padding-left: ${rev.padding}px"><a class="graph-label" href="${urlToObserveChangeset}">${_getCommitMessageHtml(rev)}</a></span></td>
                             <td><span class="label label-default" title="${rev.authorEmail}">${rev.author}</span><td>
                             <td><a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.id])}" class="btn btn-default btn-xs tree-context-button">
                                 <span class="glyphicon glyphicon-plus"></span>
