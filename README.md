@@ -6,7 +6,7 @@ Revizor
 
 ![Revizor logo](http://w32blaster.github.io/revizor/images/revizor-logo4-160.png)
 
-[Official website.](http://w32blaster.github.io/revizor/)
+Official homepage: [revizor.reviews](http://revizor.reviews/)
 
 [Downloads](https://github.com/w32blaster/revizor/releases)
 
