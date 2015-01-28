@@ -33,8 +33,8 @@
             </g:link>
         </small>
 
-        <g:render template="/review/viewTypeButtons"></g:render>
 
+        <g:render template="/review/viewTypeButtons"></g:render>
 
         <g:if test="${flash.message}">
             <div class="alert alert-warning">${flash.message}</div>

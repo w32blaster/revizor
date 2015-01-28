@@ -51,7 +51,7 @@ class FilesTreeTagLib {
             }
 
             NodeFile root = this.buildMapOfFiles(fileNames);
-            def currentReviewMode = Constants.REVIEW_SINGLE_VIEW .equals(params["viewType"]) ? Constants.REVIEW_SINGLE_VIEW : Constants.REVIEW_SIDE_BY_SIDE_VIEW
+            def currentReviewMode = Constants.REVIEW_SIDE_BY_SIDE_VIEW .equals(params["viewType"]) ? Constants.REVIEW_SIDE_BY_SIDE_VIEW : Constants.REVIEW_SINGLE_VIEW
             def hrefFileDetailsBase = attrs.urlPrefix + "/" + currentReviewMode + "?" + Constants.PARAM_FILE_NAME + '='
 
             // print fileNames
