@@ -50,7 +50,11 @@ class DiffTagLib {
 						byte type = -1;
 						def newCommentFormId = "new-comment-container-${i}-id"
 						def commentContainerId = "comment-container-"
-						
+
+                        /*
+                            the first five lines should be skipped because it is a header.
+                            A content starts after the line starting with "@@" symbols
+                        */
 						if (line.startsWith('@@')) {
 							range = extractRange(line)
 
@@ -64,9 +68,9 @@ class DiffTagLib {
 										</tr>
 										"""
 							}
+
 							isContentStarted = true;
 						}
-	                	// skip first five lines, because it is a header
 	                	else if (isContentStarted) {
                             if (isSingleViewMode) {
                                 this.renderRowForSingleView(line, commentContainerId, newCommentFormId, i, type, isReview, range, extension, mapComments)
