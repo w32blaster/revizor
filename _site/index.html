@@ -1,21 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-Design by TEMPLATED
-http://templated.co
-Released for free under the Creative Commons Attribution License
-
-Name       : Veridical 
-Description: A two-column, fixed-width design with dark color scheme.
-Version    : 1.0
-Released   : 20131203
+Design by Kristina Kanter
 
 -->
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" itemscope itemtype="http://schema.org/SoftwareApplication">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title></title>
+<title>Revizor</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
+<meta itemprop="applicationCategory" content="Code Review" />
+<meta itemprop="author" content="w32blaster" />
+<meta itemprop="creator" content="w32blaster" />
+<meta itemprop="url" content="http://revizor.reviews/" />
 <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
 <link href="stylesheets/default.css" rel="stylesheet" type="text/css" media="all" />
 <link href="stylesheets/fonts.css" rel="stylesheet" type="text/css" media="all" />
@@ -24,64 +21,61 @@ Released   : 20131203
 
 </head>
 <body>
-
-	<a href="https://github.com/w32blaster/revizor"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
-
-
 <div id="header-wrapper">
 	<div id="header" class="container">
 		<div id="menu">
 			<ul>
 				<li class="current_page_item"><a href="#" accesskey="1" title="">About</a></li>
 				<li><a href="screenshots" accesskey="2" title="">Screeshots</a></li>
-                <li><a href="https://github.com/w32blaster/revizor/wiki" target="_blank" accesskey="3" title="">Docs</a></li>
-				<li><a href="https://github.com/w32blaster/revizor" accesskey="4" target="_blank" title="">GitHub</a></li>
+                <li><a href="https://github.com/w32blaster/revizor/wiki" target="_blank" accesskey="3" title="Docs">Docs</a></li>
+				<li><a href="https://github.com/w32blaster/revizor" accesskey="4" target="_blank" title="GitHub repo" itemprop="url">GitHub</a></li>
 				<li><a href="https://github.com/w32blaster/revizor/releases" accesskey="5" title="">Downloads</a></li>
 			</ul>
 		</div>
 		<div id="logo">
-<img src="images/revizor-logo4-160.png" width="113" height="160" />
-			<h1><a href="#">Revizor</a></h1>
-			<span>The code review tool.</div>
-	</div>
+			<img itemprop="image" src="images/revizor-logo4-160.png" width="113" height="160" alt="Revizor logo"/>
+			<h1 itemprop="name"><a href="#">Revizor</a></h1>
+			<span itemprop="description">The code review tool.</span>
+		</div>
+</div>
 </div>
 <div id="wrapper1">
 	<div id="welcome" class="container">
 		
 		<div class="title">
 			<h2>Social Coding</h2>
-			<span class="byline">Open Source solution for code review</span> </div>
+			<span class="byline" itemprop="headline">Open Source solution for code review</span> </div>
 		<div class="content">
-			<p><strong>Revizor</strong> — is a code review tool and a repository browser. It allows you to build a social coding atmosphere around your code base.
+			<p itemprop="about"><strong>Revizor</strong> — is a code review tool and a repository browser. It allows you to build a social coding atmosphere around your code base.
 				Keep track on what is going in your repositories.</p>
-			<a href="https://github.com/w32blaster/revizor/releases" class="button">Download</a>  </div>
+			<a itemprop="downloadUrl" href="https://github.com/w32blaster/revizor/releases" class="button" target="_blank">Download</a>  </div>
 	</div>
 </div>
-<div id="wrapper3">
+<div id="wrapper2">
 	<div id="portfolio" class="container">
 		<div class="title">
 			<h2>Why Revizor?</h2>
 			<span class="byline">Choose right tool for your repository</span> </div>
-		<div class="pbox1">
-			<div class="column1">
+		<div class="pbox1" itemprop="featureList">
+			<div class="column column4">
 				<div class="box"> <span class="icon icon-github"></span>
 					<h3>Open source</h3>
 					<p>Revizor is <strong>free</strong> and open source application, that is hosted on <a href="https://github.com/w32blaster/revizor">GitHub</a> and written on Groovy on Grails.</p>
 				</div>
 			</div>
-			<div class="column2">
+			<div class="column column4">
 				<div class="box"> <span class="icon icon-magic"></span>
 					<h3>Simple to install</h3>
 					<p>Revizor can be executed using only <strong>one</strong> command <i>java -jar</i>, because it is distributed as self-contained archive (<strong>.jar</strong>) or deployed to your favorite container as <strong>.war</strong> file.</p>
 				</div>
 			</div>
-			<div class="column3">
+			<div class="column column4">
 				<div class="box"> <span class="icon icon-comments"></span>
 					<h3>Smart commits</h3>
 					<p>You can send simple commands to Revizor in a commit message in your favourite CVS. Check the <a href="https://github.com/w32blaster/revizor/wiki/Smart-commits" target="_blank">docs.</a></p>
 				</div>
 			</div>
-			<div class="column4">
+			<div class="column column4">
 				<div class="box"> <span class="icon icon-exchange"></span>
 					<h3>Integrations</h3>
 					<p>Revizor can be easily integrated with issue trackers or chats. Check the <a href="https://github.com/w32blaster/revizor/wiki/Integrations" target="_blank">list of supported services</a>.</p>
@@ -92,17 +86,17 @@ Released   : 20131203
 	</div>
 
     <div id="screenshot-section" class="container">
-        <a href="screenshots" class="button">Screenshots</a>
+        <a href="#" class="button">Screenshots</a>
     </div>
 
 </div>
-<div id="wrapper2">
+<div id="wrapper3">
 	<div id="featured" class="container">
-		<div class="box1">
+		<div class="column column2">
 			<h2><span class="icon icon-group"></span>Mission</h2>
 			<p>Code review — it is not only about inspection and controlling. It is more about communication within a code. The development should be socialized, allowing to share the ownerhip of the whole product across the team. Revizor is aimed to give a free tool to connect programmers in a code context, issue trackers and CVS system.</p>
 		</div>
-		<div class="box2">
+		<div class="column column2">
 			<h2><span class="icon icon-briefcase"></span>Easy to get. Easy to install.</h2>
 			<p>A development tool should not be complicated. Revizor is aimed to be easy to start working. There is only one requirement - Java Runtime Environment. If you have JRE installed on your server, you are already can use Revizor. Next step you need to add your repositories and you are ready to go!</p>
            
@@ -115,13 +109,21 @@ Released   : 20131203
 		<h2>Get in touch</h2>
 		<span class="byline">Feel free to follow us</span> </div>
 	<ul class="contact">
-		<li><a href="https://twitter.com/revizor_tool" target="_blank" class="icon icon-twitter"><span>Twitter</span></a></li>
-		<li><a href="https://github.com/w32blaster/revizor" target="_blank" class="icon icon-github"><span></span></a></li>
+		<li>
+			<a href="https://twitter.com/revizor_tool" target="_blank" class="icon icon-twitter"><span>Twitter</span></a>
+		</li>
+		<li>
+			<a href="https://github.com/w32blaster/revizor" target="_blank" class="icon icon-github"><span></span></a>
+		</li>
 	</ul>
-	<p><!-- &copy; Revizor. All rights reserved. | --> Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
-</div>
-</body>
 
+	<p>Licence <a href="https://github.com/w32blaster/revizor/blob/master/LICENSE" rel="nofollow" itemprop="license">GPL</a>.</p>
+
+</div>
+
+<a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"></a>
+
+</body>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
