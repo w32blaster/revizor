@@ -84,6 +84,9 @@ html, body
 	color: #036902;
 }
 
+#diff-container-id {
+    overflow-y: auto;
+}
 #diff-panel-id .btn-comment {
     visibility: hidden;
     margin-right: 10px;
@@ -270,4 +273,19 @@ html, body
 .graph-label {
     position: relative;
     z-index: 3;
+}
+
+#collapse-button-id {
+    position: absolute;
+    left: 4px;
+    top: 86px;
+    z-index: 1;
+}
+
+#tree-files-id {
+    margin-top: 30px;
+}
+
+#review-back-id {
+    margin-left: 17px;
 }

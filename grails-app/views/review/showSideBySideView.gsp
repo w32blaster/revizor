@@ -15,19 +15,20 @@
 
 <div class="row">
 
-	<div class="col-md-3">
+    <%-- The "Collapse/Expand" button--%>
+    <g:render template="/observeChangeset/collapseButton" />
 
-		<ft:showFilesForReview
+    <div id="tree-files-id" class="col-md-3">
+        <ft:showFilesForReview
 				repo="${reviewInstance.repository}"
 				commitID="${reviewInstance.commits[0]}"
 				reviewId="${reviewInstance.id}"
 				urlPrefix="${urlPrefix}"/>
+    </div>
 
-	</div>
+	<div id="code-review-column-id" class="col-md-9">
 
-	<div class="col-md-9">
-
-		<small>
+		<small id="review-back-id">
 			<g:link controller="review" action="show" params="[id: reviewInstance.id]" class="btn btn-default btn-success btn-xs">
 				<span class="glyphicon glyphicon-arrow-left"></span>
 				<g:message code="default.back.label" args="[entityName]" />
