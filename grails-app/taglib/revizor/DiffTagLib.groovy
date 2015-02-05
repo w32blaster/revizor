@@ -7,12 +7,17 @@ import com.revizor.CommentType
 import com.revizor.LineType
 import com.revizor.utils.Constants
 
+import javax.sound.sampled.Line
+
 /**
  * TagLib renders a code of a changed file in a diff format.
  * It means, that it sets up line numbers on the left side
  * and highlights added lines with green colour and removed lines
  * with red one.
  *
+ * There are two modes: Single and Side-to-Side. Single mode shows code in one column, where
+ * deleted and added lines are displayed on different rows. In the Side-to-side mode
+ * an old code and new one are displayed in two columns.
  */
 class DiffTagLib {
 
@@ -122,12 +127,15 @@ class DiffTagLib {
         def lstLeft = []
         def lstRight = []
 
+        mapComments.each { k,v ->
+            v.each { comment ->
+                println "[$k] = '${comment.text}', type = ${comment.typeOfLine}"
+            }
+        }
+
         file.eachWithIndex { line, i ->
 
-            byte type = -1;
-            def newCommentFormId = "new-comment-container-${i}-id"
-
-            if (line.startsWith('@@')) {
+            if (line.startsWith('@@')) { // for example "@@ -47,51 +47,51 @@ public class Oven {"
 
                 // range is defined before each code hunk. We use these values as line numbers, increase them on each iteration
                 range = this.extractRange(line)
@@ -154,7 +162,7 @@ class DiffTagLib {
             // skip first five lines, because it is a header
             else if (isContentStarted) {
                 // collect lines to two arrays
-                this.collectLinesIntoTwoArrays(lstLeft, lstRight, line, range)
+                this.collectLinesIntoTwoArrays(lstLeft, lstRight, line, range, i)
             }
         }
 
@@ -162,19 +170,24 @@ class DiffTagLib {
         this.dumpLinesToRendering(lstLeft, lstRight, isReview, extension, mapComments)
     }
 
-
-
+    /**
+     * Render code lines for one code hunk. Used only in Side-by-side Mode.
+     *
+     * @param lstLeft
+     * @param lstRight
+     * @param isReview
+     * @param extension
+     * @param mapComments
+     */
     private void dumpLinesToRendering(ArrayList lstLeft, ArrayList lstRight, boolean isReview, extension, Map<Integer, List<Comment>> mapComments) {
             def maxLinesCnt = Math.max(lstLeft.size(), lstRight.size())
             for (int i = 0; i < maxLinesCnt; i++) {
-                def newCommentFormId = "new-comment-container-${i}-id"
                 final CodeLine leftLine = (lstLeft.size() > i) ? lstLeft.get(i) : new CodeLine(codeLine: "")
                 final CodeLine rightLine = (lstRight.size() > i) ? lstRight.get(i) : new CodeLine(codeLine: "")
                 // render one single row in two columns
                 this.renderRowForSideToSideView(
                         leftLine,
                         rightLine,
-                        newCommentFormId,
                         i,
                         isReview,
                         extension,
@@ -208,7 +221,7 @@ class DiffTagLib {
             out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.ORIGINAL, range.original, i, commentContainerId)}</td>"
             out << "<td class='line-deleted'>${range.original}</td>"
             out << "<td> </td>"
-            commentsForTheLine = findCommentsForLine(mapComments, range.original, LineType.ORIGINAL)
+            commentsForTheLine = findCommentsForLine(mapComments, range.original, [LineType.ORIGINAL])
             range.original++
         } else if (line.startsWith('+')) {
             commentContainerId = CONTAINER_ID_PREFIX + range.new + "-" + LineType.NEW
@@ -216,14 +229,14 @@ class DiffTagLib {
             out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.NEW, range.new, i, commentContainerId)}</td>"
             out << "<td> </td>"
             out << "<td><span class='line-added'>${range.new}</span></td>"
-            commentsForTheLine = findCommentsForLine(mapComments, range.new, LineType.NEW)
+            commentsForTheLine = findCommentsForLine(mapComments, range.new, [LineType.NEW])
             range.new++
         } else {
             commentContainerId = CONTAINER_ID_PREFIX + range.original + "-" + LineType.UNMODIFIED
             out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.UNMODIFIED, range.original, i, commentContainerId)}</td>"
             out << "<td>${range.original}</td>"
             out << "<td>${range.new++}</td>"
-            commentsForTheLine = findCommentsForLine(mapComments, range.original, LineType.UNMODIFIED)
+            commentsForTheLine = findCommentsForLine(mapComments, range.original, [LineType.UNMODIFIED])
             range.original++
         }
 
@@ -235,25 +248,25 @@ class DiffTagLib {
         out << "</tr>"
     }
 
-    private void collectLinesIntoTwoArrays(listLeft, listRight, line, range) {
+    private void collectLinesIntoTwoArrays(listLeft, listRight, line, range, idx) {
         if (line.startsWith('-')) {
-            listLeft << new CodeLine(type: Constants.ACTION_DELETED, lineNumber: range.original, codeLine: line, lineType: LineType.ORIGINAL)
+            listLeft << new CodeLine(type: Constants.ACTION_DELETED, lineNumber: range.original, codeLine: line, lineType: LineType.ORIGINAL, no: idx)
             range.original++
 
         } else if (line.startsWith('+')) {
-            listRight << new CodeLine(type: Constants.ACTION_ADDED, lineNumber: range.new, codeLine: line, lineType: LineType.NEW)
+            listRight << new CodeLine(type: Constants.ACTION_ADDED, lineNumber: range.new, codeLine: line, lineType: LineType.NEW, no: idx)
             range.new++
 
         } else {
-            listLeft << new CodeLine(lineNumber: range.original, codeLine: line, lineType: LineType.UNMODIFIED)
-            listRight << new CodeLine(lineNumber: range.new, codeLine: line, lineType: LineType.UNMODIFIED)
+            listLeft << new CodeLine(lineNumber: range.original, codeLine: line, lineType: LineType.UNMODIFIED, no: idx)
+            listRight << new CodeLine(lineNumber: range.new, codeLine: line, lineType: LineType.UNMODIFIED, no: idx)
             range.original++
-            //range.new++
+            range.new++
         }
     }
 
     /**
-     * Renders only one row (line) depending on its type for "Side to side" mode.
+     * Renders only one row (line) with two columns for the "Side to side" mode.
      * Additionally, it prints all the comments under this line.
      *
      * @param line
@@ -267,23 +280,50 @@ class DiffTagLib {
      * @param extension
      * @param mapComments
      */
-    private void renderRowForSideToSideView(CodeLine lineLeft, CodeLine lineRight, newCommentFormId, i, isReview, extension, mapComments) {
+    private void renderRowForSideToSideView(CodeLine lineLeft, CodeLine lineRight, i, isReview, extension, mapComments) {
         out << "<tr>"
 
-        def commentsForTheLeftLine = findCommentsForLine(mapComments, lineLeft.lineNumber, lineLeft.lineType)
-        def commentsForTheRightLine = findCommentsForLine(mapComments, lineRight.lineNumber, lineRight.lineType)
-        def commentContainerId = CONTAINER_ID_PREFIX + lineLeft.lineNumber + "-" + LineType.UNMODIFIED
+        def commentContainerLeftId = CONTAINER_ID_PREFIX + lineLeft.lineNumber + "-" + lineLeft.lineType
+        def commentContainerRightId = CONTAINER_ID_PREFIX + lineRight.lineNumber + "-" + LineType.NEW
 
+        def commentsForTheLeftLine = this.findCommentsForLine(mapComments, lineLeft.lineNumber, [LineType.ORIGINAL, LineType.UNMODIFIED])
+        def commentsForTheRightLine = this.findCommentsForLine(mapComments, lineRight.lineNumber, [LineType.NEW])
+
+        def newCommentFormLeftId = "new-comment-container-${lineLeft.no}-left-id"
+        def newCommentFormRightId = "new-comment-container-${lineRight.no}-right-id"
+
+        /*
+         Left Column:
+         */
         out << "<td>"
         out << printStyledLineOfCode(lineLeft.codeLine, lineLeft.type, extension)
-        out << this.renderComments(commentContainerId, commentsForTheLeftLine, newCommentFormId)
+        out << this.renderComments(commentContainerLeftId, commentsForTheLeftLine, newCommentFormLeftId)
         out << "</td>"
-        out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.UNMODIFIED, lineLeft.lineNumber, i, commentContainerId)}</td>"
+        if (lineLeft.lineType == LineType.ORIGINAL) {
+            out << "<td>${getButtonHtml(isReview, newCommentFormLeftId, LineType.ORIGINAL, lineLeft.lineNumber, i, commentContainerLeftId)}</td>"
+        }
+        else {
+            out << "<td>${getButtonHtml(isReview, newCommentFormLeftId, LineType.UNMODIFIED, lineLeft.lineNumber, i, commentContainerLeftId)}</td>"
+        }
         out << "<td>${lineLeft.lineNumber == 0 ? "" : lineLeft.lineNumber}</td>"
+
+        /*
+         Right column:
+         */
         out << "<td>${lineRight.lineNumber == 0 ? "" : lineRight.lineNumber}</td>"
+
+        if (lineRight.lineType == LineType.NEW) {
+            out << "<td>${getButtonHtml(isReview, newCommentFormRightId, LineType.NEW, lineRight.lineNumber, i, commentContainerRightId)}</td>"
+        }
+        else {
+            out << "<td></td>"
+        }
+
         out << "<td>"
         out << printStyledLineOfCode(lineRight.codeLine, lineRight.type, extension)
-        out << this.renderComments(commentContainerId, commentsForTheRightLine, newCommentFormId)
+        if (lineRight.lineType == LineType.NEW) {
+            out << this.renderComments(commentContainerRightId, commentsForTheRightLine, newCommentFormRightId)
+        }
         out << "</td>"
 
         out << "</tr>"
@@ -307,10 +347,12 @@ class DiffTagLib {
 
     private String getButtonHtml(isReview, newCommentFormID, lineType, lineOfCode, idx, commentContainerID) {
 
+        def style = (lineType == LineType.ORIGINAL) ? "btn-comment-deleted" : ( (lineType == LineType.NEW) ? "btn-comment-added" : "" )
+
 		// the function "showForm" in the _commentsScript.gsp
 		return isReview ?
 				"""
-				<button id='show-form-btn-${idx}' class='btn-comment btn btn-default btn-xs' onclick='showForm(\"${newCommentFormID}\", \"${lineType}\", ${lineOfCode}, \"${commentContainerID}\", null, 0);'>
+				<button id='show-form-btn-${idx}' class='btn-comment btn btn-default btn-xs ${style}' onclick='showForm(\"${newCommentFormID}\", \"${lineType}\", ${lineOfCode}, \"${commentContainerID}\", null, 0);'>
 					<span class='glyphicon glyphicon-comment'></span>
 				</button>
 				"""
@@ -354,14 +396,25 @@ class DiffTagLib {
             ]
     }
 
-    private List findCommentsForLine(map, idx, type) {
-    	def lst = map[idx]
-    	return (lst && lst[0].typeOfLine == type) ? lst : null 
+    /**
+     * Extracts comments only for current line (idx) and type
+     *
+     * @param map - map "line number" <=> "list of comments"
+     * @param idx - line number
+     * @param lstTypes - list of comment types that expected to be returned
+     * @return
+     */
+    private List findCommentsForLine(map, idx, lstTypes) {
+    	def lstComments = map[idx]
+    	return (lstComments) ?
+                lstComments.findAll { it.typeOfLine in lstTypes}
+                : null
     }
 
     private class CodeLine {
         String codeLine
         int lineNumber
+        int no
         byte type
         LineType lineType
     }

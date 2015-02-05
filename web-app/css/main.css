@@ -108,7 +108,12 @@ html, body
     display: block;
     padding: 5px;
 }
-
+.btn-comment-deleted {
+    color: #cf0000 !important;
+}
+.btn-comment-added {
+    color: #036902 !important;
+}
 .code-table TD {
     vertical-align: top;
     padding: 0 3px;
@@ -117,7 +122,7 @@ html, body
 #reviewers-container-id {
     margin-bottom: 10px; 
 }
- .reviewer{
+.reviewer{
      max-width: 200px;
      margin-bottom: 0;
  }
