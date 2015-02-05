@@ -26,7 +26,9 @@ class DiffTagLib {
     static namespace = "sc"
 
     /**
-     * Print one commit in a diff format
+     * Print one file changeset in a DIFF format.
+     * There are two modes: Single and Side-to-Side.
+     *
      */
     def showDiffForCommit = { attrs, body ->
 		if (null == attrs.repo) {
@@ -41,7 +43,7 @@ class DiffTagLib {
 				if (isShown) {
 
                     def isSideBySideViewMode = Constants.REVIEW_SIDE_BY_SIDE_VIEW.equals(params["viewType"])
-					def isReview = (attrs.review != null)
+					def isReview = (attrs.review != null) // review or just simple observing
 					def comments = isReview ? Comment.findAllByReviewAndTypeAndFileName(attrs.review, CommentType.LINE_OF_CODE, attrs.fileName) : []
 					def mapComments = comments.groupBy({ comment -> comment.lineOfCode });
 					

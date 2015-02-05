@@ -9,7 +9,6 @@ class ObserveChangesetController {
         def repositoryInstance = Repository.get(params.repositoryId)
         def changeset = repositoryInstance.initImplementation().getCommitInfo(params.changeset)
 
-
         // view concrete file
         def view;
         switch (params.viewType) {
