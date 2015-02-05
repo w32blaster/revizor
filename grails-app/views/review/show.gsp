@@ -100,9 +100,14 @@
                                     </g:if>
                                 
                                     <g:if test="${reviewInstance?.commits}">
-                                        <dt>Commit count</dt>
+                                        <dt><g:message code="commit.commits"/></dt>
                                         <dd>    
-                                            <span id="commits-label" class="property-label">${reviewInstance?.commits.length}</span>                
+                                            <span id="commits-label" class="property-label">${reviewInstance?.commits.length}</span>
+                                            <ul>
+                                                <g:each in="${reviewInstance?.commits}" var="shaCommitId">
+                                                    <li><code>${shaCommitId}</code></li>
+                                                </g:each>
+                                            </ul>
                                         </dd>
                                     </g:if>
                                 </dl>

@@ -15,6 +15,8 @@ import com.revizor.utils.Constants
  *
  */
 class DiffTagLib {
+
+    private static final String CONTAINER_ID_PREFIX = "comment-container-"
 	
     static namespace = "sc"
 
@@ -42,73 +44,15 @@ class DiffTagLib {
 					def isContentStarted = false;
 					def range;
                     def extension = fileName[fileName.lastIndexOf('.')+1 .. -1]
-
-                    def lstLeft = []
-                    def lstRight = []
 					
 					out << "<h3>$fileName</h3>"
 	                out << '<div id="diff-panel-id" class="panel panel-default"><div id="diff-container-id" class="panel-body"><table class="code-table">'
-	                file.eachWithIndex { line, i ->
 
-						byte type = -1;
-						def newCommentFormId = "new-comment-container-${i}-id"
-						def commentContainerId = "comment-container-"
-						
-						if (line.startsWith('@@')) {
-							range = extractRange(line)
-
-							if (isContentStarted) {
-								// show the break between code hunks
-                                if (isSideBySideViewMode){
-                                    out << """
-                                            <tr>
-                                                <td colspan="2"><hr/></td>
-                                                <td><span class='glyphicon glyphicon-resize-small'></span> </td>
-                                                <td><span class='glyphicon glyphicon-resize-small'></span> </td>
-                                                <td><hr/></td
-                                            </tr>
-                                            """
-                                }
-                                else {
-                                    out << """
-                                            <tr>
-                                                <td> </td>
-                                                <td colspan='2'><span class='glyphicon glyphicon-resize-small'></span> </td>
-                                                <td><hr/></td>
-                                            </tr>
-                                            """
-                                }
-							}
-							isContentStarted = true;
-						}
-	                	// skip first five lines, because it is a header
-	                	else if (isContentStarted) {
-                            if (isSideBySideViewMode) {
-                                // collect
-                                this.collectLinesIntoTwoArrays(lstLeft, lstRight, line, range)
-                            }
-                            else {
-                                this.renderRowForSingleView(line, commentContainerId, newCommentFormId, i, type, isReview, range, extension, mapComments)
-                            }
-	                	}
-	                }
-
-                    // for Side-to-Side mode we should render code afterwards using two collections for each column
                     if (isSideBySideViewMode) {
-                        def maxLinesCnt = Math.max(lstLeft.size(), lstRight.size())
-                        for (int i = 0; i < maxLinesCnt; i++) {
-                            def commentContainerId = "comment-container-"
-                            def newCommentFormId = "new-comment-container-${i}-id"
-                            this.renderRowForSideToSideView(
-                                    (lstLeft.size() > i) ? lstLeft.get(i) : new CodeLine(codeLine: ""),
-                                    (lstRight.size() > i) ? lstRight.get(i) : new CodeLine(codeLine: ""),
-                                    commentContainerId,
-                                    newCommentFormId,
-                                    i,
-                                    isReview,
-                                    extension,
-                                    mapComments)
-                        }
+                        this.renderFileCodeForSideToSideMode(file, isContentStarted, isReview, range, extension, mapComments)
+                    }
+                    else {
+                        this.renderFileCodeForSingleMode(file, isContentStarted, isReview, range, extension, mapComments)
                     }
 
 	                out << '</table></div></div>'
@@ -119,11 +63,130 @@ class DiffTagLib {
     }
 
     /**
+     * Render code changes in DIFF format for a single file.
+     *
+     * @param file
+     * @param isContentStarted
+     * @param isSideBySideViewMode
+     * @param isReview
+     * @param range
+     * @param extension
+     * @param mapComments
+     * @param lstLeft
+     * @param lstRight
+     */
+    private void renderFileCodeForSingleMode(file, isContentStarted, isReview, range, extension, mapComments) {
+        file.eachWithIndex { line, i ->
+
+            byte type = -1;
+            def newCommentFormId = "new-comment-container-${i}-id"
+
+            if (line.startsWith('@@')) {
+
+                // range is defined before each code hunk. We use these values as line numbers, increase them on each iteration
+                range = this.extractRange(line)
+
+                if (isContentStarted) {
+                    // show the break between code hunks
+                        out << """
+                                    <tr>
+                                        <td> </td>
+                                        <td colspan='2'><span class='glyphicon glyphicon-resize-small'></span> </td>
+                                        <td><hr/></td>
+                                    </tr>
+                                    """
+                }
+                isContentStarted = true;
+            }
+            // skip first five lines, because it is a header
+            else if (isContentStarted) {
+                this.renderRowForSingleView(line, newCommentFormId, i, type, isReview, range, extension, mapComments)
+            }
+        }
+    }
+
+    /**
+     * Render code changes in DIFF format for a single file in Side-to-side mode.
+     *
+     * @param file
+     * @param isContentStarted
+     * @param isSideBySideViewMode
+     * @param isReview
+     * @param range
+     * @param extension
+     * @param mapComments
+     * @param lstLeft
+     * @param lstRight
+     */
+    private void renderFileCodeForSideToSideMode(file, isContentStarted, isReview, range, extension, mapComments) {
+        def lstLeft = []
+        def lstRight = []
+
+        file.eachWithIndex { line, i ->
+
+            byte type = -1;
+            def newCommentFormId = "new-comment-container-${i}-id"
+
+            if (line.startsWith('@@')) {
+
+                // range is defined before each code hunk. We use these values as line numbers, increase them on each iteration
+                range = this.extractRange(line)
+
+                if (isContentStarted) {
+
+                    // at the end of code hunk dump (render) collected lines and draw "break" line
+                    this.dumpLinesToRendering(lstLeft, lstRight, isReview, extension, mapComments)
+                    lstLeft = []
+                    lstRight = []
+
+                    out << """
+                                <tr>
+                                    <td colspan="2"><hr/></td>
+                                    <td><span class='glyphicon glyphicon-resize-small'></span> </td>
+                                    <td><span class='glyphicon glyphicon-resize-small'></span> </td>
+                                    <td><hr/></td
+                                </tr>
+                                """
+
+                }
+                isContentStarted = true;
+            }
+            // skip first five lines, because it is a header
+            else if (isContentStarted) {
+                // collect lines to two arrays
+                this.collectLinesIntoTwoArrays(lstLeft, lstRight, line, range)
+            }
+        }
+
+        // final render
+        this.dumpLinesToRendering(lstLeft, lstRight, isReview, extension, mapComments)
+    }
+
+
+
+    private void dumpLinesToRendering(ArrayList lstLeft, ArrayList lstRight, boolean isReview, extension, Map<Integer, List<Comment>> mapComments) {
+            def maxLinesCnt = Math.max(lstLeft.size(), lstRight.size())
+            for (int i = 0; i < maxLinesCnt; i++) {
+                def newCommentFormId = "new-comment-container-${i}-id"
+                final CodeLine leftLine = (lstLeft.size() > i) ? lstLeft.get(i) : new CodeLine(codeLine: "")
+                final CodeLine rightLine = (lstRight.size() > i) ? lstRight.get(i) : new CodeLine(codeLine: "")
+                // render one single row in two columns
+                this.renderRowForSideToSideView(
+                        leftLine,
+                        rightLine,
+                        newCommentFormId,
+                        i,
+                        isReview,
+                        extension,
+                        mapComments)
+            }
+    }
+
+    /**
      * Renders only one row (line) depending on its type for "Single view" mode.
      * Additionally, it prints all the comments under this line.
      *
      * @param line
-     * @param commentContainerId
      * @param newCommentFormId
      * @param i
      * @param type
@@ -133,30 +196,35 @@ class DiffTagLib {
      * @param extension
      * @param mapComments
      */
-    private void renderRowForSingleView(line, commentContainerId, newCommentFormId, i, byte type, isReview, range, extension, mapComments) {
+    private void renderRowForSingleView(line, newCommentFormId, i, byte type, isReview, range, extension, mapComments) {
         def commentsForTheLine
+        def commentContainerId
+
         out << "<tr>"
 
         if (line.startsWith('-')) {
-            commentContainerId += range.original + "-" + LineType.ORIGINAL
+            commentContainerId = CONTAINER_ID_PREFIX + range.original + "-" + LineType.ORIGINAL
             type = Constants.ACTION_DELETED
             out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.ORIGINAL, range.original, i, commentContainerId)}</td>"
             out << "<td class='line-deleted'>${range.original}</td>"
             out << "<td> </td>"
-            commentsForTheLine = findCommentsForLine(mapComments, range.original++, LineType.ORIGINAL)
+            commentsForTheLine = findCommentsForLine(mapComments, range.original, LineType.ORIGINAL)
+            range.original++
         } else if (line.startsWith('+')) {
-            commentContainerId += range.new + "-" + LineType.NEW
+            commentContainerId = CONTAINER_ID_PREFIX + range.new + "-" + LineType.NEW
             type = Constants.ACTION_ADDED
             out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.NEW, range.new, i, commentContainerId)}</td>"
             out << "<td> </td>"
             out << "<td><span class='line-added'>${range.new}</span></td>"
-            commentsForTheLine = findCommentsForLine(mapComments, range.new++, LineType.NEW)
+            commentsForTheLine = findCommentsForLine(mapComments, range.new, LineType.NEW)
+            range.new++
         } else {
-            commentContainerId += range.original + "-" + LineType.UNMODIFIED
+            commentContainerId = CONTAINER_ID_PREFIX + range.original + "-" + LineType.UNMODIFIED
             out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.UNMODIFIED, range.original, i, commentContainerId)}</td>"
             out << "<td>${range.original}</td>"
             out << "<td>${range.new++}</td>"
-            commentsForTheLine = findCommentsForLine(mapComments, range.original++, LineType.UNMODIFIED)
+            commentsForTheLine = findCommentsForLine(mapComments, range.original, LineType.UNMODIFIED)
+            range.original++
         }
 
 
@@ -170,14 +238,17 @@ class DiffTagLib {
     private void collectLinesIntoTwoArrays(listLeft, listRight, line, range) {
         if (line.startsWith('-')) {
             listLeft << new CodeLine(type: Constants.ACTION_DELETED, lineNumber: range.original, codeLine: line, lineType: LineType.ORIGINAL)
+            range.original++
 
         } else if (line.startsWith('+')) {
             listRight << new CodeLine(type: Constants.ACTION_ADDED, lineNumber: range.new, codeLine: line, lineType: LineType.NEW)
+            range.new++
 
         } else {
-            listLeft << new CodeLine(lineNumber: range.original++, codeLine: line, lineType: LineType.UNMODIFIED)
-            listRight << new CodeLine(lineNumber: range.original++, codeLine: line, lineType: LineType.UNMODIFIED)
-
+            listLeft << new CodeLine(lineNumber: range.original, codeLine: line, lineType: LineType.UNMODIFIED)
+            listRight << new CodeLine(lineNumber: range.new, codeLine: line, lineType: LineType.UNMODIFIED)
+            range.original++
+            //range.new++
         }
     }
 
@@ -196,12 +267,12 @@ class DiffTagLib {
      * @param extension
      * @param mapComments
      */
-    private void renderRowForSideToSideView(CodeLine lineLeft, CodeLine lineRight, commentContainerId, newCommentFormId, i, isReview, extension, mapComments) {
+    private void renderRowForSideToSideView(CodeLine lineLeft, CodeLine lineRight, newCommentFormId, i, isReview, extension, mapComments) {
         out << "<tr>"
 
         def commentsForTheLeftLine = findCommentsForLine(mapComments, lineLeft.lineNumber, lineLeft.lineType)
         def commentsForTheRightLine = findCommentsForLine(mapComments, lineRight.lineNumber, lineRight.lineType)
-        commentContainerId += lineLeft.lineNumber + "-" + LineType.UNMODIFIED
+        def commentContainerId = CONTAINER_ID_PREFIX + lineLeft.lineNumber + "-" + LineType.UNMODIFIED
 
         out << "<td>"
         out << printStyledLineOfCode(lineLeft.codeLine, lineLeft.type, extension)
@@ -271,7 +342,7 @@ class DiffTagLib {
 	}
 	
 	/**
-	 * Extracts two values - range since for original and for new files.
+	 * Extracts two values - range "since" for original and for new files.
 	 *
 	 * @param line, for example '@@ -92,7 +92,7 @@ class CommentController {'
 	 * @return map
