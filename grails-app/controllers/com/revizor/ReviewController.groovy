@@ -1,5 +1,6 @@
 package com.revizor
 
+import com.revizor.chats.IChat
 import com.revizor.issuetracker.ITracker
 import com.revizor.utils.Constants
 import grails.transaction.Transactional
@@ -133,6 +134,12 @@ class ReviewController {
                 issueTracker.notifyTrackerReviewClosed(issue.key, review)
             }
 
+            // notify chats that user just closed a review
+            Chat.getAll().each { Chat chat ->
+                IChat chatImpl = chat.initImplementation();
+                chatImpl.notifyReviewClosed(review)
+            }
+
             render status: OK
         }
     }
@@ -240,9 +247,15 @@ class ReviewController {
 
         def repository = Repository.read(params.repository)
         reviewInstance.setRepository(repository)
-        def r = reviewInstance.save(flush:true)
+        def review = reviewInstance.save(flush:true)
 
-        notificationService.create(session.user, Action.REVIEW_START, [session.user, r])
+        notificationService.create(session.user, Action.REVIEW_START, [session.user, review])
+
+        // notify chats
+        Chat.getAll().each { Chat chat ->
+            IChat chatImpl = chat.initImplementation();
+            chatImpl.notifyReviewStarted(review)
+        }
 
         request.withFormat {
             form multipartForm {

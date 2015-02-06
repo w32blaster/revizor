@@ -26,12 +26,12 @@ class Chat {
      */
     public IChat initImplementation() {
         def grailsApplication = this.domainClass.grailsApplication
-        def ctx = grailsApplication.mainContext
+        //def ctx = grailsApplication.mainContext
         def currentLocale = LCH.getLocale()
 
         switch(this.type) {
             case ChatType.KATO_IM:
-                return new KatoImChat(this, ctx, currentLocale);
+                return new KatoImChat(this, grailsApplication, currentLocale);
 
             default:
                 throw new RuntimeException("the type of current chat is not detected. " +

@@ -14,3 +14,6 @@ grails {
 
     }
 }
+
+// change to your server actual URL
+grails.serverURL = "http://localhost:8080/revizor"
