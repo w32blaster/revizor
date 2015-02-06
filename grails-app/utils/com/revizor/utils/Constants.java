@@ -31,4 +31,6 @@ public interface Constants {
     String SMART_COMMIT_CREATE_REVIEW = "+review";
 
     char USERNAME_DELIMETER = '~';
+
+    int MAX_LENGTH_SHOWN_IN_TABLE = 40;
 }

@@ -132,5 +132,6 @@ links {
     wiki {
         clone = "https://github.com/w32blaster/revizor/wiki/Clone-a-repository"
         issueTracker = "https://github.com/w32blaster/revizor/wiki/Issue-tracker-support"
+        chats = "https://github.com/w32blaster/revizor/wiki/Integrations-with-chats"
     }
 }

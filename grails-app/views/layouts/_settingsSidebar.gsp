@@ -53,5 +53,12 @@
             </g:link>
         </li>
 
+        <li<g:if test="${controllerName == "chat"}"> class="active"</g:if>>
+            <g:link controller="chat">
+                <span class="glyphicon glyphicon-bullhorn"></span>
+                <g:message code="chats.label" default="Chat" />
+            </g:link>
+        </li>
+
     </g:if>
 </ul>
