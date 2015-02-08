@@ -135,4 +135,7 @@ links {
         issueTracker = "https://github.com/w32blaster/revizor/wiki/Issue-tracker-support"
         chats = "https://github.com/w32blaster/revizor/wiki/Integrations-with-chats"
     }
+    images {
+        logo48x48 = "http://revizor.reviews/images/revizor-logo48x48.png"
+    }
 }

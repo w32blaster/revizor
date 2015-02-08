@@ -137,6 +137,7 @@ class ReviewController {
             // notify chats that user just closed a review
             Chat.getAll().each { Chat chat ->
                 IChat chatImpl = chat.initImplementation();
+                chatImpl.before();
                 chatImpl.notifyReviewClosed(review)
             }
 

@@ -1,7 +1,5 @@
 <%@ page import="com.revizor.Chat" %>
 
-
-
 <div class="form-group ${hasErrors(bean: chatInstance, field: 'url', 'error')} ">
 	<label class="col-lg-3" for="url">
 		<g:message code="chat.url.label" default="Url" />
@@ -18,12 +16,26 @@
 </div>
 
 <div class="form-group ${hasErrors(bean: chatInstance, field: 'name', 'error')} ">
-    <label class="col-lg-3" for="username">
+    <label class="col-lg-3" for="name">
         <g:message code="chat.username.label" default="Name" />
         <span class="required-indicator">*</span>
     </label>
     <div class="col-lg-9">
         <g:textField name="name" value="${chatInstance?.name}"/>
+    </div>
+</div>
+
+<div class="form-group ${hasErrors(bean: chatInstance, field: 'channel', 'error')} ">
+    <label class="col-lg-3" for="channel">
+        <g:message code="chat.channel" default="Channel" />
+        <span id="channel-tooltip-id" class="glyphicon glyphicon-info-sign text-info"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="<g:message code="chat.channel.tooltip"/>" ></span>
+
+    </label>
+    <div class="col-lg-9">
+        <g:textField name="channel" value="${chatInstance?.channel}" placeholder="#general"/>
     </div>
 </div>
 
@@ -55,3 +67,9 @@
     </div>
 </div>
 
+
+<r:script>
+    (function($) {
+        $('#channel-tooltip-id').tooltip();
+    })(jQuery);
+</r:script>
