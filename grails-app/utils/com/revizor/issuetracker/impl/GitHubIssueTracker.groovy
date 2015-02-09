@@ -6,10 +6,9 @@ import com.revizor.Review
 import com.revizor.issuetracker.ITracker
 import com.revizor.issuetracker.IssueTicket
 import grails.plugins.rest.client.RestBuilder
+import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.springframework.context.ApplicationContext
-import org.springframework.util.LinkedMultiValueMap
-import org.springframework.util.MultiValueMap
 
 /**
  * Created on 24/11/14.
@@ -22,11 +21,13 @@ class GitHubIssueTracker implements ITracker {
 
     def rest = new RestBuilder(connectTimeout:1000, readTimeout:20000)
     private ApplicationContext context
+    private GrailsApplication grailsApplication
     private Locale locale
 
-    public GitHubIssueTracker(IssueTracker issueTracker, ApplicationContext ctx, Locale locale) {
+    public GitHubIssueTracker(IssueTracker issueTracker, GrailsApplication grailsApplication, Locale locale) {
         this.tracker = issueTracker;
-        this.context = ctx;
+        this.grailsApplication = grailsApplication
+        this.context = grailsApplication.mainContext
         this.locale = locale;
     }
 

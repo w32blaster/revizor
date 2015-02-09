@@ -8,6 +8,7 @@ import com.revizor.issuetracker.ITracker
 import com.revizor.issuetracker.IssueTicket
 import grails.plugins.rest.client.RestBuilder
 import groovy.util.slurpersupport.GPathResult
+import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.springframework.context.ApplicationContext
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
@@ -24,11 +25,13 @@ class YouTrackIssueTracker implements ITracker{
     private cookies
     def rest = new RestBuilder(connectTimeout:1000, readTimeout:20000)
     private ApplicationContext context
+    private GrailsApplication grailsApplication
     private Locale locale
 
-    public YouTrackIssueTracker(IssueTracker issueTracker, ApplicationContext ctx, Locale locale) {
+    public YouTrackIssueTracker(IssueTracker issueTracker, GrailsApplication grailsApplication, Locale locale) {
         this.tracker = issueTracker;
-        this.context = ctx;
+        this.grailsApplication = grailsApplication
+        this.context = grailsApplication.mainContext
         this.locale = locale;
     }
 

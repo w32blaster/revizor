@@ -28,18 +28,18 @@ class IssueTracker {
      */
     public ITracker initImplementation() {
         def grailsApplication = this.domainClass.grailsApplication
-        def ctx = grailsApplication.mainContext
+        //def ctx = grailsApplication.mainContext
         def currentLocale = LCH.getLocale()
 
         switch(this.type) {
             case IssueTrackerType.JIRA:
-                return new JiraIssueTracker(this, ctx, currentLocale);
+                return new JiraIssueTracker(this, grailsApplication, currentLocale);
 
             case IssueTrackerType.YOUTRACK:
-                return new YouTrackIssueTracker(this, ctx, currentLocale);
+                return new YouTrackIssueTracker(this, grailsApplication, currentLocale);
 
             case IssueTrackerType.GITHUB:
-                return new GitHubIssueTracker(this, ctx, currentLocale);
+                return new GitHubIssueTracker(this, grailsApplication, currentLocale);
 
             default:
                 throw new RuntimeException("the type of current issue tracker is not detected. " +
