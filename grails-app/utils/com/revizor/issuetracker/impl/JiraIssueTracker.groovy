@@ -1,10 +1,15 @@
 package com.revizor.issuetracker.impl
 
 import com.revizor.IssueTracker
+import com.revizor.IssueTrackerType
 import com.revizor.Review
 import com.revizor.issuetracker.ITracker
 import com.revizor.issuetracker.IssueTicket
+import grails.plugins.rest.client.RestBuilder
+import groovy.util.slurpersupport.GPathResult
 import org.springframework.context.ApplicationContext
+import org.springframework.util.LinkedMultiValueMap
+import org.springframework.util.MultiValueMap
 
 /**
  * Created on 19/11/14.
@@ -17,6 +22,9 @@ class JiraIssueTracker implements ITracker {
     private ApplicationContext context
     private Locale locale
 
+    def rest = new RestBuilder(connectTimeout:1000, readTimeout:20000)
+    def authzBase64
+
     public JiraIssueTracker(IssueTracker issueTracker, ApplicationContext ctx, Locale locale) {
         this.tracker = issueTracker;
         this.context = ctx;
@@ -25,12 +33,27 @@ class JiraIssueTracker implements ITracker {
 
     @Override
     def before() {
-        return null
+        this.authzBase64 = "${this.tracker.getUsername()}:${this.tracker.getPassword()}".bytes.encodeBase64().toString()
     }
 
     @Override
     IssueTicket getIssueByKey(String key) {
-        return null
+
+        def resp = rest.get(tracker.url + "/rest/api/latest/issue/${key}") {
+            getHeaders().add("Authorization", "Basic ${this.authzBase64}")
+        }
+
+        return new IssueTicket(
+                title: resp.json.fields.summary,
+                tags: resp.json.fields.labels,
+                status: resp.json.fields.issuetype.name,
+                statusImgUrl: resp.json.fields.status.iconUrl,
+                isClosed: resp.json.fields.issuetype.name == "Done",
+                issueUrl: "${tracker.url}/browse/${key}",
+                authorName: resp.json.fields.creator.displayName,
+                authorImgUrl: resp.json.fields.creator.avatarUrls["32x32"],
+                trackerLogoUrl: IssueTrackerType.JIRA.imageUrl
+        )
     }
 
     /**

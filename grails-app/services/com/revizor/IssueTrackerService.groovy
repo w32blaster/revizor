@@ -22,7 +22,7 @@ class IssueTrackerService {
      * @param issue
      * @return
      */
-    @Cacheable('issueTrackerTickets')
+    //@Cacheable('issueTrackerTickets')
     IssueTicket getIssueTicket(Issue issue) {
         ITracker issueTracker = issue.tracker.initImplementation()
 

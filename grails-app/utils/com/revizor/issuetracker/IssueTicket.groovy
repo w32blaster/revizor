@@ -10,6 +10,7 @@ class IssueTicket {
     String title
     String[] tags
     String status // <-- just string name of status
+    String statusImgUrl // <-- tracker specific icon Url for an issue status
     boolean isClosed //
     String issueUrl
     String authorImgUrl

@@ -253,8 +253,11 @@ html, body
     margin-left: 40px;
     position: relative;
 }
-.issue-ticket IMG {
+.issue-ticket .tracker-icon {
     margin-top: 5px;
+}
+.issue-ticket .ticket-status-icon {
+    margin-right: 5px;
 }
 .issue-ticket .right {
     position: absolute;

@@ -50,7 +50,6 @@ class YouTrackIssueTracker implements ITracker{
     @Override
     IssueTicket getIssueByKey(String key) {
 
-
         def resp = rest.get(tracker.url + "/rest/issue/${key}") {
             getHeaders().add("Cookie", cookies[0])
         }
