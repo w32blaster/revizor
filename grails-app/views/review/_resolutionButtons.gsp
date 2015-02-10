@@ -6,12 +6,11 @@
 --%>
 <g:if test="${reviewInstance?.author?.id != session.user.id}">
 
-	<g:javascript>
-		$( document ).ready(function() {
-			
-			<g:set var="voted" value="${reviewInstance.findReviewerByUser(session.user)}" />
-			<g:set var="isAccepted" value="${voted && voted.status == ReviwerStatus.APPROVE}" />
-			<g:set var="isDeclined" value="${voted && voted.status == ReviwerStatus.DISAPPROVE}" />
+    <g:set var="voted" value="${reviewInstance.findReviewerByUser(session.user)}" />
+    <g:set var="isAccepted" value="${voted && voted.status == ReviwerStatus.APPROVE}" />
+    <g:set var="isDeclined" value="${voted && voted.status == ReviwerStatus.DISAPPROVE}" />
+
+	<r:script>
 
 			/**
 			 * Toggles the button group after the decision was made
@@ -43,7 +42,7 @@
 					}
 				}
 				else {
-					// user resolves this review in the rirst time
+					// user resolves this review in the first time
                     var reviewerHtml = '<h:renderInOneLine template="reviewer" model="['reviewer' : session.user, 
                     													'status': ReviwerStatus.APPROVE]" />';
 					
@@ -61,12 +60,13 @@
 			var _fnSendRequestWithResolution = function(resolution) {
 				_changeStatusOfButtonGroup(false);
 
-				var jqxhr = $.post( "${createLink(controller: 'review', action: 'resolve')}", { status: resolution, review: ${reviewInstance.id} })
+				$.post( "${createLink(controller: 'review', action: 'resolve')}", { status: resolution, review: ${reviewInstance.id} })
 				  .done(function() {
+				    toastr.success('<g:message code="your.resolution.was.saved.successfully" default="Your vote was saved" />')
 				    _rebuildTheListOfReviewers(resolution);
 				  })
 				  .fail(function(data) {
-				    alert( "error: " + data.statusText );
+				    toastr.error( "error: " + data.statusText );
 				  })
 				  .always(function() {
 				    _changeStatusOfButtonGroup(resolution === "${ReviwerStatus.DISAPPROVE}");
@@ -79,8 +79,7 @@
 			$("#disapprove-btn-id").click(function(){
 				_fnSendRequestWithResolution("${ReviwerStatus.DISAPPROVE}");
 			});
-		});
-	</g:javascript>
+	</r:script>
 
 	<div class="btn-group">
 	  <button id="approve-btn-id" class="btn btn-default btn-success" <%= isAccepted ? 'disabled="disabled"' : '' %>>
