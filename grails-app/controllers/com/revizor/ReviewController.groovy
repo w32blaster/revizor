@@ -3,10 +3,13 @@ package com.revizor
 import com.revizor.chats.IChat
 import com.revizor.issuetracker.ITracker
 import com.revizor.utils.Constants
+import grails.async.Promises
 import grails.transaction.Transactional
+import org.apache.commons.logging.LogFactory
 import revizor.HelpTagLib
 
 import static org.springframework.http.HttpStatus.*
+import static grails.async.Promises.*
 
 enum ReviewFilter {
     ALL("reviews.all"),
@@ -26,6 +29,7 @@ enum ReviewFilter {
 class ReviewController {
 
     def notificationService
+    def log = LogFactory.getLog(this.class)
 
     static allowedMethods = [save: "POST", update: "PUT"]
 
@@ -128,17 +132,30 @@ class ReviewController {
             notificationService.create(session.user, Action.REVIEW_CLOSE, [session.user, review])
 
             // notify Issue Tracker(s) that user just closed a review
-            review.getIssueTickets().each { Issue issue ->
-                ITracker issueTracker = issue.tracker.initImplementation();
-                issueTracker.before()
-                issueTracker.notifyTrackerReviewClosed(issue.key, review)
+            def taskNotifyIssueTracker = task {
+                review.getIssueTickets().each { Issue issue ->
+                    ITracker issueTracker = issue.tracker.initImplementation();
+                    issueTracker.before()
+                    issueTracker.notifyTrackerReviewClosed(issue.key, review)
+                }
             }
 
             // notify chats that user just closed a review
-            Chat.getAll().each { Chat chat ->
-                IChat chatImpl = chat.initImplementation();
-                chatImpl.before();
-                chatImpl.notifyReviewClosed(review)
+            def taskNotifyChat = task {
+                Chat.getAll().each { Chat chat ->
+                    IChat chatImpl = chat.initImplementation();
+                    chatImpl.before();
+                    chatImpl.notifyReviewClosed(review)
+                }
+            }
+
+            /*
+                Communication with Issue Tracker and Chats is network call
+                and potentially it is very expensive operation.
+                Let's execute it in parallel.
+             */
+            Promises.onComplete([taskNotifyIssueTracker, taskNotifyChat]){ List lst ->
+                log.info("Two tasks were executed in parallel. $lst")
             }
 
             render status: OK
