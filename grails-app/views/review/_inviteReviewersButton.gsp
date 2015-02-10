@@ -52,7 +52,7 @@
 
       </g:javascript>
 
-      <div class="btn-group">
+      <div id="invite-reviewers-btn" class="btn-group">
         <button id="invite-reviewer-btn-id" class="btn btn-default btn-info" disabled="disabled">
               <span class="glyphicon glyphicon-plus"></span> <g:message code="review.invite.reviwer"/>
         </button>

@@ -22,10 +22,12 @@
         <g:javascript library="application"/>
 		<g:javascript library="bootstrap"/>
 		<g:javascript library="mentions"/>
+		<g:javascript library="toast"/>
 
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
-				
+
 		<r:layoutResources />
+
 	</head>
 	<body>
 

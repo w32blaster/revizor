@@ -62,8 +62,8 @@ class JiraIssueTracker implements ITracker {
                 statusImgUrl: resp.json.fields.status.iconUrl,
                 isClosed: resp.json.fields.issuetype.name == "Done",
                 issueUrl: "${tracker.url}/browse/${key}",
-                authorName: resp.json.fields.assignee.displayName,
-                authorImgUrl: resp.json.fields.assignee.avatarUrls["32x32"],
+                authorName: resp.json.fields.creator.displayName,
+                authorImgUrl: resp.json.fields.creator.avatarUrls["32x32"],
                 trackerLogoUrl: IssueTrackerType.JIRA.imageUrl
         )
     }

@@ -21,20 +21,35 @@
 
         var assignUrl = "${createLink(controller: 'issue', action: 'assignReviewWithAnIssue')}/";
         $('#assign-issue-btn-id').click(function() {
+            var issueTicketKey = $('#issue-key-id').val();
+            if (!issueTicketKey) {
+                toastr.error("<g:message code="issue.ticket.key.is.not.specified" />");
+                return;
+            }
+
+            var $btn = $(this).button('toggle');
+            disableButtonWithLoading($btn);
+
             var data = {
                 'tracker.id': $('#select-issue-tracker').val(),
-                'key': $('#issue-key-id').val(),
+                'key': issueTicketKey,
                 'assignToReview': ${reviewId},
                 'review.id': ${reviewId}};
+
             $.post( assignUrl, data )
                 .done(function(arrData) {
                     var container = $('#issue-ticket-container-id')
                     container.append(arrData[0]);
                     requestDetails("issue-ticket-" + arrData[1], arrData[1]);
                     $('#issue-key-id').val("");
+
+                    releaseDownloadedButton($btn, "<g:message code="assign.button" />", null, false);
+                    toastr.success("<g:message code="issue.ticket.was.assigned" default="Review was finished." />");
                 })
                 .fail(function(errorObj, b, errorName) {
-                    alert( "Error, can't save issue " );
+                    $btn.addClass("btn-danger");
+                    $btn.html("<span class='glyphicon glyphicon-exclamation-sign'></span>");
+					toastr.error("Can't assign issue: " + errorName)
                 });
         });
 
@@ -51,7 +66,7 @@
                 $("#" + containerId).empty();
             })
             .fail(function(errorObj, b, errorName) {
-                    alert( "Error, can't delete issue " );
+                toastr.error( "Error, can't delete issue " );
             });
         };
 

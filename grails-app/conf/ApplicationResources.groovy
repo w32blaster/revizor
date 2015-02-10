@@ -21,4 +21,8 @@ modules = {
         resource url: 'css/mentions/recommended-styles.css'
     }
 
+    toast {
+        resource url: 'js/toast/toastr.min.js'
+        resource url: 'css/toast/toastr.min.css'
+    }
 }

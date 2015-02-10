@@ -40,6 +40,10 @@ class CommentController {
         respond list, model:[commentInstanceCount: Comment.count()]
     }
 
+    def list(Integer max) {
+        index(max)
+    }
+
     def show(Comment commentInstance) {
         respond commentInstance
     }

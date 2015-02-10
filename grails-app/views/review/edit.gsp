@@ -28,6 +28,7 @@
                         </fieldset>
                         <fieldset class="buttons">
                             <g:actionSubmit class="btn btn-default btn-success" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />
+                            <a href="<g:createLink action="show" id="${reviewInstance.ident()}" />" class="btn btn-link" onclick="closeForm();"><g:message code="cancel" /></a>
                         </fieldset>
                     </g:form>
                 </div>
