@@ -137,6 +137,6 @@ links {
     }
     images {
         logo48x48 = "http://revizor.reviews/images/revizor-logo48x48.png"
-        logo16x16 = "http://revizor.reviews/images/revizor-logo16x16.png"
+        logo16x16 = "http://revizor.reviews/images/revizor-logo16x16.gif"
     }
 }
