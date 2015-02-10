@@ -23,6 +23,10 @@ class ChatController {
         respond new Chat(params)
     }
 
+    def list(Integer max) {
+        index(max)
+    }
+
     @Transactional
     def save(Chat chatInstance) {
         if (chatInstance == null) {

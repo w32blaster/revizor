@@ -24,6 +24,10 @@ class IssueController {
         respond issueInstance
     }
 
+    def list(Integer max) {
+        index(max)
+    }
+
     def create() {
         respond new Issue(params)
     }

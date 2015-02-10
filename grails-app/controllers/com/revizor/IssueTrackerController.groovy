@@ -15,6 +15,10 @@ class IssueTrackerController {
         respond IssueTracker.list(params), model:[issueTrackerInstanceCount: IssueTracker.count()]
     }
 
+    def list(Integer max) {
+        index(max)
+    }
+
     def show(IssueTracker issueTrackerInstance) {
         respond issueTrackerInstance
     }

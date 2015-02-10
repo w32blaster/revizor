@@ -1,6 +1,7 @@
-package revizor
+package com.revizor
 
 import grails.converters.JSON
+import revizor.Alias
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional

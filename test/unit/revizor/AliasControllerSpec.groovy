@@ -1,7 +1,6 @@
 package revizor
 
-
-
+import com.revizor.AliasController
 import grails.test.mixin.*
 import spock.lang.*
 
