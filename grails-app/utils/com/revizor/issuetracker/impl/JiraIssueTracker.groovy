@@ -55,17 +55,22 @@ class JiraIssueTracker implements ITracker {
             getHeaders().add("Authorization", "Basic ${this.authzBase64}")
         }
 
-        return new IssueTicket(
-                title: resp.json.fields.summary,
-                tags: resp.json.fields.labels,
-                status: resp.json.fields.issuetype.name,
-                statusImgUrl: resp.json.fields.status.iconUrl,
-                isClosed: resp.json.fields.issuetype.name == "Done",
-                issueUrl: "${tracker.url}/browse/${key}",
-                authorName: resp.json.fields.creator.displayName,
-                authorImgUrl: resp.json.fields.creator.avatarUrls["32x32"],
-                trackerLogoUrl: IssueTrackerType.JIRA.imageUrl
-        )
+        if (resp.status == 404) {
+            return null
+        }
+        else {
+            return new IssueTicket(
+                    title: resp.json.fields.summary,
+                    tags: resp.json.fields.labels,
+                    status: resp.json.fields.issuetype.name,
+                    statusImgUrl: resp.json.fields.status.iconUrl,
+                    isClosed: resp.json.fields.issuetype.name == "Done",
+                    issueUrl: "${tracker.url}/browse/${key}",
+                    authorName: resp.json.fields.creator.displayName,
+                    authorImgUrl: resp.json.fields.creator.avatarUrls["32x32"],
+                    trackerLogoUrl: IssueTrackerType.JIRA.imageUrl
+            )
+        }
     }
 
     /**

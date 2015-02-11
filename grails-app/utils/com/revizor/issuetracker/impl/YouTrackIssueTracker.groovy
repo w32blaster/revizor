@@ -57,21 +57,27 @@ class YouTrackIssueTracker implements ITracker{
             getHeaders().add("Cookie", cookies[0])
         }
 
-        def issue = resp.xml as GPathResult
-        def tags = issue.tag.list().collect { it.text() }
-        def mapFields = issue.children().list()
-                .groupBy { it.@name.text() }
-                .collectEntries { k,v -> [k, v.value[0].text()] }
+        if (resp.status == 404) {
+            return null
+        }
+        else {
 
-        return new IssueTicket(
-                title: mapFields.get("summary"),
-                tags: tags,
-                status: mapFields.get("State"),
-                isClosed: mapFields.get("State") == "Fixed",
-                issueUrl: "${tracker.url}/issue/${key}",
-                authorName: mapFields.get("ReporterFullName"),
-                trackerLogoUrl: IssueTrackerType.YOUTRACK.imageUrl
-        )
+            def issue = resp.xml as GPathResult
+            def tags = issue.tag.list().collect { it.text() }
+            def mapFields = issue.children().list()
+                    .groupBy { it.@name.text() }
+                    .collectEntries { k, v -> [k, v.value[0].text()] }
+
+            return new IssueTicket(
+                    title: mapFields.get("summary"),
+                    tags: tags,
+                    status: mapFields.get("State"),
+                    isClosed: mapFields.get("State") == "Fixed",
+                    issueUrl: "${tracker.url}/issue/${key}",
+                    authorName: mapFields.get("ReporterFullName"),
+                    trackerLogoUrl: IssueTrackerType.YOUTRACK.imageUrl
+            )
+        }
     }
 
     /**

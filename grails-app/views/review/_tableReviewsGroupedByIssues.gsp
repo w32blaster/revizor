@@ -11,7 +11,7 @@
     <g:render template="scriptLoadIssueTicket" model="[isSmall:true]" />
 
     <g:each in="${groupedIssues}" var="issueTicket">
-        requestDetails("loaded-issue-${issueTicket.getKey()}-details-id", ${issueTicket.getValue()[0].ident()});
+        requestDetails("loaded-issue-${issueTicket.getKey()}-details-id", ${issueTicket.getValue()[0].ident()}, "${issueTicket.getKey()}");
     </g:each>
 
 </r:script>

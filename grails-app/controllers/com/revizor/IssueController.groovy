@@ -119,8 +119,8 @@ class IssueController {
         issueTracker.before()
         issueTracker.notifyTrackerReviewCreated(issueInstance.key, reviewInstance)
 
-        def htmlToRender = g.render(template: '/review/issueTicketLoading', model: [issueId: issueInstance.ident()])
-        render ([HelpTagLib.toSingleLine(htmlToRender), issueInstance.ident()] as JSON)
+        def htmlToRender = g.render(template: '/review/issueTicketLoading', model: [issueId: issueInstance.ident(), isEdit: true])
+        render ([HelpTagLib.toSingleLine(htmlToRender), issueInstance.ident(), issueInstance.key] as JSON)
     }
 
     @Transactional
@@ -143,6 +143,19 @@ class IssueController {
                 redirect issueInstance
             }
             '*'{ respond issueInstance, [status: OK] }
+        }
+    }
+
+    @Transactional
+    def deleteByKey() {
+        def id = params.id as long
+        def issue = Issue.findById(id)
+        if (issue) {
+            issue.delete(flush: true)
+            render status: OK
+        }
+        else {
+            notFound()
         }
     }
 

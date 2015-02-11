@@ -9,7 +9,7 @@
 <r:script>
 
     <g:each in="${issueTickets}" var="issue">
-        requestDetails("issue-ticket-${issue.ident()}", ${issue.ident()});
+        requestDetails("issue-ticket-${issue.ident()}", ${issue.ident()}, "${issue.key}");
     </g:each>
 
     /**
@@ -40,7 +40,7 @@
                 .done(function(arrData) {
                     var container = $('#issue-ticket-container-id')
                     container.append(arrData[0]);
-                    requestDetails("issue-ticket-" + arrData[1], arrData[1]);
+                    requestDetails("issue-ticket-" + arrData[1], arrData[1], arrData[2]);
                     $('#issue-key-id').val("");
 
                     releaseDownloadedButton($btn, "<g:message code="assign.button" />", null, false);
@@ -54,16 +54,15 @@
         });
 
 
-        function unassignIssue(containerId, issueId, reviewId) {
-            var unassignUrl = "${createLink(controller: 'issue', action: 'delete')}/";
-            var data = { 'key': issueId};
+        function unassignIssue(containerId, issueId) {
+            var unassignUrl = "${createLink(controller: 'issue', action: 'deleteByKey')}/" + issueId;
             $.ajax({
                 url: unassignUrl,
-                type: 'DELETE',
-                data: data
+                type: 'DELETE'
             })
-            .done(function(arrData) {
-                $("#" + containerId).empty();
+            .done(function(arrData, b, c) {
+                toastr.success('<g:message code="issue.ticket.was.deleted.successfully" default="Issue was removed" />');
+                $("#" + containerId).remove();
             })
             .fail(function(errorObj, b, errorName) {
                 toastr.error( "Error, can't delete issue " );

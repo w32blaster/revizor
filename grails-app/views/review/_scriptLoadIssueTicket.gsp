@@ -1,4 +1,4 @@
-function requestDetails(containerId, issueId) {
+function requestDetails(containerId, issueId, issueKey) {
     var refreshRepositoryUrl = "${createLink(controller: 'issue', action: isSmall ? 'requestIssueDetailsSmall' : 'requestIssueDetailsBig')}/" + issueId;
         var container = $("#" + containerId);
         // make a query
@@ -10,7 +10,7 @@ function requestDetails(containerId, issueId) {
             .fail(function(errorObj, b, errorName) {
                 container.empty();
                 if(errorObj.status == 404) {
-                    container.append("Issue not found");
+                    container.append("Issue «" + issueKey + "» not found");
                 }
                 else {
                     container.append("<p class='text-danger'>Cannot load issue. " + errorName + "</p>");

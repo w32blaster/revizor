@@ -10,9 +10,10 @@ html, body
 }
 
 .truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 500px;
 }
 .row {
     margin-bottom: 20px;
@@ -296,4 +297,12 @@ html, body
 
 #review-back-id {
     margin-left: 17px;
+}
+.issue-wrapper {
+    position: relative;
+}
+.issue-delete-btn {
+    left: 10px;
+    position: absolute;
+    top: 5px;
 }
