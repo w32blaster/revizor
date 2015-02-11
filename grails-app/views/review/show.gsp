@@ -120,8 +120,13 @@
                                     <g:render template="issueTickets" model="['issueTickets': reviewInstance.issueTickets, 'isEdit': false]" />
                                 </g:if>
 
+                                <!-- Review description: -->
                                 <h3><g:message code="review.description.label" default="Description" /></h3>
-                                <markdown:renderHtml>${reviewInstance.description}</markdown:renderHtml>
+
+                                <emoji:toHtml size="22">
+                                    <markdown:renderHtml>${reviewInstance.description}</markdown:renderHtml>
+                                </emoji:toHtml>
+
                             </div>
                         </div>
                     </div>                 
