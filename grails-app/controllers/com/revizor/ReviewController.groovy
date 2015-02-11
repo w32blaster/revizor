@@ -150,11 +150,11 @@ class ReviewController {
             }
 
             /*
-                Communication with Issue Tracker and Chats is network call
-                and potentially it is very expensive operation.
+                Communication with Issue Tracker and Chats is a network call
+                and potentially it is expensive operation.
                 Let's execute it in parallel.
              */
-            Promises.onComplete([taskNotifyIssueTracker, taskNotifyChat]){ List lst ->
+            Promises.onComplete([taskNotifyIssueTracker, taskNotifyChat]) { List lst ->
                 log.info("Two tasks were executed in parallel. $lst")
             }
 

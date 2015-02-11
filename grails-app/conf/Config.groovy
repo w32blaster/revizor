@@ -140,3 +140,6 @@ links {
         logo16x16 = "http://revizor.reviews/images/revizor-logo16x16.gif"
     }
 }
+
+// should Revizor send notifications to user's email? (override this in external config file)
+grails.allowed.email.notifications=false

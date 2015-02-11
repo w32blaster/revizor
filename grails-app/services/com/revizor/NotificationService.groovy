@@ -81,25 +81,28 @@ class NotificationService {
      */
     def sendNotificationViaEmail(Notification notification, header, toAddress) {
 
-        def ntl = grailsApplication.mainContext.getBean(NotificationTagLib.class.getName());
-        def html = ntl.oneNotification([notification: notification])
-        def emailHtml = groovyPageRenderer.render(template: "/email", model: [header: header, message: html])
+        if (grailsApplication.config.grails.allowed.email.notifications.asBoolean()) {
 
-        if (toAddress) {
-            this.sendEmail(header, toAddress, HelpTagLib.toSingleLine(emailHtml))
-        }
-        else {
-            // send this notification to all actors (except currently logged user)
-            def session = RequestContextHolder.currentRequestAttributes().getSession()
-            notification
-                    .actors
-                    .findAll { NotificationObject no ->
-                (no.type == ObjectType.USER && no.objectId != session.user.ident() && no.objectId != notification.object.ident())
+            def ntl = grailsApplication.mainContext.getBean(NotificationTagLib.class.getName());
+            def html = ntl.oneNotification([notification: notification])
+            def emailHtml = groovyPageRenderer.render(template: "/email", model: [header: header, message: html])
+
+            if (toAddress) {
+                this.sendEmail(header, toAddress, HelpTagLib.toSingleLine(emailHtml))
+            } else {
+                // send this notification to all actors (except currently logged user)
+                def session = RequestContextHolder.currentRequestAttributes().getSession()
+                notification
+                        .actors
+                        .findAll { NotificationObject no ->
+                    (no.type == ObjectType.USER && no.objectId != session.user.ident() && no.objectId != notification.object.ident())
+                }
+                .each { NotificationObject no ->
+                    User userToBeNotified = no.resoreInstance()
+                    this.sendEmail(header, userToBeNotified.email, HelpTagLib.toSingleLine(emailHtml))
+                }
             }
-            .each { NotificationObject no ->
-                User userToBeNotified = no.resoreInstance()
-                this.sendEmail(header, userToBeNotified.email, HelpTagLib.toSingleLine(emailHtml))
-            }
+
         }
     }
 

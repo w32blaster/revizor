@@ -1,5 +1,8 @@
 // external properties file
 
+// should Revizor send notifications to user's email?
+grails.allowed.email.notifications=false
+
 // SMTP server configuration to send emails. For more details and examples, please
 // refer to the url http://grails.org/plugin/mail section "Configuration"
 grails {
