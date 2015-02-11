@@ -12,7 +12,11 @@ class ChatController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Chat.list(params), model:[chatInstanceCount: Chat.count()]
+        respond Chat.list(params), model:[chatInstanceCount: Chat.count()], view: "index"
+    }
+
+    def list(Integer max) {
+        index(max)
     }
 
     def show(Chat chatInstance) {
@@ -21,10 +25,6 @@ class ChatController {
 
     def create() {
         respond new Chat(params)
-    }
-
-    def list(Integer max) {
-        index(max)
     }
 
     @Transactional

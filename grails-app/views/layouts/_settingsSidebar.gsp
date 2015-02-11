@@ -33,28 +33,28 @@
         </li>
 
         <li<g:if test="${controllerName == "user"}"> class="active"</g:if>>
-            <g:link controller="user">
+            <g:link controller="user" action="list">
                 <span class="glyphicon glyphicon-user"></span>
                 <g:message code="users.header" default="Users" />
             </g:link>
         </li>
 
         <li<g:if test="${controllerName == "issueTracker"}"> class="active"</g:if>>
-            <g:link controller="issueTracker">
+            <g:link controller="issueTracker" action="list">
                 <span class="glyphicon glyphicon-tags"></span>
                 <g:message code="issue.tracker.label" default="Issue Tracker" />
             </g:link>
         </li>
 
         <li<g:if test="${controllerName == "issue"}"> class="active"</g:if>>
-            <g:link controller="issue">
+            <g:link controller="issue" action="list">
                 <span class="glyphicon glyphicon-tag"></span>
                 <g:message code="issue.tickets.label" default="Issue Tickets" />
             </g:link>
         </li>
 
         <li<g:if test="${controllerName == "chat"}"> class="active"</g:if>>
-            <g:link controller="chat">
+            <g:link controller="chat" action="list">
                 <span class="glyphicon glyphicon-bullhorn"></span>
                 <g:message code="chats.label" default="Chat" />
             </g:link>

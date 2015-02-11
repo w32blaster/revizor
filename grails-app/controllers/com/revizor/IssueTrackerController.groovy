@@ -12,7 +12,7 @@ class IssueTrackerController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond IssueTracker.list(params), model:[issueTrackerInstanceCount: IssueTracker.count()]
+        respond IssueTracker.list(params), model:[issueTrackerInstanceCount: IssueTracker.count()], view: "index"
     }
 
     def list(Integer max) {
