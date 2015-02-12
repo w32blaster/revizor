@@ -19,7 +19,7 @@
 
 <r:script>
     $("#collapse-extend-btn-id").click(function() {
-        btn = $(this);
+        var btn = $(this);
         btn.find('span').toggleClass("glyphicon-resize-small");
         btn.find('span').toggleClass("glyphicon-resize-full");
 
