@@ -85,7 +85,6 @@ class DiffTagLib {
     private void renderFileCodeForSingleMode(file, isContentStarted, isReview, range, extension, mapComments) {
         file.eachWithIndex { line, i ->
 
-            byte type = -1;
             def newCommentFormId = "new-comment-container-${i}-id"
 
             if (line.startsWith('@@')) {
@@ -107,7 +106,7 @@ class DiffTagLib {
             }
             // skip first five lines, because it is a header
             else if (isContentStarted) {
-                this.renderRowForSingleView(line, newCommentFormId, i, type, isReview, range, extension, mapComments)
+                this.renderRowForSingleView(line, newCommentFormId, i, isReview, range, extension, mapComments)
             }
         }
     }
@@ -211,13 +210,16 @@ class DiffTagLib {
      * @param extension
      * @param mapComments
      */
-    private void renderRowForSingleView(line, newCommentFormId, i, byte type, isReview, range, extension, mapComments) {
+    private void renderRowForSingleView(line, newCommentFormId, i, isReview, range, extension, mapComments) {
         def commentsForTheLine
         def commentContainerId
+        byte type = -1;
+        def lineType = LineType.UNMODIFIED
 
         out << "<tr>"
 
         if (line.startsWith('-')) {
+            lineType = LineType.ORIGINAL
             commentContainerId = CONTAINER_ID_PREFIX + range.original + "-" + LineType.ORIGINAL
             type = Constants.ACTION_DELETED
             out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.ORIGINAL, range.original, i, commentContainerId)}</td>"
@@ -226,6 +228,7 @@ class DiffTagLib {
             commentsForTheLine = findCommentsForLine(mapComments, range.original, [LineType.ORIGINAL])
             range.original++
         } else if (line.startsWith('+')) {
+            lineType = LineType.NEW
             commentContainerId = CONTAINER_ID_PREFIX + range.new + "-" + LineType.NEW
             type = Constants.ACTION_ADDED
             out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.NEW, range.new, i, commentContainerId)}</td>"
@@ -245,7 +248,7 @@ class DiffTagLib {
 
         out << "<td>"
         out << printStyledLineOfCode(line, type, extension)
-        out << this.renderComments(commentContainerId, commentsForTheLine, newCommentFormId)
+        out << this.renderComments(commentContainerId, commentsForTheLine, newCommentFormId, lineType)
         out << "</td>"
         out << "</tr>"
     }
@@ -299,7 +302,7 @@ class DiffTagLib {
          */
         out << "<td>"
         out << printStyledLineOfCode(lineLeft.codeLine, lineLeft.type, extension)
-        out << this.renderComments(commentContainerLeftId, commentsForTheLeftLine, newCommentFormLeftId)
+        out << this.renderComments(commentContainerLeftId, commentsForTheLeftLine, newCommentFormLeftId, lineLeft.lineType)
         out << "</td>"
         if (lineLeft.lineType == LineType.ORIGINAL) {
             out << "<td>${getButtonHtml(isReview, newCommentFormLeftId, LineType.ORIGINAL, lineLeft.lineNumber, i, commentContainerLeftId)}</td>"
@@ -324,7 +327,7 @@ class DiffTagLib {
         out << "<td>"
         out << printStyledLineOfCode(lineRight.codeLine, lineRight.type, extension)
         if (lineRight.lineType == LineType.NEW) {
-            out << this.renderComments(commentContainerRightId, commentsForTheRightLine, newCommentFormRightId)
+            out << this.renderComments(commentContainerRightId, commentsForTheRightLine, newCommentFormRightId, LineType.NEW)
         }
         out << "</td>"
 
@@ -332,10 +335,12 @@ class DiffTagLib {
 
     }
 
-    private String renderComments(commentContainerId, commentsForTheLine, newCommentFormId) {
+    private String renderComments(commentContainerId, commentsForTheLine, newCommentFormId, LineType lineType) {
         def html = new StringBuffer()
+        def flavourStyle = (lineType == LineType.NEW) ? "comments-added-lines" : (lineType == LineType.ORIGINAL ? "comments-deleted-lines" : "");
+
         // add comment for this line of code, if they exist
-        html << "<div id='${commentContainerId}' class='code-line-comments' style='display:${commentsForTheLine ? "visible" : "none"};'>"
+        html << "<div id='${commentContainerId}' class='code-line-comments ${flavourStyle}' style='display:${commentsForTheLine ? "visible" : "none"};'>"
         if (commentsForTheLine) {
             html << cmt.printCommentsInHierarchy(['comments': commentsForTheLine, 'indent': 0])
         }
@@ -349,7 +354,7 @@ class DiffTagLib {
 
     private String getButtonHtml(isReview, newCommentFormID, lineType, lineOfCode, idx, commentContainerID) {
 
-        def style = (lineType == LineType.ORIGINAL) ? "btn-comment-deleted" : ( (lineType == LineType.NEW) ? "btn-comment-added" : "" )
+        def style = (lineType == LineType.ORIGINAL) ? "btn-red" : ( (lineType == LineType.NEW) ? "btn-green" : "" )
 
 		// the function "showForm" in the _commentsScript.gsp
 		return isReview ?

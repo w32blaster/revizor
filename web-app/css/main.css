@@ -109,10 +109,10 @@ html, body
     display: block;
     padding: 5px;
 }
-.btn-comment-deleted {
+.btn-red {
     color: #cf0000 !important;
 }
-.btn-comment-added {
+.btn-green {
     color: #036902 !important;
 }
 .code-table TD {
@@ -305,4 +305,10 @@ html, body
     left: 10px;
     position: absolute;
     top: 5px;
+}
+.comments-added-lines .well {
+    background-color: #F2FFED;
+}
+.comments-deleted-lines .well {
+    background-color: #FFF4F4;
 }

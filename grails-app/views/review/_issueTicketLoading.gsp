@@ -4,7 +4,7 @@
     </div>
 
     <g:if test="${isEdit}">
-        <button type="button" class="btn btn-danger btn-xs issue-delete-btn" onclick="unassignIssue('issue-wrapper-${issueId}', ${issueId});">
+        <button type="button" class="btn btn-default btn-red btn-xs issue-delete-btn" onclick="unassignIssue('issue-wrapper-${issueId}', ${issueId});">
             <span class="glyphicon glyphicon-trash"></span>
         </button>
     </g:if>
