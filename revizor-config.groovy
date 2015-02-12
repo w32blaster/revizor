@@ -1,4 +1,6 @@
-// external properties file
+
+// how often Revizor should check new commits in a repositories (in ms)
+grails.job.pull.period.time=10 * 60 * 1000 // 10 min
 
 // should Revizor send notifications to user's email?
 grails.allowed.email.notifications=false

@@ -2,6 +2,7 @@ package com.revizor
 
 import com.revizor.repos.IRepository
 import grails.transaction.Transactional
+import grails.util.Holders
 import org.apache.commons.logging.LogFactory
 
 /**
@@ -14,15 +15,16 @@ import org.apache.commons.logging.LogFactory
  */
 class PullCommitsJob {
 
-    public static final int REPEAT_INTERVAL_MS = 10 * 60 * 1000; // 10 mins
     public static final int START_DELAY_MS = 30 * 1000;
 
     def log = LogFactory.getLog(this.class)
     def reviewService
+    def grailsApplication
 
     static triggers = {
-
-        simple  startDelay:START_DELAY_MS, repeatInterval: REPEAT_INTERVAL_MS, repeatCount: -1
+        simple startDelay: START_DELAY_MS,
+               repeatInterval: Holders.config.grails.job.pull.period.time,
+               repeatCount: -1
     }
 
     @Transactional
