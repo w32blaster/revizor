@@ -128,12 +128,6 @@ class DiffTagLib {
         def lstLeft = []
         def lstRight = []
 
-        mapComments.each { k,v ->
-            v.each { comment ->
-                println "[$k] = '${comment.text}', type = ${comment.typeOfLine}"
-            }
-        }
-
         file.eachWithIndex { line, i ->
 
             if (line.startsWith('@@')) { // for example "@@ -47,51 +47,51 @@ public class Oven {"
