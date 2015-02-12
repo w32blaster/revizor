@@ -312,3 +312,10 @@ html, body
 .comments-deleted-lines .well {
     background-color: #FFF4F4;
 }
+.container-collapsed {
+    height: 2px !important;
+    background-color: #2196f3;
+}
+.container-collapsed DIV {
+    display: none;
+}
