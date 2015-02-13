@@ -30,7 +30,7 @@
 
 	/*
 		Powered by:
-		
+
 		Font Awesome (http://fortawesome.github.com/Font-Awesome/)
 		Font Awesome More (http://gregoryloucas.github.com/Font-Awesome-More/)
 	*/
@@ -218,9 +218,9 @@
 		.icon-check-empty:before          { content: "\f096"; }
 		.icon-bookmark-empty:before       { content: "\f097"; }
 		.icon-phone-sign:before           { content: "\f098"; }
-		.icon-twitter:before              { content: "\f099"; }
+		.icon-twit-ter:before              { content: "\f099"; }
 		.icon-facebook:before             { content: "\f09a"; }
-		.icon-github:before               { content: "\f09b"; }
+		.icon-git-hub:before              { content: "\f09b"; }
 		.icon-unlock:before               { content: "\f09c"; }
 		.icon-credit-card:before          { content: "\f09d"; }
 		.icon-rss:before                  { content: "\f09e"; }

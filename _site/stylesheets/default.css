@@ -57,14 +57,14 @@ a:hover
 	form
 	{
 	}
-	
+
 		form label
 		{
 			display: block;
 			text-align: left;
 			margin-bottom: 0.5em;
 		}
-		
+
 		form .submit
 		{
 			margin-top: 2em;
@@ -73,7 +73,7 @@ a:hover
 			line-height: 1.5em;
 			font-size: 1.3em;
 		}
-	
+
 		form input.text,
 		form select,
 		form textarea
@@ -113,7 +113,7 @@ a:hover
 				box-shadow: 0 0 2px 1px #E0E0E0;
 				background: #fff;
 			}
-			
+
 			form textarea
 			{
 				min-height: 10em;
@@ -506,4 +506,10 @@ ul.contact li a:before
 
 .screenshot-section IMG {
 	width: 100%;
+}
+.centered {
+	text-align: center;
+}
+.container-bottom-padding {
+	padding-bottom: 45px;
 }
