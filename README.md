@@ -4,19 +4,13 @@
 Revizor
 =======
 
-![Revizor logo](http://w32blaster.github.io/revizor/images/revizor-logo4-160.png)
+ <img align="right" width="113" height="160" src="http://w32blaster.github.io/revizor/images/revizor-logo4-160.png" title="Logo of Revizor Code review tool" />
+
+**Revizor** — is a code review tool written using Groovy on [Grails](https://grails.org/).
 
 Official homepage: [revizor.reviews](http://revizor.reviews/)
 
 [Downloads](https://github.com/w32blaster/revizor/releases)
-
-Revizor is a code review tool written using Groovy on Grails. 
-
-Development
------------
-
-Please, refer to the [Wiki page](https://github.com/w32blaster/revizor/wiki/How-to-prepare-developer-environment) to find all the 
-information regarding development
 
 Features
 ---------
@@ -47,5 +41,10 @@ The project is still under construction, thus here are some screenshots.
 ![Review details view](http://w32blaster.github.io/revizor/images/screenshots/screenshot2.jpeg)
 
 Any feedback or contribution is highly appreciated!
-
 Thank you.
+
+Development
+-----------
+
+Please, refer to the [Wiki page](https://github.com/w32blaster/revizor/wiki/How-to-prepare-developer-environment) to find all the 
+information regarding development
