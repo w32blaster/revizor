@@ -25,6 +25,7 @@ html, body
 
 #login-container {
 	width: 500px;
+    text-align: center;
 }
 
 #header {

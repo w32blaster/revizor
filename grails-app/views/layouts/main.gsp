@@ -35,9 +35,9 @@
 
 			<div id="header" class="row" role="header">
 				<div class="col-md-12">
-					<a id="logo-container" href="${createLink(uri: '/')}" class="inline-block">
-						<img src="${resource(dir: 'images', file: 'revizor-logo4-43.png')}" alt="Revizor logo"/>
-					</a>
+
+					<b>Revizor</b>
+
 
 					<g:if test="${session.user}">
 						<div id="current-account-block" role="account-container">
