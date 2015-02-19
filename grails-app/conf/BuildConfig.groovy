@@ -73,7 +73,7 @@ grails.project.dependency.resolution = {
 
         // to prepare self extracted executable JAR file. To run: grails prod build-standalone revizor.jar
         // docs: http://grails-plugins.github.io/grails-standalone/docs/manual/guide/running.html
-        compile ":standalone:1.2.3"
+        compile ":standalone:1.3"
         
         // plugins needed at runtime but not for compilation
         runtime ":hibernate:3.6.10.9" // or ":hibernate4:4.3.4"
