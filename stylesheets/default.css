@@ -513,3 +513,7 @@ ul.contact li a:before
 .container-bottom-padding {
 	padding-bottom: 45px;
 }
+
+.container-bottom-padding .button {
+	margin-bottom: 70px;
+}
