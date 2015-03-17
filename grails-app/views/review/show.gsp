@@ -41,8 +41,10 @@
 
 
                         <small>
+                            <g:link action="dashboard" controller="repository" id="${reviewInstance?.repository.ident()}" class="btn btn-default btn-success btn-xs">
+                                <span class="glyphicon glyphicon-home"></span>
+                            </g:link>
                             <g:link action="index" params="[filter: ReviewFilter.ONLY_MINE]" class="btn btn-default btn-success btn-xs">
-                                <span class="glyphicon glyphicon-arrow-left"></span>  
                                 <g:message code="default.list.label" args="[entityName]" />
                             </g:link>
                         </small>
