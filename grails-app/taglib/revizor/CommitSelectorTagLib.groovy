@@ -51,33 +51,85 @@ class CommitSelectorTagLib {
      */
     def buildFlatListofCommits = { attrs, body ->
 
-            def repo = attrs.repo.initImplementation();
-            def arrCommits = repo.getGraphSVG();
+        def repo = attrs.repo.initImplementation();
+        def arrCommits = repo.getGraphSVG();
 
-            def list = arrCommits[1]
-            int maxLaneIdx = arrCommits[2]
+        def mapReviews = _getMapOfUsedReviews(Review.findAllByRepository(attrs.repo))
 
-            def outHtml = "<table class='table table-condensed'>"
-            def graphHtml = "<div id='history-graph' style='position: absolute; top: 3px'>" +
-                    "<svg height='${list.size() * Constants.ROW_HEIGHT}' width='${CURVE_WIDTH * maxLaneIdx + 15}' overflow='hidden'><g>${arrCommits[0]}</g></svg></div>"
+        def list = arrCommits[1]
+        int maxLaneIdx = arrCommits[2]
 
-            list.each { Commit rev ->
-                def urlToObserveChangeset = g.createLink(controller: "observe", action: "show") + "/${attrs.repo.ident()}/${rev.id}/"
-                outHtml <<= """
-                        <tr title="${rev.id}" height="${Constants.ROW_HEIGHT}">
-                            <td><span class="graph-line-text" style="padding-left: ${rev.padding}px"><a class="graph-label" href="${urlToObserveChangeset}">${_getCommitMessageHtml(rev)}</a></span></td>
-                            <td><span class="label label-default" title="${rev.authorEmail}">${rev.author}</span><td>
-                            <td><a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.id])}" class="btn btn-default btn-xs tree-context-button">
-                                <span class="glyphicon glyphicon-plus"></span>
-                            </a>
-                            </td>
-                        </tr>
-                        """
+        def graphHtml = "<div id='history-graph' style='position: absolute; top: 3px'>" +
+                "<svg height='${list.size() * Constants.ROW_HEIGHT}' width='${CURVE_WIDTH * maxLaneIdx + 15}' overflow='hidden'><g>${arrCommits[0]}</g></svg></div>"
+
+        def outHtml = "<table class='table table-condensed'>"
+        list.each { Commit rev ->
+            def urlToObserveChangeset = g.createLink(controller: "observe", action: "show") + "/${attrs.repo.ident()}/${rev.id}/"
+            outHtml <<= """
+                    <tr title="${rev.id}" height="${Constants.ROW_HEIGHT}">
+                        <td>
+                            <span class="graph-line-text" style="padding-left: ${rev.padding}px">
+                                <a class="graph-label" href="${urlToObserveChangeset}">${_getCommitMessageHtml(rev)}</a>
+                            </span>
+                        </td>
+                        <td>${_renderReviewsCount(mapReviews.get(rev.id))}</td>
+                        <td><span class="label label-default" title="${rev.authorEmail}">${rev.author}</span><td>
+                        <td><a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.id])}" class="btn btn-default btn-xs tree-context-button">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </a>
+                        </td>
+                    </tr>
+                    """
+        }
+        outHtml <<= "</table>"
+
+        out << graphHtml + outHtml
+    }
+
+    /**
+     * renders the label with popuver, containing list of reviews relating to current review
+     *
+     * @param lstReviews
+     * @return
+     */
+    def _renderReviewsCount(lstReviews) {
+        if(lstReviews && !lstReviews.isEmpty()) {
+            def htmlContent = ""
+            for (Review review : lstReviews) {
+                def url = g.createLink(controller: "review", action: "show")
+                htmlContent <<= "<a href='${url}/${review.id}'>#${review.id}</a><br />"
             }
-            outHtml <<= "</table>"
 
-            out << graphHtml + outHtml
+            def out = "<a type='button' class='gpopover' data-toggle='popover' tabindex='0' data-trigger='focus'" +
+                    " data-placement='top' data-html='true' data-container='body' data-title='Reviews' data-content=\"${htmlContent}\">";
+            out <<= "<span class='label label-default'>${message(code: 'reviews.count.plural', args: [lstReviews.size()])}</span>"
+            out <<= "</a>"
+            return out;
+        }
+        else {
+            return ""
+        }
+    }
 
+    /**
+     * Builds the map "commit revision" <==> "list of used reviews"
+     *
+     * @param reviews
+     * @return
+     */
+    def _getMapOfUsedReviews(reviews) {
+        def mapReviews = [:]
+        reviews.each { review ->
+            for (String sha : review.commits) {
+                if (!mapReviews.containsKey(sha)) {
+                    mapReviews.put(sha, [review])
+                }
+                else {
+                    mapReviews.get(sha).add(review)
+                }
+            }
+        }
+        return mapReviews
     }
 
     /**
@@ -101,7 +153,7 @@ class CommitSelectorTagLib {
 
         // add link to full message
         if (commit.fullMessage.length() > (commit.message.length() + 1)) {
-            messageHtml += " <a type='button' class='graph-tooltip' data-toggle='popover' tabindex='0' data-trigger='focus' data-placement='top' data-html='true' data-container='body' title='${commit.author}' data-content='${commit.fullMessage.replace('\n', "<br>").encodeAsHTML()}'>•••</a>"
+            messageHtml += " <a type='button' class='graph-tooltip gpopover' data-toggle='popover' tabindex='0' data-trigger='focus' data-placement='top' data-html='true' data-container='body' title='${commit.author}' data-content='${commit.fullMessage.replace('\n', "<br>").encodeAsHTML()}'>•••</a>"
         }
 
         return messageHtml

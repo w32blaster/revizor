@@ -1,10 +1,7 @@
 package revizor
 
-import grails.test.mixin.*
-import spock.lang.IgnoreRest
+import grails.test.mixin.TestFor
 import spock.lang.Specification
-
-import com.revizor.utils.Constants
 
 /**
  * 

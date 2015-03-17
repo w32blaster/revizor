@@ -80,7 +80,7 @@
 
 	    <r:script>
 			(function($) {
-				$('.graph-tooltip').popover();
+				$('.gpopover').popover();
 			})(jQuery);
 		</r:script>
 	</body>
