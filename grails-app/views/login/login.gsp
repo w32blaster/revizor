@@ -10,7 +10,7 @@
 
             <img src="${resource(dir: 'images', file: 'revizor-logo4-160.png')}" alt="Revizor logo"/>
 
-			<g:form id="login-form" name="loginForm" controller="login" action="doLogin" class="form-signin form-horizontal" >
+			<g:form name="loginForm" controller="login" action="doLogin" class="form-signin form-horizontal" >
 				<fieldset class="form">
 
                     <h3 class="form-signin-heading"><g:message code="please.sign.in" /></h3>
@@ -42,6 +42,7 @@
 			var $btn = $(this).button('toggle');
 			$btn.attr('disabled','disabled');
 			$btn.html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
+            $("#loginForm").submit();
 		});
 	</r:script>
 
