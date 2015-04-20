@@ -1,0 +1,322 @@
+
+.inline-block {
+    display: inline-block;
+}
+
+html, body
+{
+     height: 100%;
+     margin: 0px;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 500px;
+}
+.row {
+    margin-bottom: 20px;
+}
+.tree-context-button {
+    position: absolute;
+    right: 5px;
+}
+
+#login-container {
+	width: 500px;
+    text-align: center;
+}
+
+#header {
+    /*width: 100%;
+    height: 68px;*/
+    background: #eeeeee;
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#current-account-block {
+    float: right;
+}
+
+/* modified file tree */
+
+.tree-leaf .added {
+    color: green;
+} 
+
+.tree-leaf .deleted {
+    color: grey;
+    text-decoration:line-through;
+}
+
+.tree-leaf .modified {
+      
+}
+.tree-leaf .selected {
+    font-weight: bold;
+}
+.tree-node {
+    font-size: 0.8em;
+}
+.tree-node .ico {
+    font-size: 0.8em;
+}
+
+/* reset Prettify styles */
+.reset-pre {
+    border: none !important;
+    background: none;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.line {
+	color: #3F3F3F;
+	background: none;
+}
+.line-deleted {
+	background-color: #FFDCDC;
+	color: #CF0000;
+}
+.line-added {
+	background-color: #DDFCCF;
+	color: #036902;
+}
+
+#diff-container-id {
+    overflow-y: auto;
+}
+#diff-panel-id .btn-comment {
+    visibility: hidden;
+    margin-right: 10px;
+}
+#diff-panel-id tr:hover .btn-comment {
+    visibility: visible;
+}
+
+.btn-comment-reply {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+}
+
+.comment-container {
+    min-height: 74px;
+    width: 100%;
+    position: relative;
+    display: block;
+    padding: 5px;
+}
+.btn-red {
+    color: #cf0000 !important;
+}
+.btn-green {
+    color: #036902 !important;
+}
+.code-table TD {
+    vertical-align: top;
+    padding: 0 3px;
+}
+
+#reviewers-container-id {
+    margin-bottom: 10px; 
+}
+.reviewer{
+     max-width: 200px;
+     margin-bottom: 0;
+ }
+.user-cell {
+    margin: 3px;
+}
+.reviewer SPAN {
+    margin-left: 3px;
+}
+.reviewer .accepted {
+    color: green;
+}
+.reviewer .disaccepted {
+    color: red;
+}
+.user-name-pos {
+    display: inline-table;
+    margin-left: 3px;
+}
+.position {
+    color: rgba(143, 143, 143, 0.8);
+    font-size: 0.7em;
+    line-height: 0;
+}
+.reviewer-status {
+    height: 32px;
+    vertical-align: middle;
+}
+.notification-link {
+    font-weight: bold;
+}
+.comment-container I A {
+    font-weight: normal;
+}
+
+.notification {
+    padding: 5px;
+    border-bottom: 1px solid #E7E6E7;
+}
+
+.notification .glyphicon-thumbs-up {
+    color: green;
+}
+
+.notification .glyphicon-thumbs-down {
+    color: red;
+}
+
+.notification BLOCKQUOTE{
+    font-size: 14px;
+}
+.notification-to-me {
+    background-color: #FFFFED;
+}
+#load-more-btn {
+    margin-top: 10px;
+}
+
+.listOfCommits {
+    height: 400px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.graph-line-text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.svg-path {
+    stroke: rgba(0, 0, 0, 0.80);
+    stroke-width:1;
+    fill:none;
+}
+.svg-circle {
+    stroke: rgba(0, 0, 0, 0.80);
+    stroke-width:2;
+    fill: #3c46ff;
+}
+
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -ms-animation: spin .7s infinite linear;
+    -webkit-animation: spinw .7s infinite linear;
+    -moz-animation: spinm .7s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+@-webkit-keyframes spinw {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@-moz-keyframes spinm {
+    from { -moz-transform: rotate(0deg);}
+    to { -moz-transform: rotate(360deg);}
+}
+
+.graph-tooltip {
+    background-color: #e8e8e8;
+    border: 1px solid #b5b4b4;
+    color: #b5b4b4;
+    font-weight: bold;
+    height: 5px;
+    max-width: none;
+    padding: 0 5px;
+    white-space: pre;
+    width: 10px;
+    cursor: pointer;
+    font-size: 0.6em;
+}
+.reply-indent {
+    padding-right: 5px;
+    padding-top: 30px;
+}
+.reply-indent SPAN {
+    padding: 1px;
+    color: #dcdcdc;
+    width: 15px;
+}
+.issue-ticket {
+    margin: 5px;
+    padding: 10px;
+    max-width: 600px;
+}
+.issue-ticket DIV {
+    margin-left: 40px;
+    position: relative;
+}
+.issue-ticket .tracker-icon {
+    margin-top: 5px;
+}
+.issue-ticket .ticket-status-icon {
+    margin-right: 5px;
+}
+.issue-ticket .right {
+    position: absolute;
+    right: 2px;
+    margin: 0;
+}
+.issue-author-avatar {
+    top: 2px;
+}
+.issue-ticket .issue-author {
+    font-size: 0.7em;
+    font-style: italic;
+    top: 38px;
+}
+.delete-issue-ticket-btn {
+    margin-left: 7px;
+}
+.form-container {
+    max-width: 600px;
+}
+.graph-label {
+    position: relative;
+    z-index: 3;
+}
+
+#collapse-button-id {
+    position: absolute;
+    left: 4px;
+    top: 86px;
+    z-index: 1;
+}
+
+#tree-files-id {
+    margin-top: 30px;
+}
+
+#review-back-id {
+    margin-left: 17px;
+}
+.issue-wrapper {
+    position: relative;
+}
+.issue-delete-btn {
+    left: 10px;
+    position: absolute;
+    top: 5px;
+}
+.comments-added-lines .well {
+    background-color: #F2FFED;
+}
+.comments-deleted-lines .well {
+    background-color: #FFF4F4;
+}
+.container-collapsed {
+    height: 2px !important;
+    background-color: #2196f3;
+}
+.container-collapsed DIV {
+    display: none;
+}
