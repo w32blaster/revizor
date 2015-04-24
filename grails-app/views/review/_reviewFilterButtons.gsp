@@ -6,11 +6,6 @@
 -->
 <div class="btn-group">
 
-    <!-- Home -->
-    <g:link url="${createLink(uri: '/')}" class="btn btn-default btn-primary">
-        <span class="glyphicon glyphicon-home"></span>
-        <g:message code="default.home.label" />
-    </g:link>
 
     <!-- My reviews, where I am as an author -->
     <% def cssClassMy = (params.filter == ReviewFilter.ONLY_MINE.toString()) ? 'active' : '' %>

@@ -83,7 +83,7 @@
     <label class="control-label"><g:message code="review.associate.issue.tickets" /></label>
     <div class="input-group" style="max-width: 600px;">
 
-            <select class="form-control" id="select-issue-tracker" style="width: 300px;">
+            <select class="form-control selectpicker" id="select-issue-tracker" style="width: 300px;">
                 <g:each in="${com.revizor.IssueTracker.all}" var="issueTracker">
                 <option value="${issueTracker.ident()}">${issueTracker.title}</option>
                 </g:each>

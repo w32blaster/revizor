@@ -10,8 +10,22 @@
 	</head>
 	<body>
 
+    <!-- Breadcrumbs -->
+    <div class="row" role="breadcrumb">
+        <ul class="breadcrumb">
+            <li>
+                <a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">${message(code: "default.home.label")}</a>
+            </li>
+            <li class="active">${message(code: CommentsFilter.msgCodeFromValue(params.filter))}</li>
+        </ul>
+    </div>
+
+
+    <div id="content-container">
+
 		<div id="list-comment" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
+
+			<h1>${message(code: CommentsFilter.msgCodeFromValue(params.filter))}</h1>
 
 			<g:if test="${flash.message}">
 				<div class="alert alert-info">${flash.message}</div>
@@ -21,29 +35,24 @@
 				<div class="row">
 					<div class="btn-group">
 
-                        <g:link class="btn btn-default btn-primary" url="${createLink(uri: '/')}">
-                            <span class="glyphicon glyphicon-home"></span>
-                            <g:message code="default.home.label" default="Home"/>
-                        </g:link>
-
 						<!-- My comments -->
 						<% def cssClassMy = (params.filter == CommentsFilter.ONLY_MINE.toString()) ? 'active' : '' %>
 						<g:link action="index" params="[filter: CommentsFilter.ONLY_MINE]" class="btn btn-default btn-primary ${cssClassMy}">
 							<span class="glyphicon glyphicon-pencil"></span> 
-							<g:message code="CommentsFilter.ONLY_MINE.value()" default="My comments" />
+							<g:message code="${CommentsFilter.ONLY_MINE.value()}" default="My comments" />
 						</g:link>
 
 						<!-- replies to me -->
 						<% def cssClassReplies = (params.filter == CommentsFilter.REPLIES_TO_ME.toString()) ? 'active' : '' %>
 						<g:link action="index" params="[filter: CommentsFilter.REPLIES_TO_ME]" class="btn btn-default btn-primary ${cssClassReplies}">
-							<span class="glyphicon glyphicon-thumbs-up"></span> 
-							<g:message code="CommentsFilter.REPLIES_TO_ME.value()" default="Replies to me" />
+							<span class="glyphicon glyphicon glyphicon-share-alt"></span>
+							<g:message code="${CommentsFilter.REPLIES_TO_ME.value()}" default="Replies to me" />
 						</g:link>
 
 						<!-- All comments -->
 						<% def cssClassAll = (params.filter == CommentsFilter.ALL.toString()) ? 'active' : '' %>
 						<g:link action="index" params="[filter: CommentsFilter.ALL]" class="btn btn-default btn-primary ${cssClassAll}">
-							<g:message code="CommentsFilter.ALL.value()" default="All comments" />
+							<g:message code="${CommentsFilter.ALL.value()}" default="All comments" />
 						</g:link>
 
 					</div>
@@ -64,6 +73,7 @@
 					<g:paginate total="${commentInstanceCount ?: 0}" />
 				</div>
 			</div>
-		</div>
+		    </div>
+        </div>
 	</body>
 </html>

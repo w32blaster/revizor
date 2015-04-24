@@ -8,6 +8,25 @@
 	</head>
 	<body>
 
+
+    <!-- Breadcrumbs -->
+    <div class="row" role="breadcrumb">
+        <ul class="breadcrumb">
+            <li>
+                <a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">${message(code: "default.home.label")}</a>
+            </li>
+            <li>
+                <a href="${createLink(controller: "review", action:"index", 'params':[filter: com.revizor.ReviewFilter.ONLY_MINE])}">
+                    ${message(code: 'reviews.only.mine')}
+                </a>
+            </li>
+            <li class="active">${message(code: "reviews.create.new")}</li>
+        </ul>
+    </div>
+
+
+    <div id="content-container">
+
 		<div id="create-review" class="content scaffold-create" role="main">
 			<h2><g:message code="default.create.label" args="[entityName]" /></h2>
 
@@ -38,8 +57,8 @@
             </div>
             <p />
 
+            </div>
         </div>
-
 	</body>
 </html>
 

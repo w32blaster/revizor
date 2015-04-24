@@ -8,8 +8,27 @@
 	</head>
 	<body>
 
-	<div id="edit-review" class="content scaffold-edit" role="main">
-		<h2><g:message code="default.edit.label" args="[entityName]" /></h2>
+    <!-- Breadcrumbs -->
+    <div class="row" role="breadcrumb">
+        <ul class="breadcrumb">
+            <li>
+                <a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">${message(code: "default.home.label")}</a>
+            </li>
+            <li>
+                <a href="${createLink(controller: "review", action:"index", 'params':[filter: com.revizor.ReviewFilter.ONLY_MINE])}">
+                    ${message(code: 'reviews.only.mine')}
+                </a>
+            </li>
+            <li class="active">${message(code: "review.edit.of", args: [reviewInstance.title])}</li>
+        </ul>
+    </div>
+
+
+    <div id="content-container">
+
+	    <div id="edit-review" class="content scaffold-edit" role="main">
+
+            <h2><g:message code="review.edit.of" args="[reviewInstance.title]" /></h2>
 
             <g:render template="/layouts/flashMessage" />
 
@@ -33,6 +52,7 @@
                     </g:form>
                 </div>
                 <p />
+            </div>
         </div>
 	</body>
 </html>

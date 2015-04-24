@@ -188,4 +188,21 @@ public enum CommentsFilter {
 
     private final String value
     public String value() { return value }
+
+    public static msgCodeFromValue(String value) {
+        switch (value) {
+
+            case CommentsFilter.ALL.name():
+                return CommentsFilter.ALL.value;
+
+            case CommentsFilter.ONLY_MINE.name():
+                return CommentsFilter.ONLY_MINE.value;
+
+            case CommentsFilter.REPLIES_TO_ME.name():
+                return CommentsFilter.REPLIES_TO_ME.value;
+
+            default:
+                return ""
+        }
+    }
 }

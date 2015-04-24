@@ -73,7 +73,6 @@
 </div>
 
 <r:script>
-    (function($) {
 
         $('.commit-checkbox').change(function() {
             var len = $(".commit-checkbox:checked").length;
@@ -83,7 +82,8 @@
             }
         });
 
-    })(jQuery);
+        $('.selectpicker').selectpicker();
+
 </r:script>
 
 

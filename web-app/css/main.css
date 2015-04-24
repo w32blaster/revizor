@@ -30,6 +30,7 @@ body {
 #login-container {
 	width: 500px;
     text-align: center;
+    margin-top: 70px;
 }
 
 #header {
@@ -38,13 +39,14 @@ body {
     position: relative;
     padding-top: 10px;
     margin-bottom: 0;
+    height: 50px;
 }
 
 #permanent-menu {
     display: inline;
 }
 
-#permanent-menu A {
+#header A {
     color: #e7e7ef;
     margin-right: 20px;
 }
