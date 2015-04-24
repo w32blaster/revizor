@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/w32blaster/revizor.png?label=ready&title=Ready)](https://waffle.io/w32blaster/revizor)
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/w32blaster/revizor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
