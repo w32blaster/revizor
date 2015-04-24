@@ -351,3 +351,7 @@ body {
 .form .form-group {
     margin-top: 40px;
 }
+
+#invite-reviewers-btn {
+    margin: 10px 0;
+}

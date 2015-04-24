@@ -6,6 +6,9 @@
     this operation could be potentially long. That's why we load it using Ajax,
     separately from the main view rendering.
 --%>
+
+<g:set var="isEmpty" value="${com.revizor.IssueTracker.all.size() == 0}" />
+
 <r:script>
 
     <g:each in="${issueTickets}" var="issue">
@@ -17,7 +20,7 @@
      */
     <g:render template="scriptLoadIssueTicket" model="[isSmall:false]" />
 
-    <g:if test="${isEdit}">
+    <g:if test="${isEdit && !isEmpty}">
 
         var assignUrl = "${createLink(controller: 'issue', action: 'assignReviewWithAnIssue')}/";
         $('#assign-issue-btn-id').click(function() {
@@ -83,9 +86,8 @@
     <label class="control-label"><g:message code="review.associate.issue.tickets" /></label>
     <div class="input-group" style="max-width: 600px;">
 
-        <g:set var="isEmpty" value="${com.revizor.IssueTracker.all.size() == 0}" />
-
         <g:if test="${isEmpty}">
+            <!-- Disabled inputs -->
             <select class="form-control selectpicker" data-style="btn-primary" id="select-issue-tracker" style="width: 300px;" disabled="disabled">
                 <option>${message(code: "no.issue.trackers.found")}</option>
             </select>
