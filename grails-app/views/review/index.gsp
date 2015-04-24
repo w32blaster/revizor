@@ -8,9 +8,26 @@
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		
+
+
+    <!-- Breadcrumbs -->
+    <div class="row" role="breadcrumb">
+        <ul class="breadcrumb">
+            <li>
+                <a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">${message(code: "default.home.label")}</a>
+            </li>
+            <li class="active">
+                    ${message(code: ReviewFilter.msgCodeFromValue(params.filter))}
+            </li>
+        </ul>
+    </div>
+
+
+    <div id="content-container">
+
 		<div id="list-review" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
+
+            <h1>${message(code: ReviewFilter.msgCodeFromValue(params.filter))}</h1>
 			
 			<g:if test="${flash.message}">
 				<div class="alert alert-info">${flash.message}</div>
@@ -23,7 +40,7 @@
 				</div>
 			</g:if>
 
-<div class="container">
+    <div class="container">
 
             <g:render template="reviewFilterButtons" />
 

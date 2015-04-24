@@ -6,6 +6,7 @@
 	</head>
 	<body>
 
+    <div id="content-container">
 		<div class="container" id="login-container">
 
             <img src="${resource(dir: 'images', file: 'revizor-logo4-160.png')}" alt="Revizor logo"/>
@@ -36,6 +37,7 @@
 			<g:renderErrors bean="${loginCmd}"/>
 
 		</div>
+    </div>
 
 	<r:script>
 		$('#submit-login-form-btn').on('click', function () {

@@ -1,14 +1,9 @@
 package revizor
-
-import groovy.xml.XmlUtil
-
 import com.revizor.Comment
 import com.revizor.CommentType
 import com.revizor.LineType
 import com.revizor.utils.Constants
-
-import javax.sound.sampled.Line
-
+import groovy.xml.XmlUtil
 /**
  * TagLib renders a code of a changed file in a diff format.
  * It means, that it sets up line numbers on the left side
@@ -24,6 +19,10 @@ class DiffTagLib {
     private static final String CONTAINER_ID_PREFIX = "comment-container-"
 	
     static namespace = "sc"
+
+    def fileNameWithoutPackage = {attrs, body ->
+        out << this.extractFileName(body())
+    }
 
     /**
      * Print one file changeset in a DIFF format.

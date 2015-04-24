@@ -61,4 +61,5 @@ class HelpTagLibSpec extends Specification {
         then: 'output will be the same, because it is written only in one line'
             output == '<div id="some-id" class="some-class"><span class="span-class"><h1>Header<h2><p>The content</p></span></div>'
     }
+
 }

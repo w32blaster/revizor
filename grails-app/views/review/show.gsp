@@ -10,27 +10,34 @@
         <meta name="layout" content="main">
         <g:set var="entityName" value="${message(code: 'review.label', default: 'Review')}" />
         <title><g:message code="default.show.label" args="[entityName]" /></title>
-
-        <!-- Breadcrumbs -->
-        <parameter name="b.one.text" value="${message(code: 'reviews.only.mine')}" />
-        <parameter name="b.one.link" value="${createLink(controller: "review", action:"index", 'params':[filter: com.revizor.ReviewFilter.ONLY_MINE])}" />
-
-        <parameter name="b.two.text" value="Review 'Check the tweaked text'" />
-        <parameter name="b.two.link" value="review/show/1" />
-
     </head>
     <body>
 
-        <div class="row">
-        
-            <div class="col-md-3">
 
+    <!-- Breadcrumbs -->
+    <div class="row" role="breadcrumb">
+        <ul class="breadcrumb">
+            <li>
+                <a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">${message(code: "default.home.label")}</a>
+            </li>
+            <li>
+                <a href="${createLink(controller: "review", action:"index", 'params':[filter: com.revizor.ReviewFilter.ONLY_MINE])}">
+                    ${message(code: 'reviews.only.mine')}
+                </a>
+            </li>
+            <li class="active">${message(code: "review.with.title", args: [reviewInstance.title])}</li>
+        </ul>
+    </div>
+
+
+    <div id="content-container">
+        <div class="row">
+            <div class="col-md-3">
                     <ft:showFilesForReview
                         repo="${reviewInstance.repository}" 
                         commitID="${reviewInstance.commits[0]}" 
                         reviewId="${reviewInstance.id}"
                         urlPrefix="${urlPrefix}"/>
-
             </div>
 
             <div class="col-md-9">
@@ -46,16 +53,6 @@
                             <g:render template="/layouts/deleteButton" />
                         </div>
                     </g:if>
-
-
-                        <small>
-                            <g:link action="dashboard" controller="repository" id="${reviewInstance?.repository.ident()}" class="btn btn-default btn-success btn-xs">
-                                <span class="glyphicon glyphicon-home"></span>
-                            </g:link>
-                            <g:link action="index" params="[filter: ReviewFilter.ONLY_MINE]" class="btn btn-default btn-success btn-xs">
-                                <g:message code="default.list.label" args="[entityName]" />
-                            </g:link>
-                        </small>
 
                     <h2><g:fieldValue bean="${reviewInstance}" field="title"/></h2>
 
@@ -183,6 +180,7 @@
 
             </div>
             </div>
+        </div>
         </div>
     </body>
 </html>

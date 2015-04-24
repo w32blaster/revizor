@@ -38,30 +38,38 @@
 			<div id="header" class="row" role="header">
 				<div class="col-md-12">
 
-                    <div id="permanent-menu">
-                        <a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">
-                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-                            Home</a>
-
-                        <g:link controller="review" action="index" params="[filter: com.revizor.ReviewFilter.ONLY_MINE]">
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                            Reviews
-                        </g:link>
-
-                        <!-- Comments -->
-                        <g:link controller="comment" action="index" params="[filter: com.revizor.CommentsFilter.ONLY_MINE]">
-                            <span class="glyphicon glyphicon-comment"></span> Comments
-                        </g:link>
-
-                    </div>
-
 					<g:if test="${session.user}">
+
+                        <div id="permanent-menu">
+
+                            <!-- Reviews -->
+                            <g:link controller="review" action="index" params="[filter: com.revizor.ReviewFilter.ONLY_MINE]">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                <g:message code="reviews.header" />
+                            </g:link>
+
+                            <!-- Comments -->
+                            <g:link controller="comment" action="index" params="[filter: com.revizor.CommentsFilter.ONLY_MINE]">
+                                <span class="glyphicon glyphicon-comment"></span>
+                                <g:message code="review.comments.header" />
+                            </g:link>
+
+                        </div>
+
+
 						<div id="current-account-block" role="account-container">
+
                             <g:render template="/user/userAvatar" model="['user' : session.user, 'size': 32]" />
 
-							<a href="${createLink(controller: 'settings')}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-cog"></span></a>
+							<a href="${createLink(controller: 'settings')}">
+                                <span class="glyphicon glyphicon-cog"></span>
+                                <g:message code="settings.label" />
+                            </a>
 
-							<g:link  controller="login" action="doLogout" class="btn btn-default btn-sm" title="${message(code: 'default.log.out')}"><span class="glyphicon glyphicon-off"></span></g:link>
+							<g:link  controller="login" action="doLogout" title="${message(code: 'default.log.out')}">
+                                <span class="glyphicon glyphicon-off"></span>
+                                <g:message code="exit.label" />
+                            </g:link>
 							
 						</div>
 					</g:if>
@@ -70,32 +78,10 @@
 				</div>
 			</div>
 
-            <div class="row" role="breadcrumb">
-
-                <ul class="breadcrumb">
-                    <li><a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">Home</a></li>
-
-                    <g:if test="${pageProperty(name:'page.b.one.text')}">
-                        <li>
-                            <a href="${pageProperty(name:'page.b.one.link')}">${pageProperty(name:'page.b.one.text')}</a>
-                        </li>
-                    </g:if>
-
-                    <g:if test="${pageProperty(name:'page.b.two.text')}">
-                        <li>
-                            <a href="${pageProperty(name:'page.b.two.link')}">${pageProperty(name:'page.b.two.text')}</a>
-                        </li>
-                    </g:if>
-
-                    <li class="active">${pageProperty(name:'page.b.one.text')}</li>
-                </ul>
-
-            </div>
-
 			
-			<div id="content-container">
+
 			<g:layoutBody/>
-			</div>
+
 			
 
 			<footer>

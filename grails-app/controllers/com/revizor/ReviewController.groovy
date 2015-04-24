@@ -16,12 +16,35 @@ enum ReviewFilter {
     ONLY_MINE("reviews.only.mine"),
     WHERE_I_AM_REVIEWER("reviews.where.i.reviewer"),
     ARCHIVED("reviews.archived"),
-    GROUPED_BY_ISSUE_TICKETS("reviews.archived");
+    GROUPED_BY_ISSUE_TICKETS("reviews.grouped.by.issue.tickets");
 
     ReviewFilter(String value) { this.value = value }
 
     private final String value
     public String value() { return value }
+
+    public static msgCodeFromValue(String value) {
+        switch (value) {
+
+            case ReviewFilter.ALL.name():
+                return ReviewFilter.ALL.value()
+
+            case ReviewFilter.ONLY_MINE.name():
+                return ReviewFilter.ONLY_MINE.value()
+
+            case ReviewFilter.WHERE_I_AM_REVIEWER.name():
+                return ReviewFilter.WHERE_I_AM_REVIEWER.value()
+
+            case ReviewFilter.GROUPED_BY_ISSUE_TICKETS.name():
+                return "reviews.grouped.by.issue.tickets.full"
+
+            case ReviewFilter.ARCHIVED.name():
+                return ReviewFilter.ARCHIVED.value()
+
+            default:
+                return ""
+        }
+    }
 }
 
 

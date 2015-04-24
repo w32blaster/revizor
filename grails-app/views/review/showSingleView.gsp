@@ -12,54 +12,74 @@
         <script type="text/javascript" src="${resource(dir: 'js/prettify', file: 'prettify.js')}"></script>
     </head>
     <body>
-		
-		<div class="row">
-		
-			<div class="col-md-3">
-				  
-					<ft:showFilesForReview
-						repo="${reviewInstance.repository}" 
-						commitID="${reviewInstance.commits[0]}" 
-						reviewId="${reviewInstance.id}"
-						urlPrefix="${urlPrefix}"/>
 
-			</div>
-			
-			<div class="col-md-9">
 
-                  <small>
-                      <g:link controller="review" action="show" params="[id: reviewInstance.id]" class="btn btn-default btn-success btn-xs">
-                          <span class="glyphicon glyphicon-arrow-left"></span>
-                          <g:message code="default.back.label" args="[entityName]" />
-                      </g:link>
-                  </small>
-                    
+    <!-- Breadcrumbs -->
+    <div class="row" role="breadcrumb">
+        <ul class="breadcrumb">
+            <li>
+                <a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">${message(code: "default.home.label")}</a>
+            </li>
+            <li>
+                <a href="${createLink(controller: "review", action:"index", 'params':[filter: com.revizor.ReviewFilter.ONLY_MINE])}">
+                    ${message(code: 'reviews.only.mine')}
+                </a>
+            </li>
+            <li>
+                <a href="${createLink(controller: "review", action:"show", 'id': reviewInstance.ident())}">
+                    ${message(code: "review.with.title", args: [reviewInstance.title])}
+                </a>
+            </li>
+            <li class="active">
+                <sc:fileNameWithoutPackage>
+                    ${fileName}
+                </sc:fileNameWithoutPackage>
+            </li>
+        </ul>
+    </div>
 
-				<g:render template="viewTypeButtons"></g:render>
 
-				<g:if test="${flash.message}">
-					<div class="alert alert-warning">${flash.message}</div>
-				</g:if>
-				
-				<g:render template="reviewHeader"></g:render>
+        <div id="content-container">
+            <div class="row">
 
-				<!-- Print the Diff of the considered file -->
-				<r:script>
-					prettyPrint();
-				</r:script>
+                <div class="col-md-3">
 
-				<g:render template="/comment/commentsScript" model="['commentType': CommentType.LINE_OF_CODE.name(),
-																	 'review': reviewInstance]" />
-				<g:javascript library="markdown"/>
+                        <ft:showFilesForReview
+                            repo="${reviewInstance.repository}"
+                            commitID="${reviewInstance.commits[0]}"
+                            reviewId="${reviewInstance.id}"
+                            urlPrefix="${urlPrefix}"/>
 
-				<sc:showDiffForCommit 
-                    repo="${reviewInstance.repository}" 
-                    commitID="${reviewInstance.commits[0]}" 
-                    fileName="${fileName}" 
-                    review="${reviewInstance}" />
+                </div>
 
-			</div>
-			
-		</div>
+                <div class="col-md-9">
+
+                    <g:render template="viewTypeButtons"></g:render>
+
+                    <g:if test="${flash.message}">
+                        <div class="alert alert-warning">${flash.message}</div>
+                    </g:if>
+
+                    <g:render template="reviewHeader"></g:render>
+
+                    <!-- Print the Diff of the considered file -->
+                    <r:script>
+                        prettyPrint();
+                    </r:script>
+
+                    <g:render template="/comment/commentsScript" model="['commentType': CommentType.LINE_OF_CODE.name(),
+                                                                         'review': reviewInstance]" />
+                    <g:javascript library="markdown"/>
+
+                    <sc:showDiffForCommit
+                        repo="${reviewInstance.repository}"
+                        commitID="${reviewInstance.commits[0]}"
+                        fileName="${fileName}"
+                        review="${reviewInstance}" />
+
+                </div>
+
+            </div>
+        </div>
 	</body>
 </html>
