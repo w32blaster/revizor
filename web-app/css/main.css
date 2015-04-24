@@ -325,3 +325,7 @@ body {
 .container-collapsed DIV {
     display: none;
 }
+
+.files-tree {
+    border-right: 1px solid #445372;
+}

@@ -24,7 +24,7 @@
                         urlPrefix="${urlPrefix}"/>
 
             </div>
-            
+
             <div class="col-md-9">
             
                 <div class="row">
@@ -57,17 +57,17 @@
                     <div class="message" role="status">${flash.message}</div>
                 </g:if>
                        
-                <div class="row">        
-                    <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-12">
 
                         <div class="row"> 
-                            <div class="col-md-2">
+                            <div class="col-md-1">
 
                                 <g:render template="/user/userAvatar" model="['user' : reviewInstance?.author]" />
 
                             </div>   
 
-                            <div class="col-md-10">
+                            <div class="col-md-6">
                                 <dl class="dl-horizontal">
 
                                     <g:if test="${reviewInstance?.status}">
@@ -115,42 +115,45 @@
                                 </dl>
                             </div>
 
-                            <div class="row">
+                            <div class="col-md-3">
 
-                                <g:if test="${reviewInstance?.issueTickets}">
-                                    <b><g:message code="review.associated.issues" /></b>
-                                    <g:render template="issueTickets" model="['issueTickets': reviewInstance.issueTickets, 'isEdit': false]" />
-                                </g:if>
+                                <g:render template="resolutionButtons" model="['reviewInstance': reviewInstance]" />
 
-                                <!-- Review description: -->
-                                <h3><g:message code="review.description.label" default="Description" /></h3>
+                                <g:render template="closeReviewButton" model="['reviewInstance': reviewInstance]" />
 
-                                <emoji:toHtml size="22">
-                                    <markdown:renderHtml>${reviewInstance.description}</markdown:renderHtml>
-                                </emoji:toHtml>
+                                <h3><g:message code="review.reviewers.label" default="Reviewers" /></h3>
+
+                                <div id="${Id.REVIEWER_CONTAINER}">
+                                    <g:each in="${reviewInstance.reviewers}" var="r">
+                                        <g:render template="reviewer" model="['reviewer' : r.reviewer, 'status': r.status]" />
+                                    </g:each>
+                                </div>
+
+                                <%-- Buttons "Invite Reviewers" --%>
+                                <g:render template="inviteReviewersButton" model="['reviewInstance': reviewInstance]" />
+
 
                             </div>
+
                         </div>
-                    </div>                 
-                    <div class="col-md-3">
 
-                        <g:render template="resolutionButtons" model="['reviewInstance': reviewInstance]" />
+                        <div class="row">
 
-                        <g:render template="closeReviewButton" model="['reviewInstance': reviewInstance]" />
+                            <g:if test="${reviewInstance?.issueTickets}">
+                                <b><g:message code="review.associated.issues" /></b>
+                                <g:render template="issueTickets" model="['issueTickets': reviewInstance.issueTickets, 'isEdit': false]" />
+                            </g:if>
 
-                        <h3><g:message code="review.reviewers.label" default="Reviewers" /></h3>
-                    
-                            <div id="${Id.REVIEWER_CONTAINER}">
-                            <g:each in="${reviewInstance.reviewers}" var="r">
-                                <g:render template="reviewer" model="['reviewer' : r.reviewer, 'status': r.status]" />
-                            </g:each>
-                            </div>
-                            
-                            <%-- Buttons "Invite Reviewers" --%>
-                            <g:render template="inviteReviewersButton" model="['reviewInstance': reviewInstance]" />
-                    
-                     
-                </div>
+                        <!-- Review description: -->
+                            <h3><g:message code="review.description.label" default="Description" /></h3>
+
+                            <emoji:toHtml size="22">
+                                <markdown:renderHtml>${reviewInstance.description}</markdown:renderHtml>
+                            </emoji:toHtml>
+
+                        </div>
+
+                    </div>
             </div>
             
             <div class="row">
