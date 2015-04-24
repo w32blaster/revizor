@@ -21,6 +21,7 @@
 		<g:javascript library="jquery" plugin="jquery"/>
         <g:javascript library="application"/>
 		<g:javascript library="bootstrap"/>
+		<g:javascript library="selectbox"/>
 		<g:javascript library="mentions"/>
 		<g:javascript library="toast"/>
 

@@ -8,6 +8,11 @@ modules = {
 		resource url:'css/bootstrap.min.css'
 	}
 
+    selectbox {
+        resource url:'js/bootstrap-select.min.js'
+        resource url:'css/bootstrap-select.min.css'
+    }
+
     markdown {
         resource url:'js/bootstrap-markdown.js'
         resource url:'js/markdown.js'

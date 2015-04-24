@@ -67,8 +67,11 @@
 		<span class="required-indicator">*</span>
 	</label>
 	<div class="col-lg-9">
-		<g:select name="type" from="${com.revizor.RepositoryType?.values()}" keys="${com.revizor.RepositoryType.values()*.name()}" required="" value="${repositoryInstance?.type?.name()}" />
-	</div>
+
+		<g:select class="selectpicker" name="type" data-style="btn-primary"
+                  from="${com.revizor.RepositoryType?.values()}" keys="${com.revizor.RepositoryType.values()*.name()}" required="" value="${repositoryInstance?.type?.name()}" />
+
+    </div>
 </div>
 
 
@@ -76,5 +79,8 @@
 	(function($) {
 		$('#password-tooltip-id').tooltip();
 	})(jQuery);
+
+    $('.selectpicker').selectpicker();
+
 </r:script>
 

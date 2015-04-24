@@ -20,6 +20,7 @@
     <g:javascript library="jquery" plugin="jquery"/>
     <g:javascript library="application"/>
     <g:javascript library="bootstrap"/>
+    <g:javascript library="selectbox"/>
 
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
 
