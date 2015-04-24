@@ -53,7 +53,7 @@ class DiffTagLib {
                     def extension = fileName[fileName.lastIndexOf('.')+1 .. -1]
 					
 					out << "<h3>$fileName</h3>"
-	                out << '<div id="diff-panel-id" class="panel panel-default"><div id="diff-container-id" class="panel-body"><table class="code-table">'
+	                out << '<div id="diff-panel-id" class="panel panel-default"><div id="diff-container-id" class="panel-body"><table class="code-table table-striped">'
 
                     if (isSideBySideViewMode) {
                         this.renderFileCodeForSideToSideMode(file, isContentStarted, isReview, range, extension, mapComments)

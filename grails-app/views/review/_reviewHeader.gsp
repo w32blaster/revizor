@@ -5,7 +5,7 @@
 
     <g:if test="${reviewInstance?.author}">
 
-        <g:render template="/user/userAvatar" model="['user' : reviewInstance?.author]" />
+        <g:render template="/user/userAvatar" model="['user' : reviewInstance?.author, 'size': 32]" />
         ${reviewInstance?.author?.username.encodeAsHTML()}
 
     </g:if>

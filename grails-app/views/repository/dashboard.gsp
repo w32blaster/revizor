@@ -3,12 +3,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main"/>
+		<meta name="layout" content="main" />
 		<title><g:message code="dashboard.title" /></title>
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'dashboard.css')}" type="text/css">
 	</head>
 	<body>
-		
+
 		<g:set var="notificationContainerID" value="notification-feed-container" />
 		<div id="${notificationContainerID}" class="col-md-4 full-height">
 			
@@ -33,16 +33,6 @@
 					<h3 class="pull-left">${selectedRepo.title}</h3>
 
 					<div id="switch-to-btn" class="btn-group">
-
-						<!-- Reviews -->
-						<g:link controller="review" action="index" params="[filter: ReviewFilter.ONLY_MINE]" class="btn btn-default btn-primary">
-							<span class="glyphicon glyphicon-pencil"></span> Reviews
-						</g:link>
-
-						<!-- Comments -->
-						<g:link controller="comment" action="index" params="[filter: CommentsFilter.ONLY_MINE]" class="btn btn-default btn-primary">
-							<span class="glyphicon glyphicon-comment"></span> Comments
-						</g:link>
 
 						<!-- "Switch to..." button -->
 						<div class="btn-group">

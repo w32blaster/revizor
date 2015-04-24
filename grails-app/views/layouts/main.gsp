@@ -1,3 +1,4 @@
+<%@ page import="com.revizor.CommentsFilter; com.revizor.ReviewFilter" %>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -37,8 +38,22 @@
 			<div id="header" class="row" role="header">
 				<div class="col-md-12">
 
-					<b>Revizor</b>
+                    <div id="permanent-menu">
+                        <a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                            Home</a>
 
+                        <g:link controller="review" action="index" params="[filter: com.revizor.ReviewFilter.ONLY_MINE]">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            Reviews
+                        </g:link>
+
+                        <!-- Comments -->
+                        <g:link controller="comment" action="index" params="[filter: com.revizor.CommentsFilter.ONLY_MINE]">
+                            <span class="glyphicon glyphicon-comment"></span> Comments
+                        </g:link>
+
+                    </div>
 
 					<g:if test="${session.user}">
 						<div id="current-account-block" role="account-container">
@@ -51,9 +66,19 @@
 						</div>
 					</g:if>
 
+
 				</div>
 			</div>
-			
+
+            <div class="row" role="breadcrumb">
+
+                <ul class="breadcrumb">
+                    <li><a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">Home</a></li>
+                    <li><a href="#">Controller</a></li>
+                    <li class="active">Actions</li>
+                </ul>
+
+            </div>
 
 			
 			<div id="content-container">

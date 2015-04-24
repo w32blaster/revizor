@@ -21,6 +21,7 @@ class RepositoryController {
     def index() {
         def repos = Repository.list()
         if (repos.size() > 0) {
+            session.activeRepository = repos.get(0).ident()
             redirect(controller: "repository", action: "dashboard", id: repos.get(0).ident());
         }
         else {
@@ -34,6 +35,7 @@ class RepositoryController {
             return
         }
         def id = params.id.toInteger()
+        session.activeRepository = id
 
         def repos = Repository.list()
         def selectedRepo = repos.find { it.ident() == id }
