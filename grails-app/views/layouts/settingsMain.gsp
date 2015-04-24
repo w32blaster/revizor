@@ -32,19 +32,13 @@
 
     <div id="header" class="row" role="header">
       <div class="col-md-12">
-        <a href="${createLink(uri: '/')}" class="inline-block">
-          <img src="${resource(dir: 'images', file: 'revizor-logo4-43.png')}" alt="Revizor logo"/>
-        </a>
+
+        <b>${message(code: "settings.label")}</b>
 
         <g:if test="${session.user}">
-          <div id="current-account-block" role="account-container">
-            <g:render template="/user/userAvatar" model="['user' : session.user, 'size': 32]" />
 
-            <a href="${createLink(controller: 'settings')}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-cog"></span></a>
+            <g:render template="/layouts/leftPanelSettingsAndExit" />
 
-            <g:link  controller="login" action="doLogout" class="btn btn-default btn-sm" title="${message(code: 'default.log.out')}"><span class="glyphicon glyphicon-off"></span></g:link>
-
-          </div>
         </g:if>
       </div>
     </div>
