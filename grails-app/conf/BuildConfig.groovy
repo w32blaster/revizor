@@ -64,22 +64,23 @@ grails.project.dependency.resolution = {
         build ":tomcat:7.0.52.1"
 
         // plugins for the compile step
-        compile ":scaffolding:2.0.2"
+        compile ":scaffolding:2.1.0"
         compile ":markdown:1.1.1"
         compile ":quartz:1.0.2"
         compile ":rest-client-builder:2.0.3"
         compile ":cache:1.1.8"
         compile ":mail:1.0.7"
+        compile ':asset-pipeline:1.8.3'
 
         // to prepare self extracted executable JAR file. To run: grails prod build-standalone revizor.jar
         // docs: http://grails-plugins.github.io/grails-standalone/docs/manual/guide/running.html
         compile ":standalone:1.3"
         
         // plugins needed at runtime but not for compilation
-        runtime ":hibernate:3.6.10.9" // or ":hibernate4:4.3.4"
-        runtime ":database-migration:1.3.8"
+        runtime ':hibernate4:4.3.5.2' // or ':hibernate:3.6.10.14'
+        runtime ":database-migration:1.4.0"
         runtime ":jquery:1.11.0.2"
-        runtime ":resources:1.2.7"
+        runtime ":resources:1.2.14"
         runtime ":grails-emoji:0.1"
 
         // Uncomment these (or add new ones) to enable additional resources capabilities

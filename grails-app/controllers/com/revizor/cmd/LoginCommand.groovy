@@ -3,7 +3,7 @@ package com.revizor.cmd
 import com.revizor.User
 import com.revizor.security.BCrypt;
 
-@grails.validation.Validateable
+@grails.validation.Validateable(nullable = true)
 class LoginCommand {
 
 	String email;
