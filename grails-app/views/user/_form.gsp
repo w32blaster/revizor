@@ -72,7 +72,14 @@
 		<span class="required-indicator">*</span>
 	</label>
 	<div class="col-lg-9">
-		<g:select  class="form-control" name="role" from="${com.revizor.Role?.values()}" keys="${com.revizor.Role.values()*.name()}" required="" value="${userInstance?.role?.name()}" />
+		<g:select  class="form-control selectpicker" data-style="btn-primary" name="role" from="${com.revizor.Role?.values()}" keys="${com.revizor.Role.values()*.name()}" required="" value="${userInstance?.role?.name()}" />
 	</div>
 </div>
+
+
+<r:script>
+
+    $('.selectpicker').selectpicker();
+
+</r:script>
 

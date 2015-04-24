@@ -16,7 +16,7 @@
 			<g:render template="/layouts/actionButton" />
 
 			<div class="form-container">
-				<g:form url="[resource:userInstance, action:'save']"  >
+				<g:form url="[resource:userInstance, action:'save']"  class="form-horizontal" >
 					<fieldset class="form">
                         <g:hiddenField name="hasImage" value="false"/>
 
