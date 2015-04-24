@@ -74,8 +74,20 @@
 
                 <ul class="breadcrumb">
                     <li><a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">Home</a></li>
-                    <li><a href="#">Controller</a></li>
-                    <li class="active">Actions</li>
+
+                    <g:if test="${pageProperty(name:'page.b.one.text')}">
+                        <li>
+                            <a href="${pageProperty(name:'page.b.one.link')}">${pageProperty(name:'page.b.one.text')}</a>
+                        </li>
+                    </g:if>
+
+                    <g:if test="${pageProperty(name:'page.b.two.text')}">
+                        <li>
+                            <a href="${pageProperty(name:'page.b.two.link')}">${pageProperty(name:'page.b.two.text')}</a>
+                        </li>
+                    </g:if>
+
+                    <li class="active">${pageProperty(name:'page.b.one.text')}</li>
                 </ul>
 
             </div>

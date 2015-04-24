@@ -10,6 +10,14 @@
         <meta name="layout" content="main">
         <g:set var="entityName" value="${message(code: 'review.label', default: 'Review')}" />
         <title><g:message code="default.show.label" args="[entityName]" /></title>
+
+        <!-- Breadcrumbs -->
+        <parameter name="b.one.text" value="${message(code: 'reviews.only.mine')}" />
+        <parameter name="b.one.link" value="${createLink(controller: "review", action:"index", 'params':[filter: com.revizor.ReviewFilter.ONLY_MINE])}" />
+
+        <parameter name="b.two.text" value="Review 'Check the tweaked text'" />
+        <parameter name="b.two.link" value="review/show/1" />
+
     </head>
     <body>
 

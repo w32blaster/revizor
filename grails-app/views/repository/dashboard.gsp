@@ -6,10 +6,11 @@
 		<meta name="layout" content="main" />
 		<title><g:message code="dashboard.title" /></title>
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'dashboard.css')}" type="text/css">
+
 	</head>
 	<body>
 
-		<g:set var="notificationContainerID" value="notification-feed-container" />
+    	<g:set var="notificationContainerID" value="notification-feed-container" />
 		<div id="${notificationContainerID}" class="col-md-4 full-height">
 			
 			<g:render template="/notification/notificationFeed" />
