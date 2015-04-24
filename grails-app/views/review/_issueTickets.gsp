@@ -83,9 +83,25 @@
     <label class="control-label"><g:message code="review.associate.issue.tickets" /></label>
     <div class="input-group" style="max-width: 600px;">
 
-            <select class="form-control selectpicker" id="select-issue-tracker" style="width: 300px;">
+        <g:set var="isEmpty" value="${com.revizor.IssueTracker.all.size() == 0}" />
+
+        <g:if test="${isEmpty}">
+            <select class="form-control selectpicker" data-style="btn-primary" id="select-issue-tracker" style="width: 300px;" disabled="disabled">
+                <option>${message(code: "no.issue.trackers.found")}</option>
+            </select>
+
+            <label class="input-group-addon"><g:message code="issue.key.label" /></label>
+
+            <input id="issue-key-id" class="form-control" type="text" style="width: 100px;" placeholder="<g:message code="key.placeholder"/>"  disabled="disabled" />
+
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button" disabled="disabled"><g:message code="assign.button" /></button>
+            </span>
+        </g:if>
+        <g:else>
+            <select class="form-control selectpicker" data-style="btn-primary" id="select-issue-tracker" style="width: 300px;">
                 <g:each in="${com.revizor.IssueTracker.all}" var="issueTracker">
-                <option value="${issueTracker.ident()}">${issueTracker.title}</option>
+                    <option value="${issueTracker.ident()}">${issueTracker.title}</option>
                 </g:each>
             </select>
 
@@ -94,7 +110,10 @@
             <input id="issue-key-id" class="form-control" type="text" style="width: 100px;" placeholder="<g:message code="key.placeholder"/>" />
 
             <span class="input-group-btn">
-                <button id="assign-issue-btn-id" class="btn btn-primary" type="button"><g:message code="assign.button" /></button>
+                <button id="assign-issue-btn-id"  class="btn btn-primary" type="button"><g:message code="assign.button" /></button>
             </span>
+        </g:else>
+
+
     </div>
 </g:if>

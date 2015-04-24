@@ -28,18 +28,15 @@
 
 	    <div id="edit-review" class="content scaffold-edit" role="main">
 
-            <h2><g:message code="review.edit.of" args="[reviewInstance.title]" /></h2>
-
-            <g:render template="/layouts/flashMessage" />
-
-            <g:render template="/layouts/showErrors" model="[instance: reviewInstance]" />
-
             <div class="container">
 
-                <g:render template="reviewFilterButtons" />
+                <h2><g:message code="review.edit.of" args="[reviewInstance.title]" /></h2>
 
+                <g:render template="/layouts/flashMessage" />
 
-                    <g:form url="[resource:reviewInstance, action:'update']" method="PUT" >
+                <g:render template="/layouts/showErrors" model="[instance: reviewInstance]" />
+
+                <g:form url="[resource:reviewInstance, action:'update']" method="PUT" class="form-review">
                         <g:hiddenField name="version" value="${reviewInstance?.version}" />
                         <g:hiddenField name="repository" value="${repository?.id}" />
                         <fieldset class="form">

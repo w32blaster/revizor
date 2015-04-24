@@ -4,19 +4,22 @@
 <g:javascript library="markdown"/>
 
 <div class="form-group ${hasErrors(bean: reviewInstance, field: 'title', 'error')} ">
-	<label for="title">
-		<g:message code="review.title.label" default="Title" />
-		
-	</label>
-	<g:textField class="form-control" name="title" value="${reviewInstance?.title}"/>
 
-</div>
+    <div class="row">
+        <div class="col-lg-7">
+            <label for="title">
+                <g:message code="review.title.label" default="Title" />
 
-<div class="form-group">
-    <label for="author">
-        <g:message code="review.author.label" default="Author" />
-    </label>
-    <g:render name="author" template="reviewer" model="['reviewer' : reviewInstance?.author ? reviewInstance.author : session.user]" />
+            </label>
+            <g:textField class="form-control" name="title" value="${reviewInstance?.title}"/>
+        </div>
+        <div class="col-lg-5">
+            <label for="author">
+                <g:message code="review.author.label" default="Author" />
+            </label>
+            <g:render name="author" template="reviewer" model="['reviewer' : reviewInstance?.author ? reviewInstance.author : session.user]" />
+        </div>
+    </div>
 </div>
 
 
@@ -30,8 +33,9 @@
 </div>
 
 
-<g:render template="issueTickets" model="['issueTickets': reviewInstance?.issueTickets, 'isEdit': isEdit, 'reviewId': reviewInstance?.ident()]" />
-
+<div class="form-group">
+    <g:render template="issueTickets" model="['issueTickets': reviewInstance?.issueTickets, 'isEdit': isEdit, 'reviewId': reviewInstance?.ident()]" />
+</div>
 
 <div class="form-group ${hasErrors(bean: reviewInstance, field: 'description', 'error')} ">
 	<label for="description">

@@ -28,17 +28,16 @@
     <div id="content-container">
 
 		<div id="create-review" class="content scaffold-create" role="main">
-			<h2><g:message code="default.create.label" args="[entityName]" /></h2>
-
-            <g:render template="/layouts/flashMessage" />
-
-            <g:render template="/layouts/showErrors" model="[instance: reviewInstance]" />
 
             <div class="container">
 
-                <g:render template="reviewFilterButtons" />
+                <h2><g:message code="default.create.label" args="[entityName]" /></h2>
 
-                <g:form url="[resource: reviewInstance, action:'save']" >
+                <g:render template="/layouts/flashMessage" />
+
+                <g:render template="/layouts/showErrors" model="[instance: reviewInstance]" />
+
+                <g:form url="[resource: reviewInstance, action:'save']" class="form-review">
 
                     <fieldset class="form">
                         <g:render template="form"/>

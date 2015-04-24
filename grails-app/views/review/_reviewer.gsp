@@ -3,7 +3,7 @@
 <%-- 
     One cell with author (avatar, his name and his decision)
 --%>
-<div class="reviewer row">
+<div class="reviewer">
 
     <div class="col-md-10">
         <g:render template="userWithAvatar" model="[user: reviewer]" />
