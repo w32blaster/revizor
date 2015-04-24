@@ -45,7 +45,7 @@
                 <div class="row">
 
                     <g:if test="${reviewInstance?.author?.id == session.user.id}">
-                        <div class="btn-group pull-right" >
+                        <div class="btn-group" >
                             <g:link action="edit" resource="${reviewInstance}" class="btn btn-default btn-xs">
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </g:link>

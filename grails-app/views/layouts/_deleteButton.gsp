@@ -30,6 +30,6 @@
         """;
 %>
 
-<button id="delete-btn" title data-original-title="Are you sure?" type="button" data-container="body" data-toggle="popover" data-html="true" data-content="<%= HelpTagLib.toSingleLine(template) %>" data-placement="right"  class="confirmation btn btn-default btn-xs">
+<button id="delete-btn" data-original-title="Are you sure?" type="button" data-container="body" data-toggle="popover" data-html="true" data-content="<%= HelpTagLib.toSingleLine(template) %>" data-placement="right"  class="confirmation btn btn-default btn-danger btn-xs">
     <span class="glyphicon glyphicon-trash"></span> 
 </button>
