@@ -14,7 +14,7 @@
     <div class="row" role="breadcrumb">
         <ul class="breadcrumb">
             <li>
-                <a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">${message(code: "default.home.label")}</a>
+                <a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">${message(code: "dashboard.label")}</a>
             </li>
             <li class="active">
                     ${message(code: ReviewFilter.msgCodeFromValue(params.filter))}

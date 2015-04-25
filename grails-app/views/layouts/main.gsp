@@ -42,6 +42,12 @@
 
                         <div id="permanent-menu">
 
+                            <!-- Home page -->
+                            <g:link controller="repository" action="homePage">
+                                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                                <g:message code="default.home.label" />
+                            </g:link>
+
                             <!-- Reviews -->
                             <g:link controller="review" action="index" params="[filter: com.revizor.ReviewFilter.ONLY_MINE]">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>

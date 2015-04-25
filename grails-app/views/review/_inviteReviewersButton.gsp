@@ -60,6 +60,7 @@
       <div id="invite-reviewers-btn" class="btn-group">
 
         <g:if test="${isOnlyOneUser}">
+            <!-- Disabled button, where there are no registered users yet -->
             <button class="btn btn-default btn-info" disabled="disabled">
                 <g:message code="users.not.found"/>
             </button>

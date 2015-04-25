@@ -355,3 +355,9 @@ body {
 #invite-reviewers-btn {
     margin: 10px 0;
 }
+.repo-logo {
+    margin-right: 10px;
+}
+.hp-row {
+    margin: 10px;
+}

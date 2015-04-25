@@ -21,12 +21,15 @@ class RepositoryController {
     def index() {
         def repos = Repository.list()
         if (repos.size() > 0) {
-            session.activeRepository = repos.get(0).ident()
-            redirect(controller: "repository", action: "dashboard", id: repos.get(0).ident());
+            redirect(controller: "repository", action: "homePage");
         }
         else {
             redirect(controller: "repository", action: "create")
         }
+    }
+
+    def homePage() {
+        render view: "homePage"
     }
 
     def dashboard() {
