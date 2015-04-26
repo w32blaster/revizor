@@ -360,4 +360,5 @@ body {
 }
 .hp-row {
     margin: 10px;
+    min-height: 50px;
 }

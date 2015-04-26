@@ -6,7 +6,7 @@
 <div class="reviewer">
 
     <div class="col-md-10">
-        <g:render template="userWithAvatar" model="[user: reviewer]" />
+        <g:render template="/review/userWithAvatar" model="[user: reviewer]" />
     </div>
 
     <div class="col-md-2">

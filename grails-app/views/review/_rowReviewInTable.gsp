@@ -23,6 +23,6 @@
         </span>
     </td>
 
-    <td><g:render template="reviewer" model="['reviewer' : review.author]" /></td>
+    <td><g:render template="/review/reviewer" model="['reviewer' : review.author]" /></td>
 
 </tr>
