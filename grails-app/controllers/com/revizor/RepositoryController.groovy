@@ -3,6 +3,7 @@ package com.revizor
 import com.revizor.repos.IRepository
 import com.revizor.utils.Constants
 import grails.transaction.Transactional
+import org.apache.commons.io.FileUtils
 import revizor.HelpTagLib
 
 import static org.springframework.http.HttpStatus.*
@@ -107,11 +108,15 @@ class RepositoryController {
             _notFound()
             return
         }
-		
+
         if (!repositoryInstance.validate()) {
             respond repositoryInstance.errors, view:'create'
             return
         }
+
+        def directoryPath = Constants.LOCAL_REPO_PATH + File.separator + params.folderName
+        def targetDir =  new File(directoryPath)
+        if (targetDir.exists()) FileUtils.deleteDirectory(targetDir)
 
         repositoryInstance.save flush:true
 
