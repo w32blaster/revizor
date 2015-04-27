@@ -89,7 +89,8 @@
 
         <g:if test="${actionName == "create"}">
             var $folderNameField = $('#folderName');
-            $folderNameField.focusout(function() {
+            $folderNameField.keyup(function() {
+
                 var $folderNameValue = $(this).val();
                 if($folderNameValue) {
                     $.get("${createLink(controller: 'repository', action: 'checkFolderExistence')}/" + encodeURIComponent( $folderNameValue ) )
@@ -97,11 +98,10 @@
                             if (isExisting === "1") {
                                 $('#folderNameWrapperID').addClass("has-error");
 
-                                $folderNameField.popover({
-                                    content : "${message(code: 'folder.exists.explanation')}"
-                                        .replace("{0}", "${com.revizor.utils.Constants.LOCAL_REPO_PATH + File.separator}" + $folderNameValue)
-                                });
+                                $folderNameField.attr("data-content", "${message(code: 'folder.exists.explanation')}"
+                                        .replace("{0}", "${com.revizor.utils.Constants.LOCAL_REPO_PATH + File.separator}" + $folderNameValue));
                                 $folderNameField.popover('show');
+
                                 $('#clone-repo-btn').attr('disabled','disabled');
                             }
                             else {
