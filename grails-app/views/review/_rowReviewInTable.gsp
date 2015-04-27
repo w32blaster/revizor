@@ -1,28 +1,54 @@
-<%@ page import="com.revizor.ReviewStatus" %>
+<%@ page import="revizor.HelpTagLib; com.revizor.ReviewStatus" %>
 <%--
     Row in table, representing one Review
 --%>
 <tr>
+    <%-- Review Title --%>
     <td>
-        <g:link action="show" id="${review.ident()}">
-            <% if (review.status == com.revizor.ReviewStatus.CLOSED) %> <del>
+        <g:link action="show" controller="review" id="${review.ident()}">
 
-            ${fieldValue(bean: review, field: "title")}
-
-            <% if (review.status == com.revizor.ReviewStatus.CLOSED) %> </del>
+            <g:if test="${review.status == com.revizor.ReviewStatus.CLOSED}">
+                <del>${review.ident()}: ${fieldValue(bean: review, field: "title")}</del>
+            </g:if>
+            <g:else>
+                ${review.ident()}: ${fieldValue(bean: review, field: "title")}
+            </g:else>
 
         </g:link>
     </td>
 
+    <%-- Repository Name --%>
     <td>
         <g:if test="${review?.repository.image}">
-            <img height="32" width="32" class="avatar img-rounded" src="${createLink(controller:'repository', action: 'logo_image', id: review?.repository.ident())}" />
+            <img height="16" width="16" class="avatar img-rounded" src="${createLink(controller:'repository', action: 'logo_image', id: review?.repository.ident())}" />
         </g:if>
         <span class="property-value" aria-labelledby="reviewers-label">
            ${review.repository.title}
         </span>
     </td>
 
-    <td><g:render template="/review/reviewer" model="['reviewer' : review.author]" /></td>
+    <%-- Author image --%>
+    <td width="32">
+        <g:render template="/user/userAvatar" model="['user' : review.author, 'size': 16]" />
+    </td>
+
+    <%-- If you are reviewer, then show the mark here --%>
+    <td width="32">
+        <g:if test="${revizor.HelpTagLib.isUserIsReviewer(session.user, review.reviewers)}">
+            <span class="label label-primary" title="${message(code:"you.are.reviewer.in.this.review")}">R</span>
+        </g:if>
+    </td>
+
+    <%-- Count of comments --%>
+    <td width="64">
+        <g:if test="${commentsByReview.containsKey(review.ident())}">
+            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> ${commentsByReview.get(review.ident()).size()}
+        </g:if>
+        <g:else>
+            <span class="faded">
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> 0
+            </span>
+        </g:else>
+    </td>
 
 </tr>

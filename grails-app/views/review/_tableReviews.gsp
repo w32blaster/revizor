@@ -10,14 +10,19 @@
 
         <th><g:message code="review.repository.label" default="Repository" /></th>
 
-        <th><g:message code="review.author.label" default="Author" /></th>
+        <th width="32"> </th>
 
+        <th width="32"> </th>
+
+        <th width="64"> </th>
 
     </tr>
     </thead>
     <tbody>
+    <g:set var="mapComments" value="${com.revizor.Comment.list().groupBy { it.review.id } }" />
+
     <g:each in="${reviewInstanceList}" status="i" var="reviewInstance">
-        <g:render template="rowReviewInTable" model="[review: reviewInstance]" />
+        <g:render template="rowReviewInTable" model="[review: reviewInstance, commentsByReview: mapComments]" />
     </g:each>
     </tbody>
 </table>

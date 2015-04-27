@@ -1,5 +1,8 @@
 package revizor
 
+import com.revizor.Reviewer
+import com.revizor.User
+
 /**
  * Helpers tag lib
  */
@@ -30,5 +33,20 @@ class HelpTagLib {
         // remove whitespace before the first and after the last tag
         html = (html =~ /^\s+<{1}/).replaceAll("<")
         return (html =~ />{1}\s+$/).replaceAll(">")
+    }
+
+    /**
+     * Checks whether given user is in the reviewers list
+     *
+     * @param currentUser - user to be checked
+     * @param lstReviewers - list of reviewers
+     * @return
+     */
+    public static boolean isUserIsReviewer(User currentUser, def lstReviewers) {
+        for (Reviewer rev : lstReviewers) {
+            if (rev.reviewer.id == currentUser.id)
+                return true
+        }
+        return false;
     }
 }

@@ -1,4 +1,4 @@
-<%@ page import="com.revizor.Review; com.revizor.ReviewStatus" contentType="text/html;charset=UTF-8" %>
+<%@ page import="com.revizor.Comment; com.revizor.Review; com.revizor.ReviewStatus" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main" />
@@ -21,8 +21,12 @@
                         </div>
 
                         <table class="table">
+                            <g:set var="mapComments" value="${com.revizor.Comment.list().groupBy { it.review.id } }" />
+
                             <g:each in="${com.revizor.Review.findAllByStatus(com.revizor.ReviewStatus.OPEN)}" var="reviewInstance">
-                                <g:render template="/review/rowReviewInTable" model="[review: reviewInstance]" />
+                                <g:render template="/review/rowReviewInTable" model="[
+                                        review: reviewInstance,
+                                        commentsByReview: mapComments ]" />
                             </g:each>
                         </table>
                     </div>

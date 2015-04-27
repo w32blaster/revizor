@@ -362,3 +362,6 @@ body {
     margin: 10px;
     min-height: 50px;
 }
+.faded {
+    color: #BFBFBF;
+}

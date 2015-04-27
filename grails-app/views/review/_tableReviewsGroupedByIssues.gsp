@@ -18,6 +18,7 @@
 
 <h1></h1>
 
+<g:set var="mapComments" value="${com.revizor.Comment.list().groupBy { it.review.id } }" />
 <table class="table">
     <tbody>
     <g:each in="${groupedIssues}" var="issueTicket">
@@ -29,7 +30,7 @@
         </tr>
 
         <g:each in="${issueTicket.getValue()}" status="i" var="issue">
-            <g:render template="rowReviewInTable" model="[review: issue.review]" />
+            <g:render template="rowReviewInTable" model="[review: issue.review, commentsByReview: mapComments]" />
         </g:each>
 
     </g:each>
@@ -40,7 +41,7 @@
         </tr>
 
         <g:each in="${reviewInstanceList}" status="i" var="review">
-            <g:render template="rowReviewInTable" model="[review: review]" />
+            <g:render template="rowReviewInTable" model="[review: review, commentsByReview: mapComments]" />
         </g:each>
 
     </tbody>

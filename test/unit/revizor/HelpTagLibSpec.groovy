@@ -1,11 +1,16 @@
 package revizor
 
+import com.revizor.Reviewer
+import com.revizor.User
+import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
 /**
  * 
  */
+@Mock(User)
+@Mock(Reviewer)
 @TestFor(HelpTagLib)
 class HelpTagLibSpec extends Specification {
 
@@ -61,5 +66,4 @@ class HelpTagLibSpec extends Specification {
         then: 'output will be the same, because it is written only in one line'
             output == '<div id="some-id" class="some-class"><span class="span-class"><h1>Header<h2><p>The content</p></span></div>'
     }
-
 }
