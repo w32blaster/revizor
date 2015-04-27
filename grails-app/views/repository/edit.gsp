@@ -14,9 +14,7 @@
 
             <g:render template="/layouts/showErrors" model="[instance: repositoryInstance]" />
 
-
 			<g:render template="/layouts/actionButton" />
-
 
             <g:render template="/user/select_avatar" model="[id: repositoryInstance?.ident()]"/>
 

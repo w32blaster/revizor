@@ -65,6 +65,20 @@ class RepositoryController {
     }
 
     /**
+     * In case if user tries to create a new repository but the target
+     * folder exists, then this action may potentially destroy some data.
+     *
+     * In this case we need to warn user. This method is supposed to be called
+     * from AJAX request. It checks the folder existence.
+     *
+     */
+    def checkFolderExistence() {
+        def directoryPath = Constants.LOCAL_REPO_PATH + File.separator + params.folderName
+        def dir = new File(directoryPath)
+        render dir.exists() ? "1" : "0"
+    }
+
+    /**
      * Pulls the latest changes from the origin (remote repo) and
      * renders updated tree.
      *
