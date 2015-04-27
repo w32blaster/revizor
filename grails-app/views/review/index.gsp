@@ -13,8 +13,9 @@
     <!-- Breadcrumbs -->
     <div class="row" role="breadcrumb">
         <ul class="breadcrumb">
-            <li>
-                <a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">${message(code: "dashboard.label")}</a>
+
+            <g:render template="dashboardBreadcrumb" />
+
             </li>
             <li class="active">
                     ${message(code: ReviewFilter.msgCodeFromValue(params.filter))}
