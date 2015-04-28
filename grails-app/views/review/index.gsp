@@ -13,10 +13,6 @@
     <!-- Breadcrumbs -->
     <div class="row" role="breadcrumb">
         <ul class="breadcrumb">
-
-            <g:render template="dashboardBreadcrumb" />
-
-            </li>
             <li class="active">
                     ${message(code: ReviewFilter.msgCodeFromValue(params.filter))}
             </li>

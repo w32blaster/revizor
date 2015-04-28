@@ -43,19 +43,22 @@
                         <div id="permanent-menu">
 
                             <!-- Home page -->
-                            <g:link controller="repository" action="homePage">
+                            <g:link controller="repository" action="homePage" class="menu-link">
                                 <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                                 <g:message code="default.home.label" />
                             </g:link>
 
+                            <!-- Dashboard -->
+                            <g:render template="/review/dashboardBreadcrumb" />
+
                             <!-- Reviews -->
-                            <g:link controller="review" action="index" params="[filter: com.revizor.ReviewFilter.ONLY_MINE]">
+                            <g:link controller="review" action="index" params="[filter: com.revizor.ReviewFilter.ONLY_MINE]" class="menu-link">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 <g:message code="reviews.header" />
                             </g:link>
 
                             <!-- Comments -->
-                            <g:link controller="comment" action="index" params="[filter: com.revizor.CommentsFilter.ONLY_MINE]">
+                            <g:link controller="comment" action="index" params="[filter: com.revizor.CommentsFilter.ONLY_MINE]" class="menu-link">
                                 <span class="glyphicon glyphicon-comment"></span>
                                 <g:message code="review.comments.header" />
                             </g:link>

@@ -13,9 +13,6 @@
     <!-- Breadcrumbs -->
     <div class="row" role="breadcrumb">
         <ul class="breadcrumb">
-            <li>
-                <a href="${createLink(controller: 'repository', action: 'dashboard', id: session.activeRepository)}">${message(code: "dashboard.label")}</a>
-            </li>
             <li class="active">${message(code: CommentsFilter.msgCodeFromValue(params.filter))}</li>
         </ul>
     </div>

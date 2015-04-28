@@ -34,7 +34,12 @@
                               </button>
                               <ul class="dropdown-menu" role="menu">
                                 <g:each var="repo" in="${repos}">
-                                    <li><a href="${createLink(controller: 'repository', action: 'dashboard', id: repo.ident())}">${repo.title}</a></li>
+                                    <g:if test="${repo.ident() == session.activeRepository}" >
+                                        <li class="dropdown-header">${repo.title}</li>
+                                    </g:if>
+                                    <g:else>
+                                        <li><a href="${createLink(controller: 'repository', action: 'dashboard', id: repo.ident())}">${repo.title}</a></li>
+                                    </g:else>
                                 </g:each>
 
                                 <li role="presentation" class="divider"></li>

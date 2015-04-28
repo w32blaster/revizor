@@ -30,6 +30,10 @@ class RepositoryController {
     }
 
     def homePage() {
+        // when we log in to the system, activate the very first repo
+        def anyFirstRepository = Repository.list([max: 1])[0]
+        session.activeRepository = anyFirstRepository.ident()
+
         render view: "homePage"
     }
 

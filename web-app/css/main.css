@@ -46,7 +46,7 @@ body {
     display: inline;
 }
 
-#header A {
+#header .menu-link {
     color: #e7e7ef;
     margin-right: 20px;
 }
@@ -364,4 +364,10 @@ body {
 }
 .faded {
     color: #BFBFBF;
+}
+.menu-top-item {
+    display: inline;
+}
+#repo-dropdown-label {
+    margin-right: 0 !important;
 }
