@@ -35,15 +35,16 @@
 
 		<div id="page" class="container-full container-fluid">
 
-			<div id="header" class="row" role="header">
-				<div class="col-md-12">
+			<div id="header" class="row top-block" role="header">
+
 
 					<g:if test="${session.user}">
 
-                        <div id="permanent-menu">
+                        <div id="permanent-menu" class="top-block">
 
                             <!-- Home page -->
-                            <g:link controller="repository" action="homePage" class="menu-link">
+                            <g:set var="homeActive" value="${actionName == "homePage" ? " active " : ""}" />
+                            <g:link controller="repository" action="homePage" class="menu-link ${homeActive}">
                                 <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                                 <g:message code="default.home.label" />
                             </g:link>
@@ -52,25 +53,27 @@
                             <g:render template="/review/dashboardBreadcrumb" />
 
                             <!-- Reviews -->
-                            <g:link controller="review" action="index" params="[filter: com.revizor.ReviewFilter.ONLY_MINE]" class="menu-link">
+							<g:set var="reviewsActive" value="${controllerName == "review" ? " active " : ""}" />
+                            <g:link controller="review" action="index" params="[filter: com.revizor.ReviewFilter.ONLY_MINE]" class="menu-link ${reviewsActive}">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 <g:message code="reviews.header" />
                             </g:link>
 
                             <!-- Comments -->
-                            <g:link controller="comment" action="index" params="[filter: com.revizor.CommentsFilter.ONLY_MINE]" class="menu-link">
+                            <g:set var="commentsActive" value="${controllerName == "comment" ? " active " : ""}" />
+                            <g:link controller="comment" action="index" params="[filter: com.revizor.CommentsFilter.ONLY_MINE]" class="menu-link ${commentsActive}">
                                 <span class="glyphicon glyphicon-comment"></span>
                                 <g:message code="review.comments.header" />
                             </g:link>
 
                         </div>
 
+                        <g:set var="settingsActive" value="" />
                         <g:render template="/layouts/leftPanelSettingsAndExit" />
 
 					</g:if>
 
 
-				</div>
 			</div>
 
 			

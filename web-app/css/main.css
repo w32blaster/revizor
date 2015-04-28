@@ -37,22 +37,36 @@ body {
     background: #445372;
     color: #e7e7ef;
     position: relative;
-    padding-top: 10px;
     margin-bottom: 0;
-    height: 50px;
+    padding-left: 15px;
 }
 
 #permanent-menu {
-    display: inline;
+    display: inline-block;
 }
 
 #header .menu-link {
     color: #e7e7ef;
-    margin-right: 20px;
+    display: inline-block;
+    height: 50px;
+    padding: 10px;
+    margin-left: -5px;
+}
+
+#header .active {
+    background-color: #526b89;
+}
+
+.top-block {
+    height: 50px;
 }
 
 #current-account-block {
     float: right;
+}
+
+#current-account-block IMG {
+    margin-right: 10px;
 }
 
 /* modified file tree */
