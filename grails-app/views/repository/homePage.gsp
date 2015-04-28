@@ -39,7 +39,8 @@
                             <h3 class="panel-title"><g:message code="what.is.new" /></h3>
                         </div>
 
-                        <div id="notification-feed-container" class="pre-scrollable">
+                        <g:set var="notificationContainerID" value="notification-feed-container" />
+                        <div id="${notificationContainerID}" class="pre-scrollable">
                             <g:render template="/notification/notificationFeed" />
                         </div>
 

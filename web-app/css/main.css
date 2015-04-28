@@ -193,8 +193,9 @@ body {
 .notification-to-me {
     background-color: #FFFFED;
 }
-#load-more-btn {
-    margin-top: 10px;
+
+#loading-label-id {
+    text-align: center;
 }
 
 .listOfCommits {

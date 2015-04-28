@@ -43,8 +43,7 @@
 				}
 				else {
 					// user resolves this review in the first time
-                    var reviewerHtml = '<h:renderInOneLine template="reviewer" model="['reviewer' : session.user, 
-                    													'status': ReviwerStatus.APPROVE]" />';
+                    var reviewerHtml = '<h:renderInOneLine template="reviewer" model="['reviewer' : session.user, 'status': ReviwerStatus.APPROVE]" />';
 					
 					$('#${Id.REVIEWER_CONTAINER}').append(reviewerHtml);
 

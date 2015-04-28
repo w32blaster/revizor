@@ -1,7 +1,6 @@
 package com.revizor
 
-import com.revizor.cmd.LoginCommand
-import com.revizor.utils.Constants
+import revizor.HelpTagLib
 
 class NotificationController {
 
@@ -14,6 +13,6 @@ class NotificationController {
         def offset = params.int('offset')
         def notificationsHtml = ntl.feed(offset: offset)
 
-        render notificationsHtml
+        render HelpTagLib.toSingleLine(notificationsHtml);
     }
 }

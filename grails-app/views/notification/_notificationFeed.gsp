@@ -5,39 +5,62 @@
     At the end of feed is placed the button "Load more" that dynamically loads additional
     data from server.
 --%>
-<g:set var="buttonId" value="load-more-btn" />
 <g:set var="feedNontainerId" value="only-feed-container" />
 
-<g:javascript>
-    var offset = 0;
-    var button = $("#${buttonId}");
-    var notificationLoadMoreUrl = "${createLink(controller: 'notification', action: 'loadMore')}";
+<r:script>
 
-    button.click(function(){
+    var offset = 0;
+    var notificationLoadMoreUrl = "${createLink(controller: 'notification', action: 'loadMore')}";
+    var mutex = true;
+
+    function loadFeedsWithOffset() {
         offset += <%= Constants.MAX_PER_REQUEST %>
-        button.attr("disabled", "disabled");
 
         $.get( notificationLoadMoreUrl + "?offset=" + offset)
             .done(function(html) {
-                $("#${feedNontainerId}").append(html);
+                if(!html.trim()) {
+                    $("#${feedNontainerId}").append("<div class='well well-sm'>${message(code: 'dashboard.no.more.events')}</div>");
+                    $container.unbind("scroll");
+                }
+                else {
+                    $("#${feedNontainerId}").append(html);
+                }
             })
             .fail(function() {
                 alert( "Error, can't load notifications" );
             })
             .always(function() {
-                button.removeAttr("disabled");
+                mutex = true;
+                $("#loading-label-id").fadeOut();
+
             });
+    };
+
+    // infinite loading
+    var $container = $("#${notificationContainerID}");
+    var $feed = $("#${feedNontainerId}")
+    $container.scroll(function() {
+        if (mutex) {
+            if ($container.scrollTop() + $container.height() >= $feed.height()) {
+                mutex = false;
+                $("#loading-label-id").fadeIn();
+                setTimeout(loadFeedsWithOffset, 300);
+            }
+        }
     });
 
-    	$('.mention-popover').popover();
+    $('.mention-popover').popover();
 
-</g:javascript>
+
+</r:script>
 
 <div id="${feedNontainerId}">
     <ntl:feed />
 </div>
 
-<button id="${buttonId}" class="btn btn-default btn-primary center-block">
-    <g:message code="dashboard.load.more" default="More..." />
-     <span class="caret"></span> 
- </button>
+<div class="panel panel-default" id="loading-label-id" style="display: block;" >
+    <div class="panel-body">
+        <span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>
+        <g:message code="dashboard.loading" />
+    </div>
+</div>
