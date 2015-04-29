@@ -52,6 +52,10 @@ enum Action {
             "action.comment.reply.created",
             "action.comment.you.replied",
             "action.comment.reply.to.you.created"),
+    CREATE_REPOSITORY(
+            "action.comment.new.repo",
+            "action.comment.new.repo",
+            "action.comment.new.repo"),
     REVIEW_CLOSE(
             "action.review.close",
             "action.review.you.closed",

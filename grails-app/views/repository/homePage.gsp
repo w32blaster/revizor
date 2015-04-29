@@ -58,9 +58,14 @@
                             <h3 class="panel-title"><g:message code="repository.header" /></h3>
                         </div>
 
-                        <g:each in="${com.revizor.Repository.list()}" var="repository">
-                            <div class="hp-row">
-                                <g:render template="repositoryHeader" model="[size: 32, repo: repository]" />
+                        <g:each in="${com.revizor.Repository.list(sort: 'id', order: 'desc')}" var="repository">
+                            <g:set var="isUnread" value="${repository.ident() in unreadRepos}" />
+
+                            <div class="hp-row <% if (isUnread) {%> unread<%} %>">
+                                <g:render template="repositoryHeader" model="[
+                                        size: 32,
+                                        repo: repository,
+                                        isUnread: isUnread]" />
                             </div>
                         </g:each>
                      </div>

@@ -38,10 +38,12 @@ class RepositoryController {
         def unreadReviewIds = notificationService.getNewUnreadItemsForMe(ObjectType.REVIEW, session.user)
         def activeReviews = Review.findAllByStatus(com.revizor.ReviewStatus.OPEN, [sort: 'id', order: 'desc'])
         def mapOfComments = Comment.list().groupBy { it.review.id }
+        def unreadRepositoriesIds = notificationService.getNewUnreadItemsForMe(ObjectType.REPO, session.user)
 
         render view: "homePage", model: [
                 activeReviews: activeReviews,
                 unreadReviews: unreadReviewIds,
+                unreadRepos: unreadRepositoriesIds,
                 commentsGroupedByReview: mapOfComments]
     }
 
@@ -52,6 +54,9 @@ class RepositoryController {
         }
         def id = params.id.toInteger()
         session.activeRepository = id
+
+        // mark "unread" the event about this review for current user
+        notificationService.markReadEvent(ObjectType.REPO, session.user)
 
         def repos = Repository.list()
         def selectedRepo = repos.find { it.ident() == id }
@@ -130,10 +135,15 @@ class RepositoryController {
         def targetDir =  new File(directoryPath)
         if (targetDir.exists()) FileUtils.deleteDirectory(targetDir)
 
-        repositoryInstance.save flush:true
+        Repository repo = repositoryInstance.save flush:true
 
         def impl = repositoryInstance.initImplementation();
         impl.cloneRepository(repositoryInstance.url, repositoryInstance.username, repositoryInstance.password);
+
+        // create new notification about that event...
+        def n = notificationService.create(session.user, Action.CREATE_REPOSITORY, [session.user, repo])
+        // ...and mark for all the users, that this event is unread yet
+        notificationService.makeUnreadEventsForAllUsers(n, ObjectType.REPO, repo.ident())
 
         request.withFormat {
             form multipartForm {
