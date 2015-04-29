@@ -17,13 +17,14 @@ class NotificationTagLib {
 
         def offset = attrs.offset ?: 0
         def notifications = notificationService.feed(Constants.MAX_PER_REQUEST, offset)
+        def unreadAllItems = notificationService.getAllNewUnreadItemsForMe(session.user);
 
         /*
          * Build each message. Please refer to the JavaDocs in the file NotificaionObject.groovy
          * for details.
          */
         notifications.each { notification ->
-            out << oneNotification(['notification': notification])
+            out << oneNotification(['notification': notification, 'unreadNotifications': unreadAllItems])
         }
 
     }
@@ -32,7 +33,6 @@ class NotificationTagLib {
      * Prints only one notification
      */
     def oneNotification = { attrs, body ->
-
 
         def notification = attrs.notification
         def actors = notification.actors.sort { it.idx }
@@ -49,7 +49,8 @@ class NotificationTagLib {
                 'mainActor': notification.object,
                 'message': msg,
                 'forMe':isItShownForMe,
-                'details': details])
+                'details': details,
+                'isUnread': (notification.ident() in attrs.unreadNotifications)])
     }
 
     /**

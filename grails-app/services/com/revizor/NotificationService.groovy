@@ -58,6 +58,20 @@ class NotificationService {
                                         .collect { it.objectId }
     }
 
+    /**
+     * Returns list of notification IDs, that are not read yet for current user.
+     *
+     * For example, if there is an unread message that an user created an review, then
+     * the notification about this event will be in the returned collection
+     *
+     * @param user
+     * @return
+     */
+    def getAllNewUnreadItemsForMe(User user) {
+        return UnreadEvent.findAllByUser(user)
+                .collect { it.notification.ident() }
+    }
+
     def feed(max, offset) {
 
         def all = Notification.withCriteria{
@@ -102,7 +116,8 @@ class NotificationService {
         if (grailsApplication.config.grails.allowed.email.notifications.asBoolean()) {
 
             def ntl = grailsApplication.mainContext.getBean(NotificationTagLib.class.getName());
-            def html = ntl.oneNotification([notification: notification])
+            def unreadAllItems = getAllNewUnreadItemsForMe(session.user);
+            def html = ntl.oneNotification([notification: notification, 'unreadNotifications': unreadAllItems])
             def emailHtml = groovyPageRenderer.render(template: "/email", model: [header: header, message: html])
 
             if (toAddress) {

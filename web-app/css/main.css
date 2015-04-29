@@ -392,3 +392,13 @@ body {
 #repo-dropdown-label {
     margin-right: 0 !important;
 }
+.unread {
+    font-weight: bold;
+    background-color: rgba(164, 95, 84, 0.1);
+    position: relative;
+}
+.new-label {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
