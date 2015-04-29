@@ -83,9 +83,11 @@
 	<div class="btn-group">
 	  <button id="approve-btn-id" class="btn btn-default btn-success" <%= isAccepted ? 'disabled="disabled"' : '' %>>
 	  		<span class="glyphicon glyphicon-thumbs-up"></span>
+		    <g:message code="review.accept" />
 	  </button>
 	  <button id="disapprove-btn-id" class="btn btn-default btn-danger"  <%= isDeclined ? 'disabled="disabled"' : '' %>>
 	  		<span class="glyphicon glyphicon-thumbs-down"></span>
+          <g:message code="review.decline" />
 	  </button>
 	</div>
 
