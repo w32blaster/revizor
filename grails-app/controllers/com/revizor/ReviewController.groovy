@@ -122,6 +122,9 @@ class ReviewController {
                 break;
         }
 
+        // mark "unread" the event about this review for current user
+        notificationService.markReadEvent(ObjectType.REVIEW, session.user)
+
         respond reviewInstance, view: view, model:[
                 fileName: params[Constants.PARAM_FILE_NAME],
                 urlPrefix: g.createLink(controller: 'review', action: 'show', id: reviewInstance.ident())

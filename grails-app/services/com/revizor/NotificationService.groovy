@@ -58,6 +58,11 @@ class NotificationService {
                                         .collect { it.objectId }
     }
 
+    def markReadEvent(ObjectType type, User user) {
+        UnreadEvent.executeUpdate("delete UnreadEvent c where c.type = :type and c.user = :user",
+                [type: type, user: user])
+    }
+
     /**
      * Returns list of notification IDs, that are not read yet for current user.
      *
