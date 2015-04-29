@@ -1,4 +1,5 @@
 package com.revizor
+
 /**
  * Notification object is an entity with whom an actor performs an action.
  *
@@ -71,10 +72,3 @@ class NotificationObject {
     }
 }
 
-enum ObjectType {
-    REPO,
-    COMMENT,
-    REVIEW,
-    STRING,
-    USER
-}
