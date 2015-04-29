@@ -61,7 +61,7 @@
 						<g:link controller="review" action="show" id="${comment.review.id}" class="btn btn-default btn-xs">
 							${comment.review.title}
 						</g:link>
-					    <g:render template="/comment/comment" model="['comment' : comment, 'indent': 0]" />
+					    <g:render template="/comment/comment" model="['comment' : comment, 'indent': 0, 'isUnread': (comment.ident() in unreadComments) ]" />
 					    </br>
 					</g:each>
 				</div>

@@ -13,12 +13,16 @@
     </div>
 </g:if>
 
-<div class="media comment-container well" style="width: ${800 - indentPx}px;">
+<div class="media comment-container well <% if (isUnread) {%> unread<%} %>" style="width: ${800 - indentPx}px;">
   <a class="pull-left" href="${createLink(controller:'user', action:'show', id:comment.author?.ident())}">
       <g:render template="/user/userAvatar" model="['user' : comment.author, 'cssClass': 'avatar img-rounded media-object']" />
   </a>
   <div class="media-body">
-    <h4 class="media-heading">${comment.author?.username}</h4>
+    <h4 class="media-heading">${comment.author?.username}
+        <g:if test="${isUnread}">
+            <span class="label label-danger">N</span>
+        </g:if>
+    </h4>
 
     <cmt:highlightUsername>
         <emoji:toHtml size="22">

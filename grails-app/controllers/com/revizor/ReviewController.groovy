@@ -64,6 +64,8 @@ class ReviewController {
         switch(reviewFilter) {
 
             case ReviewFilter.ALL:
+                params.sort = 'id';
+                params.order = 'desc';
                 list = Review.list(params);
                 break;
 

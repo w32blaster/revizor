@@ -20,11 +20,13 @@ class CommentController {
         switch(commentsFilter) {
             
             case CommentsFilter.ALL:
+                params.sort = 'id'
+                params.order = 'desc'
                 list = Comment.list(params);
                 break;
 
             case CommentsFilter.ONLY_MINE:
-                list = Comment.findAllByAuthor(session.user);
+                list = Comment.findAllByAuthor(session.user, [sort: "id", order: "desc"]);
                 break;
 
             case CommentsFilter.REPLIES_TO_ME:
@@ -37,7 +39,9 @@ class CommentController {
                 break;                
         }
 
-        respond list, model:[commentInstanceCount: Comment.count()]
+        def unreadCommentIds = notificationService.getNewUnreadItemsForMe(ObjectType.COMMENT, session.user)
+
+        respond list, model:[commentInstanceCount: Comment.count(), unreadComments: unreadCommentIds]
     }
 
     def list(Integer max) {
@@ -165,17 +169,19 @@ class CommentController {
     }
 
     def saveNotification(comment) {
+        def notification
         if (comment.replyTo) {
             def to = (comment.author.ident() == comment.replyTo.author.ident()) ? g.message(code: "reply.to.himself") : comment.replyTo.author;
-            return notificationService.create(session.user, Action.CREATE_COMMENT_REPLY_TO, [comment.author, to, comment, comment.review], 2)
+            notification = notificationService.create(session.user, Action.CREATE_COMMENT_REPLY_TO, [comment.author, to, comment, comment.review], 2)
         }
         else if (comment.type == CommentType.REVIEW) {
-            return notificationService.create(session.user, Action.CREATE_COMMENT_TO_REVIEW, [comment.author, comment, comment.review], 1)
+            notification = notificationService.create(session.user, Action.CREATE_COMMENT_TO_REVIEW, [comment.author, comment, comment.review], 1)
         }
         else if (comment.type == CommentType.LINE_OF_CODE) {
-            return notificationService.create(session.user, Action.CREATE_COMMENT_TO_LINE_OF_CODE, [comment.author, comment, comment.fileName, comment.review], 1)
+            notification = notificationService.create(session.user, Action.CREATE_COMMENT_TO_LINE_OF_CODE, [comment.author, comment, comment.fileName, comment.review], 1)
         }
-
+        notificationService.makeUnreadEventsForAllUsers(notification, ObjectType.COMMENT, comment.ident())
+        return notification
     }
 }
 
