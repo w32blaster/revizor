@@ -13,8 +13,8 @@
 
             <div class="row">
 
-                <div class="col-md-6">
-                    <div class="panel panel-default">
+                <div class="col-md-6 hp-equal-height">
+                    <div class="panel panel-default full-height">
 
                         <div class="panel-heading">
                             <h3 class="panel-title"><g:message code="reviews.active.reviews" /></h3>
@@ -32,8 +32,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="panel panel-default">
+                <div class="col-md-6 hp-equal-height">
+                    <div class="panel panel-default full-height">
 
                         <div class="panel-heading">
                             <h3 class="panel-title"><g:message code="what.is.new" /></h3>
@@ -52,8 +52,8 @@
 
 
             <div class="row">
-                <div class="col-md-6">
-                    <div class="panel panel-default">
+                <div class="col-md-6 hp-equal-height">
+                    <div class="panel panel-default full-height">
 
                         <div class="panel-heading">
                             <h3 class="panel-title"><g:message code="repository.header" /></h3>
@@ -67,8 +67,8 @@
                      </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="panel panel-default">
+                <div class="col-md-6 hp-equal-height">
+                    <div class="panel panel-default full-height">
 
                         <div class="panel-heading">
                             <h3 class="panel-title"><g:message code="users.header" /></h3>
