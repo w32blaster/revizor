@@ -68,15 +68,17 @@ class ReviewController {
                 break;
 
             case ReviewFilter.ONLY_MINE:
-                list = Review.findAllByAuthorAndStatus(session.user, ReviewStatus.OPEN);
+                list = Review.findAllByAuthorAndStatus(session.user, ReviewStatus.OPEN,
+                        [sort: "id", order: "desc"]);
                 break;
 
             case ReviewFilter.WHERE_I_AM_REVIEWER:
-                list = Reviewer.findAllByReviewer(session.user).collect { it.review };
+                list = Reviewer.findAllByReviewer(session.user, [sort: "id", order: "desc"]).collect { it.review };
                 break;
 
             case ReviewFilter.ARCHIVED:
-                list = Review.findAllByAuthorAndStatus(session.user, ReviewStatus.CLOSED);
+                list = Review.findAllByAuthorAndStatus(session.user, ReviewStatus.CLOSED,
+                        [sort: "id", order: "desc"]);
                 break;
 
             case ReviewFilter.GROUPED_BY_ISSUE_TICKETS:
@@ -90,12 +92,16 @@ class ReviewController {
                 break;
         }
 
+        // new reviews, that we haven't read yet
+        def unreadReviewIds = notificationService.getNewUnreadItemsForMe(ObjectType.REVIEW, session.user)
         def repos = Repository.list()
+
         respond list, model:[
                 reviewInstanceCount: Review.count(),
                 reviewFilter: reviewFilter,
                 repos: repos,
-                groupedIssues: groupedIssues]
+                groupedIssues: groupedIssues,
+                unreadReviews: unreadReviewIds]
     }
 
     def show(Review reviewInstance) {
@@ -290,7 +296,10 @@ class ReviewController {
         reviewInstance.setRepository(repository)
         def review = reviewInstance.save(flush:true)
 
-        notificationService.create(session.user, Action.REVIEW_START, [session.user, review])
+        // create new notification about that event...
+        def n = notificationService.create(session.user, Action.REVIEW_START, [session.user, review])
+        // ...and mark for all the users, that this event is unread yet
+        notificationService.makeUnreadEventsForAllUsers(n, ObjectType.REVIEW, review.ident())
 
         // notify chats
         Chat.getAll().each { Chat chat ->

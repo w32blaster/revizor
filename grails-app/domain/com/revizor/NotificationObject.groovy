@@ -11,7 +11,7 @@ package com.revizor
  * 
  * This class allows to save any object in the database and to store it type-safely
  */
-class NotificationObject {
+public class NotificationObject {
 
     ObjectType type;
     Long objectId;

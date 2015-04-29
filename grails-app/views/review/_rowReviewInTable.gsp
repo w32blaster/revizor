@@ -2,7 +2,15 @@
 <%--
     Row in table, representing one Review
 --%>
-<tr>
+<tr <% if (isUnread) {%>class="unread" <%} %>>
+
+    <%-- Mark new --%>
+    <td width="32">
+        <g:if test="${isUnread}">
+            <span class="label label-danger" title="${message(code:"unread.review")}">N</span>
+        </g:if>
+    </td>
+
     <%-- Review Title --%>
     <td>
         <g:link action="show" controller="review" id="${review.ident()}">

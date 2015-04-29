@@ -12,17 +12,17 @@ class NotificationService {
 
     static transactional = true
 
-    /*
-    * Creates one record to the notification feed
-    *
-    * @param who - the main actor
-    * @param action - the Action enum instance
-    * @params actors - parameters to be replaced in translated message (collection)
-    * @params actorIndexToBeUsedForDetails - if any "expanded" message follows a notification, then this 
-    * parameter specifies the index in the 'actors' collection.
-    *
-    * Please refer to the comments in files Notification.groovy and NotificationObject.groovy
-    */
+    /**
+     * Creates one record to the notification feed
+     *
+     * @param who - the main actor
+     * @param action - the Action enum instance
+     * @params actors - parameters to be replaced in translated message (collection)
+     * @params actorIndexToBeUsedForDetails - if any "expanded" message follows a notification, then this
+     * parameter specifies the index in the 'actors' collection.
+     *
+     * Please refer to the comments in files Notification.groovy and NotificationObject.groovy
+     */
     def create(who, action, actors, actorIndexToBeUsedForDetails = -1) {
         Notification u = new Notification (
                 object: who,
@@ -38,6 +38,24 @@ class NotificationService {
         u.save(flush: true);
 
         return u
+    }
+
+    /**
+     * Create unread messages for all the users.
+     */
+    def makeUnreadEventsForAllUsers(Notification notification, ObjectType type, long id) {
+        User.list().each { User user ->
+            new UnreadEvent(notification: notification, type: type, objectId: id, user: user)
+                    .save()
+        }
+    }
+
+    /**
+     * Returns list of IDs of those objects, that user has not read yet.
+     */
+    def getNewUnreadItemsForMe(ObjectType type, User user) {
+        return UnreadEvent.findAllByTypeAndUser(type, user)
+                                        .collect { it.objectId }
     }
 
     def feed(max, offset) {

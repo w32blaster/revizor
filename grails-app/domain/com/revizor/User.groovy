@@ -16,7 +16,7 @@ class User extends HasImage implements INotifiable {
             asReviewer: Reviewer,
             reviewsAsAuthor: Review,
             aliases: Alias,
-            unreadEvents: UnreadEvents
+            unreadEvents: UnreadEvent
     ]
 
     static constraints = {

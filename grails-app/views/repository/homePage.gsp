@@ -21,12 +21,11 @@
                         </div>
 
                         <table class="table">
-                            <g:set var="mapComments" value="${com.revizor.Comment.list().groupBy { it.review.id } }" />
-
-                            <g:each in="${com.revizor.Review.findAllByStatus(com.revizor.ReviewStatus.OPEN)}" var="reviewInstance">
+                            <g:each in="${activeReviews}" var="reviewInstance">
                                 <g:render template="/review/rowReviewInTable" model="[
                                         review: reviewInstance,
-                                        commentsByReview: mapComments ]" />
+                                        commentsByReview: commentsGroupedByReview,
+                                        isUnread: (reviewInstance.ident() in unreadReviews)]" />
                             </g:each>
                         </table>
                     </div>

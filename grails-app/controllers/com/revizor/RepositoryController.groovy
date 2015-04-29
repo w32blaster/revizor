@@ -15,6 +15,7 @@ class RepositoryController {
 
     def uploadService
     def reviewService
+    def notificationService
 
     /**
      * Main enter point of the app. The root URL "/" is going here. 
@@ -34,7 +35,14 @@ class RepositoryController {
         def anyFirstRepository = Repository.list([max: 1])[0]
         session.activeRepository = anyFirstRepository.ident()
 
-        render view: "homePage"
+        def unreadReviewIds = notificationService.getNewUnreadItemsForMe(ObjectType.REVIEW, session.user)
+        def activeReviews = Review.findAllByStatus(com.revizor.ReviewStatus.OPEN, [sort: 'id', order: 'desc'])
+        def mapOfComments = Comment.list().groupBy { it.review.id }
+
+        render view: "homePage", model: [
+                activeReviews: activeReviews,
+                unreadReviews: unreadReviewIds,
+                commentsGroupedByReview: mapOfComments]
     }
 
     def dashboard() {

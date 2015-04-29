@@ -1,16 +1,13 @@
 package com.revizor
 
-public class UnreadEvents {
+public class UnreadEvent {
 
     ObjectType type;
     Long objectId;
 
     static belongsTo = [
-            user: User
-    ]
-
-    static hasOne = [
-        notification: Notification
+            user: User,
+            notification: Notification
     ]
 
     static constraints = {
