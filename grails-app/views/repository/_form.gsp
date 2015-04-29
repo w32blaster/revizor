@@ -29,14 +29,21 @@
 		<g:message code="repository.folderName.label" default="Folder Name" />
 	</label>
 	<div class="col-lg-9">
-        <g:if test="${actionName == "edit"}">
-            <g:textField name="folderName"  class="form-control" value="${repositoryInstance?.folderName}" disabled="disabled" />
-        </g:if>
-        <g:else>
-            <g:textField class="form-control" name="folderName" pattern="${repositoryInstance.constraints.folderName.matches}" value="${repositoryInstance?.folderName}"
-                         data-trigger="manual" data-animation="true" data-placement="bottom" data-html="true"
-                         title="${message(code: 'folder.exists')}" />
-        </g:else>
+
+        <div class="input-group">
+            <span class="input-group-addon">
+                <samp>${com.revizor.utils.Constants.LOCAL_REPO_PATH + File.separator}</samp>
+            </span>
+
+            <g:if test="${actionName == "edit"}">
+                <g:textField name="folderName"  class="form-control" value="${repositoryInstance?.folderName}" disabled="disabled" />
+            </g:if>
+            <g:else>
+                <g:textField class="form-control" name="folderName" pattern="${repositoryInstance.constraints.folderName.matches}" value="${repositoryInstance?.folderName}"
+                             data-trigger="manual" data-animation="true" data-placement="bottom" data-html="true"
+                             title="${message(code: 'folder.exists')}" />
+            </g:else>
+        </div>
 	</div>
 </div>
 
