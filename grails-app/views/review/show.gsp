@@ -169,8 +169,13 @@
                     <cmt:printCommentsInHierarchy comments="${comments}" />
                 </g:if>
 
+                <%-- new comment will appear here --%>
                 <div id='new-comment-container-id' style='display:none; width: 800px;'></div>
-                <button class="btn btn-primary" onclick="showForm('new-comment-form', null, null, 'new-comment-container-id', null, 0);">Send comment</button>
+
+                <button class="btn btn-link" onclick="showForm('new-comment-form', null, null, 'new-comment-container-id', null, 0);">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    <g:message code="show.form" />
+                </button>
 
                 <%-- Here will appear a form to add new comment --%>
                 <div id='new-comment-form' class='panel' style='display:none; width: 800px;'></div>

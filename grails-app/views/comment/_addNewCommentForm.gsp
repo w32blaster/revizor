@@ -3,7 +3,7 @@
 <%-- 
 	The form to add new comment
 --%>
-<div class="form-group" style="width: 800px;">
+<div class="form-group add-new-comment-form">
 
 	<g:if test="${commentType == CommentType.LINE_OF_CODE.name()}">
 		<b><g:message code="review.comments.form.line.code" default="Your comment to this line of code" /></b>
@@ -20,7 +20,7 @@
 	<textarea data-provide="markdown" name="text" class="form-control" rows="5"></textarea>
 </div>
 
-<div class="form-group" style="width: 800px;">
+<div class="form-group add-new-comment-form"" style="width: 800px;">
 	<g:hiddenField name="author.id" value="${session.user.id}"/>
 	<g:hiddenField name="review.id" value="${reviewId}"/>
 	<g:hiddenField name="type" value="${commentType}"/>
@@ -38,6 +38,9 @@
 		<g:hiddenField name="typeOfLine" value="${lineType}" id="typeOfLine" />
 	</g:if>
 
-	<button type="button" name="submit-comment-review-btn" class="btn btn-default" onclick="createNewComment();">${message(code: 'review.comments.post', default: 'Post the comment')}</button>
+	<button type="button" name="submit-comment-review-btn" class="btn btn-primary" onclick="createNewComment();">
+		<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+		${message(code: 'review.comments.post', default: 'Post the comment')}
+	</button>
 	<a href="#" class="btn btn-link" onclick="closeForm();"><g:message code="cancel" /></a>
 </div>
