@@ -23,10 +23,12 @@ class LoginCommand {
 			if (!obj.getUser()) return "user.not.found"	
 		})
 		password(blank:false, validator: { val, obj ->
-			def isMatching = BCrypt.checkpw(val, obj.getUser().password)
-			if (obj.user && !isMatching) {
-				return "user.password.invalid" 	
-			}
+            if (obj.getUser()) {
+                def isMatching = BCrypt.checkpw(val, obj.getUser().password)
+                if (obj.user && !isMatching) {
+                    return "user.password.invalid"
+                }
+            }
 		})
 	}
 }
