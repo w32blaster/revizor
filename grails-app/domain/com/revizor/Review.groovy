@@ -12,6 +12,9 @@ class Review implements INotifiable {
     // SHA of smart commit, that current review was created
     String smartCommitId
 
+    def grailsLinkGenerator
+    static transients = [ "grailsLinkGenerator" ]
+
     static belongsTo = [
             repository: Repository,
             author: User
@@ -51,6 +54,16 @@ class Review implements INotifiable {
 		return "${this.id}: ${this.title}";
 	}
 
+    /**
+     * Returns URL for current instance
+     * @return
+     */
+    @Override
+    String getUrl() {
+        return grailsLinkGenerator.link(controller: 'review', action: 'show', id: this.ident(), absolute: true)
+    }
+
+    @Override
     boolean equals(o) {
         if (this.is(o)) return true
         if (getClass() != o.class) return false
@@ -69,6 +82,7 @@ class Review implements INotifiable {
         return true
     }
 
+    @Override
     int hashCode() {
         int result
         result = title.hashCode()

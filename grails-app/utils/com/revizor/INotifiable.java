@@ -27,4 +27,10 @@ public interface INotifiable {
 	 * @return
 	 */
 	String getNotificationName();
+
+	/**
+	 * Returns URL for current instance
+	 * @return
+	 */
+	String getUrl();
 }

@@ -16,8 +16,6 @@ import groovy.xml.XmlUtil
  */
 class DiffTagLib {
 
-    private static final String CONTAINER_ID_PREFIX = "comment-container-"
-	
     static namespace = "sc"
 
     def fileNameWithoutPackage = {attrs, body ->
@@ -213,7 +211,7 @@ class DiffTagLib {
 
         if (line.startsWith('-')) {
             lineType = LineType.ORIGINAL
-            commentContainerId = CONTAINER_ID_PREFIX + range.original + "-" + LineType.ORIGINAL
+            commentContainerId = Constants.CONTAINER_ID_PREFIX + range.original + "-" + LineType.ORIGINAL
             type = Constants.ACTION_DELETED
             out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.ORIGINAL, range.original, i, commentContainerId)}</td>"
             out << "<td class='line-deleted'>${range.original}</td>"
@@ -222,7 +220,7 @@ class DiffTagLib {
             range.original++
         } else if (line.startsWith('+')) {
             lineType = LineType.NEW
-            commentContainerId = CONTAINER_ID_PREFIX + range.new + "-" + LineType.NEW
+            commentContainerId = Constants.CONTAINER_ID_PREFIX + range.new + "-" + LineType.NEW
             type = Constants.ACTION_ADDED
             out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.NEW, range.new, i, commentContainerId)}</td>"
             out << "<td> </td>"
@@ -230,7 +228,7 @@ class DiffTagLib {
             commentsForTheLine = findCommentsForLine(mapComments, range.new, [LineType.NEW])
             range.new++
         } else {
-            commentContainerId = CONTAINER_ID_PREFIX + range.original + "-" + LineType.UNMODIFIED
+            commentContainerId = Constants.CONTAINER_ID_PREFIX + range.original + "-" + LineType.UNMODIFIED
             out << "<td>${getButtonHtml(isReview, newCommentFormId, LineType.UNMODIFIED, range.original, i, commentContainerId)}</td>"
             out << "<td>${range.original}</td>"
             out << "<td>${range.new++}</td>"
@@ -281,8 +279,8 @@ class DiffTagLib {
     private void renderRowForSideToSideView(CodeLine lineLeft, CodeLine lineRight, i, isReview, extension, mapComments) {
         out << "<tr>"
 
-        def commentContainerLeftId = CONTAINER_ID_PREFIX + lineLeft.lineNumber + "-" + lineLeft.lineType
-        def commentContainerRightId = CONTAINER_ID_PREFIX + lineRight.lineNumber + "-" + LineType.NEW
+        def commentContainerLeftId = Constants.CONTAINER_ID_PREFIX + lineLeft.lineNumber + "-" + lineLeft.lineType
+        def commentContainerRightId = Constants.CONTAINER_ID_PREFIX + lineRight.lineNumber + "-" + LineType.NEW
 
         def commentsForTheLeftLine = this.findCommentsForLine(mapComments, lineLeft.lineNumber, [LineType.ORIGINAL, LineType.UNMODIFIED])
         def commentsForTheRightLine = this.findCommentsForLine(mapComments, lineRight.lineNumber, [LineType.NEW])

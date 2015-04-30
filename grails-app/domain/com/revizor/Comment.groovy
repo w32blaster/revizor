@@ -1,12 +1,12 @@
 package com.revizor
 
+import com.revizor.utils.Constants
 import org.springframework.context.i18n.LocaleContextHolder as LCH
 
 /**
  * One comment. Could be comment to a line of code or to the whole review
  */
 class Comment implements INotifiable {
-
 
     String text
     // in case the current comment is for a specific commit, this field should be specified (SHA value)
@@ -16,6 +16,9 @@ class Comment implements INotifiable {
     int lineOfCode
 	LineType typeOfLine
     CommentType type
+
+    def grailsLinkGenerator
+    static transients = [ "grailsLinkGenerator" ]
 
     static belongsTo = [
             review: Review,
@@ -55,6 +58,35 @@ class Comment implements INotifiable {
         def ctx = grailsApplication.mainContext
         return ctx.getMessage("comments.one", null, LCH.getLocale())
 	}
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    String getUrl() {
+        switch (this.getType()) {
+            case CommentType.LINE_OF_CODE:
+                /*
+                    The link for a review looks like this:
+                        http//domain/review/show/{id}/single/?fileName={file}#{comment-id}
+
+                    The 'comment-id' is build of three parts: prefix, line of code and type. It is done to
+                    correctly display comments tree in HTML using JS. Please refer to the DiffTagLib.renderRowForSingleView function
+
+                    URL example:
+                        http://localhost:8080/revizor/review/show/1/single?fileName=src/main/java/org/jbake/launcher/LaunchOptions.java#comment-container-24-UNMODIFIED
+
+                 */
+                def linkToReview = grailsLinkGenerator.link(controller: 'review', action: 'show', id: this.getReview().ident(), absolute: true);
+                def commentAnchorId = Constants.CONTAINER_ID_PREFIX + this.lineOfCode + "-" + this.typeOfLine
+
+                return "${linkToReview}/${Constants.REVIEW_SINGLE_VIEW}?${Constants.PARAM_FILE_NAME}=${this.fileName.toString()}#${commentAnchorId}"
+
+            case CommentType.REVIEW:
+                def commentReviewAnchorId = Constants.CONTAINER_ID_PREFIX + this.ident()
+                return grailsLinkGenerator.link(controller: 'review', action: 'show', id: this.getReview().ident(), fragment: commentReviewAnchorId, absolute: true)
+        }
+    }
 }
 
 enum CommentType {

@@ -9,7 +9,10 @@ class User extends HasImage implements INotifiable {
 	String password
     String position // <-- job position within a team: Developer, Manager, CEO...
     Role role
-	
+
+    def grailsLinkGenerator
+    static transients = [ "grailsLinkGenerator" ]
+
     static hasMany = [
             comments: Comment,
             repositories: Repository,
@@ -40,6 +43,15 @@ class User extends HasImage implements INotifiable {
 	public String getNotificationName() {
 		return this.username;
 	}
+
+    /**
+     * Returns URL for current instance
+     * @return
+     */
+    @Override
+    String getUrl() {
+        return grailsLinkGenerator.link(controller: 'user', action: 'show', id: this.ident(), absolute: true)
+    }
 }
 
 enum Role {

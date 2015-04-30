@@ -17,6 +17,9 @@ class Repository extends HasImage implements INotifiable {
     String password;
     String username;
 
+    def grailsLinkGenerator
+    static transients = [ "grailsLinkGenerator" ]
+
     static belongsTo = User
     static hasMany = [members: User]
 
@@ -53,6 +56,15 @@ class Repository extends HasImage implements INotifiable {
 	public String getNotificationName() {
 		return this.title;
 	}
+
+    /**
+     * Returns URL for current instance
+     * @return
+     */
+    @Override
+    String getUrl() {
+        return grailsLinkGenerator.link(controller: 'repository', action: 'dashboard', id: this.ident(), absolute: true)
+    }
 }
 
 enum RepositoryType {

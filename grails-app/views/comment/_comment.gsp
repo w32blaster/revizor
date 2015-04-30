@@ -1,4 +1,4 @@
-<%@ page import="com.revizor.CommentType" %>
+<%@ page import="com.revizor.utils.Constants; com.revizor.CommentType" %>
 
 <%-- 
 	The body of only one comment 
@@ -13,7 +13,7 @@
     </div>
 </g:if>
 
-<div class="media comment-container well <% if (isUnread) {%> unread<%} %>" style="width: ${800 - indentPx}px;">
+<div id="${com.revizor.utils.Constants.CONTAINER_ID_PREFIX}${comment.ident()}" class="media comment-container well <% if (isUnread) {%> unread<%} %>" style="width: ${800 - indentPx}px;">
   <a class="pull-left" href="${createLink(controller:'user', action:'show', id:comment.author?.ident())}">
       <g:render template="/user/userAvatar" model="['user' : comment.author, 'cssClass': 'avatar img-rounded media-object']" />
   </a>

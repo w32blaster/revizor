@@ -1,8 +1,8 @@
 package revizor
 
+import com.revizor.INotifiable
 import com.revizor.NotificationObject
 import com.revizor.utils.Constants
-import grails.util.GrailsNameUtils
 
 class NotificationTagLib {
 
@@ -41,7 +41,7 @@ class NotificationTagLib {
         def messageCode = (notification.object.ident() == session.user.ident()) ?
                 notification.action.messageByMe() :
                 isItShownForMe ? notification.action.messageForMe() : notification.action.message()
-        def messageParams = actors.collect { getHtmlMessage(it) }
+        def messageParams = actors.collect { this.getHtmlMessage(it) }
         def msg = g.message(code: messageCode, args: messageParams, encodeAs: 'None', default: "Notification message not found")
         def details = (notification.detailedActorIndex > -1) ? getDetailedHtmlBlock(actors.get(notification.detailedActorIndex)) : null
 
@@ -61,6 +61,12 @@ class NotificationTagLib {
         return actorObject.getDetailsAsHtml()
     }
 
+    /**
+     * Build HTML-link for the given object.
+     *
+     * @param object
+     * @return
+     */
     private String getHtmlMessage(NotificationObject object) {
 		def actorObject = object.resoreInstance();
 
@@ -71,9 +77,8 @@ class NotificationTagLib {
 			return actorObject
 		}
 		else {
-            def classSimpleName = GrailsNameUtils.getShortName(actorObject.class).toLowerCase();
-            def href = g.createLink(controller: classSimpleName, action: 'show', id: actorObject.ident(), absolute: true)
-            return "<a href='${href}' class='notification-link'>${actorObject.getNotificationName()}</a>"
+            INotifiable actorNotifiable = (INotifiable) actorObject;
+            return "<a href='${actorNotifiable.getUrl()}' class='notification-link'>${actorNotifiable.getNotificationName()}</a>"
 		}
     }
 }

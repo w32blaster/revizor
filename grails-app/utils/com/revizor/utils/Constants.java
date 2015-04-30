@@ -17,7 +17,9 @@ public interface Constants {
 
     String REVIEW_SINGLE_VIEW = "single";
     String REVIEW_SIDE_BY_SIDE_VIEW = "side-by-side";
-    
+    String CONTAINER_ID_PREFIX = "comment-container-";
+
+
     byte ACTION_ADDED = 1;
     byte ACTION_DELETED = 2;
     byte ACTION_MODIFIED = 3;
