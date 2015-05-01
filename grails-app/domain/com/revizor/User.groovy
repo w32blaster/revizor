@@ -33,6 +33,7 @@ class User extends HasImage implements INotifiable {
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	public String getDetailsAsHtml() {
 		return null;
 	}
@@ -40,6 +41,7 @@ class User extends HasImage implements INotifiable {
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	public String getNotificationName() {
 		return this.username;
 	}
@@ -49,7 +51,7 @@ class User extends HasImage implements INotifiable {
      * @return
      */
     @Override
-    String getUrl() {
+    String getLinkHref() {
         return grailsLinkGenerator.link(controller: 'user', action: 'show', id: this.ident(), absolute: true)
     }
 }

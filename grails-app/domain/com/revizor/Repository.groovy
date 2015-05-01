@@ -46,6 +46,7 @@ class Repository extends HasImage implements INotifiable {
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	public String getDetailsAsHtml() {
 		return null;
 	}
@@ -53,6 +54,7 @@ class Repository extends HasImage implements INotifiable {
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	public String getNotificationName() {
 		return this.title;
 	}
@@ -62,7 +64,7 @@ class Repository extends HasImage implements INotifiable {
      * @return
      */
     @Override
-    String getUrl() {
+    String getLinkHref() {
         return grailsLinkGenerator.link(controller: 'repository', action: 'dashboard', id: this.ident(), absolute: true)
     }
 }

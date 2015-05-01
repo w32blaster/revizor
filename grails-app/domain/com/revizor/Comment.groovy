@@ -43,6 +43,7 @@ class Comment implements INotifiable {
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	public String getDetailsAsHtml() {
 		def grailsApplication = this.domainClass.grailsApplication
         def ctx = grailsApplication.mainContext
@@ -53,6 +54,7 @@ class Comment implements INotifiable {
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	public String getNotificationName() {
         def grailsApplication = this.domainClass.grailsApplication
         def ctx = grailsApplication.mainContext
@@ -63,7 +65,7 @@ class Comment implements INotifiable {
      * {@inheritDoc}
      */
     @Override
-    String getUrl() {
+    String getLinkHref() {
         switch (this.getType()) {
             case CommentType.LINE_OF_CODE:
                 /*

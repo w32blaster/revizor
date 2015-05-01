@@ -78,7 +78,7 @@ class NotificationTagLib {
 		}
 		else {
             INotifiable actorNotifiable = (INotifiable) actorObject;
-            return "<a href='${actorNotifiable.getUrl()}' class='notification-link'>${actorNotifiable.getNotificationName()}</a>"
+            return "<a href='${actorNotifiable.getLinkHref()}' class='notification-link'>${actorNotifiable.getNotificationName()}</a>"
 		}
     }
 }
