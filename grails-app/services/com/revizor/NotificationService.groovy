@@ -41,12 +41,16 @@ class NotificationService {
     }
 
     /**
-     * Create unread messages for all the users.
+     * Create unread messages for all the users, except current one.
      */
     def makeUnreadEventsForAllUsers(Notification notification, ObjectType type, long id) {
+        def session = RequestContextHolder.currentRequestAttributes().getSession()
+
         User.list().each { User user ->
-            new UnreadEvent(notification: notification, type: type, objectId: id, user: user)
-                    .save()
+            if (user.ident() != session.user.ident()) {
+                new UnreadEvent(notification: notification, type: type, objectId: id, user: user)
+                        .save()
+            }
         }
     }
 
@@ -61,6 +65,24 @@ class NotificationService {
     def markReadEvent(ObjectType type, User user) {
         UnreadEvent.executeUpdate("delete UnreadEvent c where c.type = :type and c.user = :user",
                 [type: type, user: user])
+    }
+
+    def markReadCommentsByType(unreadCommentIds, CommentType commentType) {
+
+        if (unreadCommentIds) {
+
+            def unreadNewCommentEventsToBeDeleted = Comment.getAll(unreadCommentIds)
+                    .findAll { it.getType() == commentType }
+                    .collect { it.ident() }
+
+            def unreadEventsToBeDeleted = UnreadEvent
+                    .findAllByTypeAndObjectId(ObjectType.COMMENT, unreadNewCommentEventsToBeDeleted)
+                    .collect { it.ident() }
+
+            UnreadEvent.executeUpdate("delete UnreadEvent c where c.type = :type and c.id in :ids",
+                    [type: ObjectType.COMMENT,
+                    ids: unreadEventsToBeDeleted])
+        }
     }
 
     /**

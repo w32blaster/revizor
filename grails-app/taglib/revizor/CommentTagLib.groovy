@@ -10,22 +10,26 @@ class CommentTagLib {
 
     def printCommentsInHierarchy = {attrs, body ->
         def comments = attrs.comments;
+        def unreadComments = attrs.unreadComments
 
         def rootComments = comments.findAll { Comment comment -> !comment.replyTo }
 
-        _recursivelyPrintCommentReplies(0, rootComments);
+        _recursivelyPrintCommentReplies(0, rootComments, unreadComments);
     }
 
     def printOneComment = { attrs, body ->
-        _recursivelyPrintCommentReplies(attrs.indent, [attrs.comment]);
+        _recursivelyPrintCommentReplies(attrs.indent, [attrs.comment], []);
     }
 
-    def _recursivelyPrintCommentReplies(indent, comments) {
+    def _recursivelyPrintCommentReplies(indent, comments, unreadComments) {
         comments
             .sort { it.ident() }
             .each { Comment comment ->
 
-                out << g.render(template: "/comment/comment", model: ['comment': comment, 'indent': indent])
+                out << g.render(template: "/comment/comment", model: [
+                        'comment': comment,
+                        'indent': indent,
+                        'isUnread': (comment.ident() in unreadComments) ])
 
                 out << "<div id='replies-container-${comment.id}-id' style='max-width:800px;'>";
                     if(comment.replies) {

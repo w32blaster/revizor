@@ -406,3 +406,8 @@ body {
     width: 800px;
     padding: 10px;
 }
+.pseudo-img {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+}
