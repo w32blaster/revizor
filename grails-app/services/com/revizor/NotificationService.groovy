@@ -75,13 +75,13 @@ class NotificationService {
                     .findAll { it.getType() == commentType }
                     .collect { it.ident() }
 
-            def unreadEventsToBeDeleted = UnreadEvent
-                    .findAllByTypeAndObjectId(ObjectType.COMMENT, unreadNewCommentEventsToBeDeleted)
-                    .collect { it.ident() }
+            def delCnt = UnreadEvent.where {
+                eq("type", ObjectType.COMMENT)
+                inList("objectId", unreadNewCommentEventsToBeDeleted)
+            }
+            .deleteAll()
 
-            UnreadEvent.executeUpdate("delete UnreadEvent c where c.type = :type and c.id in :ids",
-                    [type: ObjectType.COMMENT,
-                    ids: unreadEventsToBeDeleted])
+            return delCnt
         }
     }
 
