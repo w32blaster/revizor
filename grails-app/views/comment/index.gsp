@@ -55,16 +55,35 @@
 					</div>
 				</div>
 
-				<div class="row">
-					<g:each var="comment" in="${commentInstanceList}">
-						
-						<g:link controller="review" action="show" id="${comment.review.id}" class="btn btn-default btn-xs">
-							${comment.review.title}
-						</g:link>
-					    <g:render template="/comment/comment" model="['comment' : comment, 'indent': 0, 'isUnread': (comment.ident() in unreadComments) ]" />
-					    </br>
-					</g:each>
-				</div>
+                <g:each var="comment" status="i"  in="${commentInstanceList}">
+                    <div class="row ${(i % 2) == 0 ? 'even' : 'odd'}">
+                        <div class="col-lg-3">
+
+                            <dl>
+                                <dt><g:message code="Review.label" /></dt>
+                                <dd>
+                                    <g:link controller="review" action="show" id="${comment.review.id}">
+                                        ${comment.review.title}
+                                    </g:link>
+                                </dd>
+                                <g:if test="${comment.type == com.revizor.CommentType.LINE_OF_CODE}">
+                                    <dt><g:message code="file.label" /></dt>
+                                    <dd>
+                                        <a href="${comment.getLinkHref()}">
+                                            <sc:fileNameWithoutPackage>
+                                                ${comment.fileName}
+                                            </sc:fileNameWithoutPackage>
+                                        </a>
+                                    </dd>
+                                </g:if>
+                            </dl>
+
+                        </div>
+                        <div class="col-lg-9">
+                            <g:render template="/comment/comment" model="['comment' : comment, 'isReplyButtonHidden': true, 'indent': 0, 'isUnread': (comment.ident() in unreadComments) ]" />
+                        </div>
+                    </div>
+                </g:each>
 
 				<div class="pagination">
 					<g:paginate total="${commentInstanceCount ?: 0}" />
