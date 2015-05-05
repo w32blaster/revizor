@@ -43,6 +43,7 @@ class Review implements INotifiable {
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	public String getDetailsAsHtml() {
 		return null;
 	}
@@ -50,6 +51,7 @@ class Review implements INotifiable {
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	public String getNotificationName() {
 		return "${this.id}: ${this.title}";
 	}
@@ -59,7 +61,7 @@ class Review implements INotifiable {
      * @return
      */
     @Override
-    String getUrl() {
+    String getLinkHref() {
         return grailsLinkGenerator.link(controller: 'review', action: 'show', id: this.ident(), absolute: true)
     }
 

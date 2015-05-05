@@ -29,8 +29,8 @@ public interface INotifiable {
 	String getNotificationName();
 
 	/**
-	 * Returns URL for current instance
+	 * Returns URL for current instance, that should be used in <A HREF> tag.
 	 * @return
 	 */
-	String getUrl();
+	String getLinkHref();
 }
