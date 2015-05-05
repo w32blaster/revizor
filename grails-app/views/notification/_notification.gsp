@@ -3,7 +3,7 @@
 <%-- 
 	The body of only one notification 
 --%>
-<div class="media notification<g:if test="${forMe}"> notification-to-me</g:if> <g:if test="${isUnread}"> unread</g:if>" style="width: 100%;">
+<div class="media notification<g:if test="${forMe}"> notification-to-me</g:if> <g:if test="${isUnread}"> unread unread-new</g:if>" style="width: 100%;">
   
   <a class="pull-left" href="${createLink(controller:'user', action:'show', id: mainActor?.ident(), absolute: true)}">
       <g:render template="/user/userAvatar" model="[

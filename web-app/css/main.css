@@ -398,7 +398,7 @@ body {
     background-color: rgba(164, 95, 84, 0.1) !important;
     position: relative;
 }
-.unread::after {
+.unread-new::after {
     content: "new";
     background-color: rgba(164, 95, 84, 0.64);
     color: white;
