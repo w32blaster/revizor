@@ -51,12 +51,13 @@
 				container.show();
 				container.get()[0].innerHTML = '<form id="${formId}" data-comment-container="' + commentContainerID + '">' + formHtml + '</form>';
 				initMentionsInTextarea();
+				$("#${formId} TEXTAREA").focus();
 		   }
 		 });
 	}
 
 	function initMentionsInTextarea() {
-	<g:set var="allUsers" value="${com.revizor.User.getAll()}" />
+	    <g:set var="allUsers" value="${com.revizor.User.getAll()}" />
 
 		$('#${formId} .form-control').mention({
 			delimiter: '~',
