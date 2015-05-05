@@ -18,7 +18,8 @@
 			<table class="table">
 			<thead>
 					<tr>
-					
+
+						<td> </td>
 						<g:sortableColumn property="url" title="${message(code: 'repository.url.label', default: 'Url')}" />
 					
 						<g:sortableColumn property="title" title="${message(code: 'repository.title.label', default: 'Title')}" />
@@ -33,6 +34,11 @@
 				<tbody>
 				<g:each in="${repositoryInstanceList}" status="i" var="repositoryInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+                        <td>
+                            <g:if test="${repositoryInstance?.image}">
+                                <img class="avatar" width="16" height="16" src="${createLink(controller: 'repository', action: 'logo_image', id: repositoryInstance?.ident())}" />
+                            </g:if>
+                        </td>
 						<td>
 							<g:link action="show" id="${repositoryInstance.id}">
 								<hs:maskPassword>

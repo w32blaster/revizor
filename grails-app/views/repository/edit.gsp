@@ -16,8 +16,6 @@
 
 			<g:render template="/layouts/actionButton" />
 
-            <g:render template="/user/select_avatar" model="[id: repositoryInstance?.ident()]"/>
-
 			<div class="form-container">
 			<g:form url="[resource:repositoryInstance, action:'update']" method="PUT" >
 				<g:hiddenField name="version" value="${repositoryInstance?.version}" />
