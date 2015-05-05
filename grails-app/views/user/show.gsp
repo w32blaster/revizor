@@ -1,5 +1,5 @@
 
-<%@ page import="com.revizor.User" %>
+<%@ page import="com.revizor.CommentsFilter; com.revizor.User" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -16,12 +16,10 @@
 
 				<g:render template="/layouts/actionButton" />
 
+                <g:render template="/user/userAvatar" model="['user' : userInstance, 'cssClass': 'avatar img-rounded']" />
 
 			<ol class="property-list user">
-			
-				<g:if test="${userInstance?.image}">
-					  <img class="avatar" src="${createLink(controller: 'user', action: 'avatar_image', id: userInstance?.ident())}" />
-				</g:if>
+
 
 				<g:if test="${userInstance?.email}">
 				<li class="form-group">
@@ -54,37 +52,31 @@
 		<g:if test="${userInstance?.comments}">
 				<li class="form-group">
 					<span id="comments-label" class="property-label"><g:message code="user.comments.label" default="Comments" /></span>
-					
-						<g:each in="${userInstance.comments}" var="c">
-						<span class="property-value" aria-labelledby="comments-label"><g:link controller="comment" action="show" id="${c.id}">${c?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
+
+                    <g:link controller="comment" action="index" params="[filter: com.revizor.CommentsFilter.BY_AUTHOR, author: userInstance.ident()]" >
+                        <g:message code="review.comments.header" />
+                    </g:link>
+
 				</li>
 				</g:if>
 
 				<g:if test="${userInstance?.reviewsAsAuthor}">
 				<li class="form-group">
 					<span id="reviewsAsAuthor-label" class="property-label"><g:message code="user.reviewsAsAuthor.label" default="Reviews" /></span>
-					
+
+                        <ul>
 						<g:each in="${userInstance.reviewsAsAuthor}" var="r">
-						<span class="property-value" aria-labelledby="reviewsAsAuthor-label"><g:link controller="review" action="show" id="${r.id}">${r?.encodeAsHTML()}</g:link></span>
+                            <li>
+                                <g:link controller="review" action="show" id="${r.id}">
+                                    ${r.ident()}: ${r?.title}
+                                </g:link>
+                            </li>
 						</g:each>
-					
+                        </ul>
 				</li>
 				</g:if>
 			
 
-
-				<g:if test="${userInstance?.repositories}">
-					<li class="form-group">
-						<span id="repositories-label" class="property-label"><g:message code="user.repositories.label" default="Repositories" /></span>
-						
-							<g:each in="${userInstance.repositories}" var="r">
-								<span class="property-value" aria-labelledby="repositories-label"><g:link controller="repository" action="show" id="${r.id}">${r?.title.encodeAsHTML()}</g:link></span>
-							</g:each>
-						
-					</li>
-				</g:if>
 
 				<g:if test="${userInstance?.role}">
 				<li class="form-group">
