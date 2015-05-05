@@ -75,7 +75,8 @@
                     repo="${reviewInstance.repository}"
                     commitID="${reviewInstance.commits[0]}"
                     fileName="${fileName}"
-                    review="${reviewInstance}" />
+                    review="${reviewInstance}"
+                    unreadComments="${unreadComments}"/>
 
         </div>
 

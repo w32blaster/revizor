@@ -19,9 +19,6 @@
   </a>
   <div class="media-body">
     <h4 class="media-heading">${comment.author?.username}
-        <g:if test="${isUnread}">
-            <span class="label label-danger">N</span>
-        </g:if>
     </h4>
 
     <cmt:highlightUsername>

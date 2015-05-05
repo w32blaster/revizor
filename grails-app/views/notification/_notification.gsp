@@ -20,8 +20,4 @@
             <blockquote><cmt:highlightUsername><emoji:toHtml size="22">${details}</emoji:toHtml></cmt:highlightUsername></blockquote>
         </g:if>
   </div>
-
-    <g:if test="${isUnread}">
-        <span class="label label-danger new-label">N</span>
-    </g:if>
 </div>

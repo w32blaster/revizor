@@ -33,7 +33,7 @@ class CommentTagLib {
 
                 out << "<div id='replies-container-${comment.id}-id' style='max-width:800px;'>";
                     if(comment.replies) {
-                        _recursivelyPrintCommentReplies( (indent + 1), comment.replies);
+                        _recursivelyPrintCommentReplies( (indent + 1), comment.replies, unreadComments);
                     }
                     out << "<div id='new-reply-to-${comment.id}-form' class='panel' style='display:none;'></div>"
                 out << "</div>"
