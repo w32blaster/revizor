@@ -1,5 +1,5 @@
 
-<%@ page import="com.revizor.Comment" %>
+<%@ page import="com.revizor.User; com.revizor.Comment" %>
 <%@ page import="com.revizor.CommentsFilter" %>
 <!DOCTYPE html>
 <html>
@@ -46,6 +46,31 @@
 							<g:message code="${CommentsFilter.REPLIES_TO_ME.value()}" default="Replies to me" />
 						</g:link>
 
+                        <!-- replies to me -->
+                        <% def cssClassByAuth = (params.filter == CommentsFilter.BY_AUTHOR.toString()) ? 'active' : '' %>
+                        <div class="btn-group">
+                            <g:link action="index" params="[filter: CommentsFilter.BY_AUTHOR]" class="btn btn-default btn-primary ${cssClassByAuth}">
+                                <span class="glyphicon glyphicon glyphicon-user"></span>
+                                <g:message code="${CommentsFilter.BY_AUTHOR.value()}" default="Replies to me" />
+                            </g:link>
+
+                            <a aria-expanded="false" href="#" class="btn btn-primary dropdown-toggle ${cssClassByAuth}" data-toggle="dropdown"><span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <g:each in="${com.revizor.User.list()}" var="user">
+                                    <g:if test="${user.id != session.user.id}">
+                                        <li role="presentation">
+                                            <g:link action="index" params="[filter: CommentsFilter.BY_AUTHOR, author: user.id]" >
+                                                <g:render template="/user/userAvatar" model="['user' :user, size: 16, 'cssClass': 'avatar img-rounded']" />
+                                                ${user.username}
+                                            </g:link>
+                                        </li>
+                                    </g:if>
+                                </g:each>
+                            </ul>
+                        </div>
+
+
+
 						<!-- All comments -->
 						<% def cssClassAll = (params.filter == CommentsFilter.ALL.toString()) ? 'active' : '' %>
 						<g:link action="index" params="[filter: CommentsFilter.ALL]" class="btn btn-default btn-primary ${cssClassAll}">
@@ -88,6 +113,7 @@
 				<div class="pagination">
 					<g:paginate total="${commentInstanceCount ?: 0}" />
 				</div>
+
 			</div>
 		    </div>
         </div>

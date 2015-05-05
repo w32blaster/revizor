@@ -428,3 +428,6 @@ body {
     right: 11px;
     top: 1px;
 }
+.pagination A {
+    padding: 5px;
+}
