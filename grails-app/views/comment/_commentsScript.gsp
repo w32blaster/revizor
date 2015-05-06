@@ -52,6 +52,7 @@
 				container.get()[0].innerHTML = '<form id="${formId}" data-comment-container="' + commentContainerID + '">' + formHtml + '</form>';
 				initMentionsInTextarea();
 				$("#${formId} TEXTAREA").focus();
+				$('.mention-popover').popover();
 		   }
 		 });
 	}
