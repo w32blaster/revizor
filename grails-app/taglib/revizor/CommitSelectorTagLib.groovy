@@ -81,7 +81,7 @@ class CommitSelectorTagLib {
                         </td>
                         <td>${_renderReviewsCount(mapReviews.get(rev.id))}</td>
                         <td><span class="label label-default" title="${rev.authorEmail}">${rev.author}</span><td>
-                        <td><a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.id])}" class="btn btn-default btn-xs tree-context-button">
+                        <td><a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.id])}" class="btn btn-default btn-xs">
                             <span class="glyphicon glyphicon-plus"></span>
                         </a>
                         </td>

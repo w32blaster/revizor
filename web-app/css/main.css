@@ -22,10 +22,6 @@ body {
 .row {
     margin-bottom: 20px;
 }
-.tree-context-button {
-    position: absolute;
-    right: 5px;
-}
 
 #login-container {
 	width: 500px;
@@ -220,7 +216,6 @@ body {
 }
 .graph-line-text {
     text-overflow: ellipsis;
-    white-space: nowrap;
 }
 .svg-path {
     stroke: rgba(0, 0, 0, 0.80);
