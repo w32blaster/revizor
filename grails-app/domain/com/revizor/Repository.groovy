@@ -18,7 +18,7 @@ class Repository extends HasImage implements INotifiable {
     String username;
 
     def grailsLinkGenerator
-    static transients = [ "grailsLinkGenerator" ]
+    static transients = [ "grailsLinkGenerator", "validateRepoURL" ]
 
     static belongsTo = User
     static hasMany = [members: User]
@@ -30,6 +30,11 @@ class Repository extends HasImage implements INotifiable {
         members(nullable: true)
         password(nullable: true)
         username(nullable: true)
+    }
+
+    // #TODO: implement validation of the URL
+    static def isURLvalid(val) {
+        return false;
     }
 
     /**
