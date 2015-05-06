@@ -51,6 +51,13 @@ class CommitSelectorTagLib {
      */
     def buildFlatListofCommits = { attrs, body ->
 
+        if(!attrs.repo){
+            out << "<div class='alert alert-danger'>" +
+                    "  <strong>Oh snap!</strong> There is no selected repository." +
+                    "</div>";
+            return;
+        }
+
         def repo = attrs.repo.initImplementation();
         def arrCommits = repo.getGraphSVG();
 
