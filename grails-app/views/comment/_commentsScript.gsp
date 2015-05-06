@@ -74,27 +74,28 @@
 		});
 	}
 
-/**
- * Method will be fired by the "Add new comment" form submitting
- */
-function createNewComment() {
-    var form = $('#${formId}');
-		var idCommentContainer = form.data("comment-container");
+    /**
+     * Method will be fired by the "Add new comment" form submitting
+     */
+    function createNewComment(btn) {
+        $(btn).attr('disabled','disabled');
+        var form = $('#${formId}');
+        var idCommentContainer = form.data("comment-container");
 
-		$.ajax({
-			   type: "POST",
-			   url: "${createLink(controller: 'comment', action:'save')}.html",
-			   data: form.serialize(),
-			   success: function(data)
-			   {
-					var comment = $(data);
-					$('#' + idCommentContainer).show().append(comment);
-					form.remove();
-			   }
-			 });
+        $.ajax({
+               type: "POST",
+               url: "${createLink(controller: 'comment', action:'save')}.html",
+               data: form.serialize(),
+               success: function(data)
+               {
+                    var comment = $(data);
+                    $('#' + idCommentContainer).show().append(comment);
+                    form.remove();
+               }
+             });
 
-		return false;
-	}
+        return false;
+    }
 
 	$('.mention-popover').popover();
 

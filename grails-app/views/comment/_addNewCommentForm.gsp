@@ -39,9 +39,10 @@
 		<g:hiddenField name="typeOfLine" value="${lineType}" id="typeOfLine" />
 	</g:if>
 
-	<button type="button" name="submit-comment-review-btn" class="btn btn-primary" onclick="createNewComment();">
+	<button type="button" name="submit-comment-review-btn" class="btn btn-primary" onclick="createNewComment(this);">
 		<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
 		${message(code: 'review.comments.post', default: 'Post the comment')}
 	</button>
+
 	<a href="#" class="btn btn-link" onclick="closeForm();"><g:message code="cancel" /></a>
 </div>
