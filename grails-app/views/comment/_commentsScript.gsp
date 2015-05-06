@@ -1,5 +1,6 @@
 <%@ page import="com.revizor.CommentType" %>
 <%@ page import="com.revizor.Comment" %>
+<%@ page defaultCodec="none" %>
 
 <%-- 
 	The JS script that is used to add a new comments and show them dynamically.
@@ -90,6 +91,7 @@
                {
                     var comment = $(data);
                     $('#' + idCommentContainer).show().append(comment);
+                    $('.mention-popover').popover();
                     form.remove();
                }
              });
