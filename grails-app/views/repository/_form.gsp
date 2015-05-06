@@ -2,15 +2,20 @@
 
 
 <div class="form-group ${hasErrors(bean: repositoryInstance, field: 'url', 'error')} ">
-	<label for="url" class="col-lg-3">
-		<g:message code="repository.url.label" default="Url" />
-		<a href="${grailsApplication.config.links.wiki.clone}" target="_blank" title="<g:message code="wiki.clone.repository" />">
-			<span class="glyphicon glyphicon-info-sign"></span>
-		</a>
-	</label>
+
+    <div class="col-lg-3">
+        <label for="url">
+            <g:message code="repository.url.label" default="Url" />
+        </label>
+
+        <button id="url-help" type="button" class="btn btn-link floating" data-html="true" data-toggle="popover" data-trigger="focus" title="<g:message code="help.repo.url.title" />"
+                data-content="${message(code: "help.repo.url.text", args: [ grailsApplication.config.links.wiki.clone ])}">
+            <span class="glyphicon glyphicon-info-sign"></span>
+        </button>
+    </div>
+
 	<div class="col-lg-9">
 		<g:textField class="form-control col-lg-3" name="url" value="${repositoryInstance?.url}"/>
-
 	</div>
 </div>
 
@@ -31,7 +36,9 @@
 	<div class="col-lg-9">
 
         <div class="input-group">
+
             <span class="input-group-addon">
+                <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
                 <samp>${com.revizor.utils.Constants.LOCAL_REPO_PATH + File.separator}</samp>
             </span>
 
@@ -98,6 +105,7 @@
 
         $('#password-tooltip-id').tooltip();
         $('.selectpicker').selectpicker();
+        $('#url-help').popover();
 
         <g:if test="${actionName == "create"}">
             var $folderNameField = $('#folderName');

@@ -17,7 +17,7 @@
 			<g:render template="/layouts/actionButton" />
 
 			<div class="form-container">
-			<g:form url="[resource:repositoryInstance, action:'update']" method="PUT" >
+			<g:form url="[resource:repositoryInstance, action:'update']" method="PUT" class="form-horizontal" >
 				<g:hiddenField name="version" value="${repositoryInstance?.version}" />
 				<fieldset class="form">
 					<g:render template="form"/>
