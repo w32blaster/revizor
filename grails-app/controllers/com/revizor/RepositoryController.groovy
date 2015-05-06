@@ -55,7 +55,7 @@ class RepositoryController {
         def id = params.id.toInteger()
         session.activeRepository = id
 
-        // mark "unread" the event about this review for current user
+        // mark "unread" the event about this repo for current user
         notificationService.markReadEvent(ObjectType.REPO, session.user)
 
         def repos = Repository.list()

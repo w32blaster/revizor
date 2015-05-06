@@ -67,7 +67,7 @@
                         <g:each in="${com.revizor.Repository.list(sort: 'id', order: 'desc')}" var="repository">
                             <g:set var="isUnread" value="${repository.ident() in unreadRepos}" />
 
-                            <div class="hp-row <% if (isUnread) {%> unread<%} %>">
+`                            <div class="hp-row <% if (isUnread) {%> unread unread-new<%} %>">
                                 <g:render template="repositoryHeader" model="[
                                         size: 32,
                                         repo: repository,
