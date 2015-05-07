@@ -215,7 +215,8 @@ body {
     overflow-y: auto;
 }
 .graph-line-text {
-    text-overflow: ellipsis;
+    height: 24px;
+    vertical-align: middle;
 }
 .svg-path {
     stroke: rgba(0, 0, 0, 0.80);
@@ -254,13 +255,16 @@ body {
     border: 1px solid #b5b4b4;
     color: #b5b4b4;
     font-weight: bold;
-    height: 5px;
+    height: 15px;
     max-width: none;
     padding: 0 5px;
     white-space: pre;
-    width: 10px;
+    width: 20px;
     cursor: pointer;
     font-size: 0.6em;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
 }
 .reply-indent {
     padding-right: 5px;
@@ -308,6 +312,13 @@ body {
 .graph-label {
     position: relative;
     z-index: 3;
+    display: inline-block;
+    max-width: 500px;
+    overflow: hidden;
+    padding: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
 }
 
 #collapse-button-id {

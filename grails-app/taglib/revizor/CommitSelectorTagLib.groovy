@@ -85,9 +85,9 @@ class CommitSelectorTagLib {
             outHtml <<= """
                     <tr title="${rev.id}" height="${Constants.ROW_HEIGHT}">
                         <td>
-                            <span class="graph-line-text" style="padding-left: ${rev.padding}px">
+                            <div class="graph-line-text" style="padding-left: ${rev.padding}px">
                                 <a class="graph-label" href="${urlToObserveChangeset}">${_getCommitMessageHtml(rev)}</a>
-                            </span>
+                            </div>
                         </td>
                         <td>${_renderReviewsCount(mapReviews.get(rev.id))}</td>
                         <td><span class="label label-default" title="${rev.authorEmail}">${rev.author}</span><td>
