@@ -51,15 +51,25 @@ class CommitSelectorTagLib {
      */
     def buildFlatListofCommits = { attrs, body ->
 
-        if(!attrs.repo){
-            out << "<div class='alert alert-danger'>" +
-                    "  <strong>Oh snap!</strong> There is no selected repository." +
-                    "</div>";
+        def repoImpl = attrs.repo.initImplementation();
+
+        def arrCommits = []
+        try {
+            arrCommits = repoImpl.getGraphSVG();
+        }
+        catch(NullPointerException npe) {
+
+            // this can happen, when cloning was unsuccessful and the repository exists in the DB, but
+            // the folder is empty or repo is corrupted.
+            out << """
+                    <div class='alert alert-danger'>
+                        <strong>${g.message(code: 'fatal.error')}!</strong> <br />
+                        ${g.message(code: 'no.such.repo.or.corrupted')}</br>
+                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                        <a href="${g.createLink(controller: 'repository', action: 'show', id: attrs.repo.ident())}">${attrs.repo.title}</a>
+                    </div>""";
             return;
         }
-
-        def repo = attrs.repo.initImplementation();
-        def arrCommits = repo.getGraphSVG();
 
         def mapReviews = _getMapOfUsedReviews(Review.findAllByRepository(attrs.repo))
 

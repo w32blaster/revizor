@@ -64,16 +64,18 @@
                             <g:message code="repository.header" />
                         </div>
 
-                        <g:each in="${com.revizor.Repository.list(sort: 'id', order: 'desc')}" var="repository">
-                            <g:set var="isUnread" value="${repository.ident() in unreadRepos}" />
+                        <div id="list-of-repositories" class="pre-scrollable">
+                            <g:each in="${com.revizor.Repository.list(sort: 'id', order: 'desc')}" var="repository">
+                                <g:set var="isUnread" value="${repository.ident() in unreadRepos}" />
 
-`                            <div class="hp-row <% if (isUnread) {%> unread unread-new<%} %>">
-                                <g:render template="repositoryHeader" model="[
-                                        size: 32,
-                                        repo: repository,
-                                        isUnread: isUnread]" />
-                            </div>
-                        </g:each>
+                                <div class="hp-row <% if (isUnread) {%> unread unread-new<%} %>">
+                                    <g:render template="repositoryHeader" model="[
+                                            size: 32,
+                                            repo: repository,
+                                            isUnread: isUnread]" />
+                                </div>
+                            </g:each>
+                        </div>
                      </div>
                 </div>
 

@@ -193,10 +193,8 @@ class RepositoryController {
         repositoryInstance.delete flush:true
 
         // remove the directory, where old repository was hosted
-        def isSuccess = new File(directoryPath).deleteDir()
-        if (!isSuccess) {
-            throw new RuntimeException("Cant delete directory ${directoryPath}")
-        }
+        def targetDir = new File(directoryPath)
+        if (targetDir.exists()) FileUtils.deleteDirectory(targetDir)
 
         request.withFormat {
             form multipartForm {

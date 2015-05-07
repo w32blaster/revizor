@@ -426,3 +426,6 @@ body {
 .pagination A {
     padding: 5px;
 }
+#list-of-repositories {
+    overflow-y: auto;
+}
