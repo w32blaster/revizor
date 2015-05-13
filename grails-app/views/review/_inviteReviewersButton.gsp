@@ -77,7 +77,12 @@
             <ul class="dropdown-menu" role="menu">
                 <g:each in="${User.list()}" var="user">
                     <g:if test="${user.id != session.user.id}">
-                        <li role="presentation"><a href="#" onclick="selectUser(${user.id}); return false;">${user.username}</a></li>
+                        <li role="presentation">
+                            <a href="#" onclick="selectUser(${user.id}); return false;">
+                                <g:render template="/user/userAvatar" model="['user' :user, size: 16, 'cssClass': 'avatar img-rounded']" />
+                                ${user.username}
+                            </a>
+                        </li>
                     </g:if>
                 </g:each>
             </ul>

@@ -1,5 +1,6 @@
 package com.revizor
 
+import grails.transaction.Transactional
 import revizor.HelpTagLib
 
 class NotificationController {
@@ -14,5 +15,18 @@ class NotificationController {
         def notificationsHtml = ntl.feed(offset: offset)
 
         render HelpTagLib.toSingleLine(notificationsHtml);
+    }
+
+    /**
+     * method is called via ajax-request. Just mark all the events as "read" for current user
+     *
+     * @return
+     */
+    @Transactional
+    def markAllReadEvents() {
+        def cnt = UnreadEvent.executeUpdate("delete UnreadEvent c where c.user = :user",
+                [user: session.user])
+
+        render cnt
     }
 }

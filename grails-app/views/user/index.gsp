@@ -22,6 +22,8 @@
 					<thead>
 							<tr>
 
+                                <td width="20"> </td>
+
 								<g:sortableColumn property="email" title="${message(code: 'user.email.label', default: 'Email')}" />
 
 								<g:sortableColumn property="username" title="${message(code: 'user.username.label', default: 'username')}" />
@@ -35,6 +37,12 @@
                         <h3><g:message code="registered.in.revizor" /></h3>
 						<g:each in="${userInstanceList}" status="i" var="userInstance">
 							<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+
+                                <td width="20">
+                                    <g:if test="${userInstance?.image}">
+                                        <img class="avatar" width="16" height="16" src="${createLink(controller: 'repository', action: 'logo_image', id: userInstance?.ident())}" />
+                                    </g:if>
+                                </td>
 
 								<td><g:link action="show" id="${userInstance.id}">${fieldValue(bean: userInstance, field: "email")}</g:link></td>
 

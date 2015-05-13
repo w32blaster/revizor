@@ -51,8 +51,25 @@ class CommitSelectorTagLib {
      */
     def buildFlatListofCommits = { attrs, body ->
 
-        def repo = attrs.repo.initImplementation();
-        def arrCommits = repo.getGraphSVG();
+        def repoImpl = attrs.repo.initImplementation();
+
+        def arrCommits = []
+        try {
+            arrCommits = repoImpl.getGraphSVG();
+        }
+        catch(NullPointerException npe) {
+
+            // this can happen, when cloning was unsuccessful and the repository exists in the DB, but
+            // the folder is empty or repo is corrupted.
+            out << """
+                    <div class='alert alert-danger'>
+                        <strong>${g.message(code: 'fatal.error')}!</strong> <br />
+                        ${g.message(code: 'no.such.repo.or.corrupted')}</br>
+                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                        <a href="${g.createLink(controller: 'repository', action: 'show', id: attrs.repo.ident())}">${attrs.repo.title}</a>
+                    </div>""";
+            return;
+        }
 
         def mapReviews = _getMapOfUsedReviews(Review.findAllByRepository(attrs.repo))
 
@@ -68,13 +85,13 @@ class CommitSelectorTagLib {
             outHtml <<= """
                     <tr title="${rev.id}" height="${Constants.ROW_HEIGHT}">
                         <td>
-                            <span class="graph-line-text" style="padding-left: ${rev.padding}px">
+                            <div class="graph-line-text" style="padding-left: ${rev.padding}px">
                                 <a class="graph-label" href="${urlToObserveChangeset}">${_getCommitMessageHtml(rev)}</a>
-                            </span>
+                            </div>
                         </td>
                         <td>${_renderReviewsCount(mapReviews.get(rev.id))}</td>
                         <td><span class="label label-default" title="${rev.authorEmail}">${rev.author}</span><td>
-                        <td><a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.id])}" class="btn btn-default btn-xs tree-context-button">
+                        <td><a href="${createLink(controller: 'review', action: 'create', id: attrs.repo.ident(), params: [selected: rev.id])}" class="btn btn-default btn-xs">
                             <span class="glyphicon glyphicon-plus"></span>
                         </a>
                         </td>

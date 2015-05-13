@@ -9,8 +9,7 @@ import spock.lang.Specification
 /**
  * 
  */
-@Mock(User)
-@Mock(Reviewer)
+@Mock([Reviewer, User])
 @TestFor(HelpTagLib)
 class HelpTagLibSpec extends Specification {
 

@@ -109,18 +109,25 @@ class ReviewController {
     def show(Review reviewInstance) {
         def view;
 
+        // unread comments
+        def unreadCommentIds = notificationService.getNewUnreadItemsForMe(ObjectType.COMMENT, session.user)
+
         switch (params.viewType) {
 
             case Constants.REVIEW_SINGLE_VIEW:
                 view = "showSingleView";
+                notificationService.markReadCommentsByType(unreadCommentIds, CommentType.LINE_OF_CODE)
                 break
 
             case Constants.REVIEW_SIDE_BY_SIDE_VIEW:
                 view = "showSideBySideView";
+                notificationService.markReadCommentsByType(unreadCommentIds, CommentType.LINE_OF_CODE)
                 break;
 
             default:
                 view = "show";
+                notificationService.markReadCommentsByType(unreadCommentIds, CommentType.REVIEW)
+
                 break;
         }
 
@@ -129,6 +136,7 @@ class ReviewController {
 
         respond reviewInstance, view: view, model:[
                 fileName: params[Constants.PARAM_FILE_NAME],
+                unreadComments: unreadCommentIds,
                 urlPrefix: g.createLink(controller: 'review', action: 'show', id: reviewInstance.ident())
         ]
     }

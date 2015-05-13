@@ -37,6 +37,14 @@
 					$btn.attr('disabled','disabled');
 					$btn.html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
 				});
+
+				var folderNameInput = $("#folderName")
+				$("#title").keyup(function(){
+					var value = $(this).val();
+					value = value.replace(/[^a-zA-Z\w]/g, "").toLowerCase();
+					folderNameInput.val(value);
+				});
+
 			</r:script>
 
 	</body>

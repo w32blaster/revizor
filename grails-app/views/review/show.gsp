@@ -166,7 +166,7 @@
                 <g:set var="comments" value="${com.revizor.Comment.findAllByReviewAndType(reviewInstance, CommentType.REVIEW)}" />
                 <g:if test="${comments}">
                     <h3><g:message code="review.comments.header" default="Comments" /></h3>
-                    <cmt:printCommentsInHierarchy comments="${comments}" />
+                    <cmt:printCommentsInHierarchy comments="${comments}" unreadComments="${unreadComments}"/>
                 </g:if>
 
                 <%-- new comment will appear here --%>

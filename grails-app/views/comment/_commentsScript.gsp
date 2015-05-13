@@ -1,5 +1,6 @@
 <%@ page import="com.revizor.CommentType" %>
 <%@ page import="com.revizor.Comment" %>
+<%@ page defaultCodec="none" %>
 
 <%-- 
 	The JS script that is used to add a new comments and show them dynamically.
@@ -51,12 +52,14 @@
 				container.show();
 				container.get()[0].innerHTML = '<form id="${formId}" data-comment-container="' + commentContainerID + '">' + formHtml + '</form>';
 				initMentionsInTextarea();
+				$("#${formId} TEXTAREA").focus();
+				$('.mention-popover').popover();
 		   }
 		 });
 	}
 
 	function initMentionsInTextarea() {
-	<g:set var="allUsers" value="${com.revizor.User.getAll()}" />
+	    <g:set var="allUsers" value="${com.revizor.User.getAll()}" />
 
 		$('#${formId} .form-control').mention({
 			delimiter: '~',
@@ -72,27 +75,29 @@
 		});
 	}
 
-/**
- * Method will be fired by the "Add new comment" form submitting
- */
-function createNewComment() {
-    var form = $('#${formId}');
-		var idCommentContainer = form.data("comment-container");
+    /**
+     * Method will be fired by the "Add new comment" form submitting
+     */
+    function createNewComment(btn) {
+        $(btn).attr('disabled','disabled');
+        var form = $('#${formId}');
+        var idCommentContainer = form.data("comment-container");
 
-		$.ajax({
-			   type: "POST",
-			   url: "${createLink(controller: 'comment', action:'save')}.html",
-			   data: form.serialize(),
-			   success: function(data)
-			   {
-					var comment = $(data);
-					$('#' + idCommentContainer).show().append(comment);
-					form.remove();
-			   }
-			 });
+        $.ajax({
+               type: "POST",
+               url: "${createLink(controller: 'comment', action:'save')}.html",
+               data: form.serialize(),
+               success: function(data)
+               {
+                    var comment = $(data);
+                    $('#' + idCommentContainer).show().append(comment);
+                    $('.mention-popover').popover();
+                    form.remove();
+               }
+             });
 
-		return false;
-	}
+        return false;
+    }
 
 	$('.mention-popover').popover();
 

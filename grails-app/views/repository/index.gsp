@@ -18,7 +18,8 @@
 			<table class="table">
 			<thead>
 					<tr>
-					
+
+						<td> </td>
 						<g:sortableColumn property="url" title="${message(code: 'repository.url.label', default: 'Url')}" />
 					
 						<g:sortableColumn property="title" title="${message(code: 'repository.title.label', default: 'Title')}" />
@@ -26,13 +27,17 @@
 						<g:sortableColumn property="folderName" title="${message(code: 'repository.folderName.label', default: 'Folder Name')}" />
 					
 						<g:sortableColumn property="type" title="${message(code: 'repository.type.label', default: 'Type')}" />
-					
-						<td> </td>
+
 					</tr>
 				</thead>
 				<tbody>
 				<g:each in="${repositoryInstanceList}" status="i" var="repositoryInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+                        <td>
+                            <g:if test="${repositoryInstance?.image}">
+                                <img class="avatar" width="16" height="16" src="${createLink(controller: 'repository', action: 'logo_image', id: repositoryInstance?.ident())}" />
+                            </g:if>
+                        </td>
 						<td>
 							<g:link action="show" id="${repositoryInstance.id}">
 								<hs:maskPassword>
@@ -41,15 +46,8 @@
 							</g:link>
 						</td>
 						<td>${fieldValue(bean: repositoryInstance, field: "title")}</td>
-						<td>${fieldValue(bean: repositoryInstance, field: "folderName")}</td>
+						<td><samp>${fieldValue(bean: repositoryInstance, field: "folderName")}</samp></td>
 						<td>${fieldValue(bean: repositoryInstance, field: "type")}</td>
-
-						<td>
-							<g:link controller="review" action="create" id="${repositoryInstance.id}" class="btn btn-primary" role="button">
-								<span class="glyphicon glyphicon-plus"></span>
-								<g:message code="default.new.label" args="['Review']" />
-							</g:link>
-						</td>
 					
 					</tr>
 				</g:each>

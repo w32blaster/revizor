@@ -33,9 +33,6 @@
 
 				<hr />
 
-				<%-- Form "Upload Avatar" --%>
-				<g:render template="select_avatar" model="[id: userInstance?.ident()]"/>
-
 				<%-- Form "Edit aliases" --%>
 				<g:render template="editAliases" model="[aliases: userInstance?.aliases, userId: userInstance?.ident()]"/>
 

@@ -22,10 +22,6 @@ body {
 .row {
     margin-bottom: 20px;
 }
-.tree-context-button {
-    position: absolute;
-    right: 5px;
-}
 
 #login-container {
 	width: 500px;
@@ -189,7 +185,8 @@ body {
 }
 
 .notification {
-    padding: 5px;
+    margin-top: 0 !important;
+    padding: 15px 5px;
     border-bottom: 1px solid #E7E6E7;
 }
 
@@ -205,7 +202,7 @@ body {
     font-size: 14px;
 }
 .notification-to-me {
-    background-color: #FFFFED;
+    background-color: rgba(242, 242, 188, 0.2);
 }
 
 #loading-label-id {
@@ -218,8 +215,8 @@ body {
     overflow-y: auto;
 }
 .graph-line-text {
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    height: 24px;
+    vertical-align: middle;
 }
 .svg-path {
     stroke: rgba(0, 0, 0, 0.80);
@@ -258,13 +255,16 @@ body {
     border: 1px solid #b5b4b4;
     color: #b5b4b4;
     font-weight: bold;
-    height: 5px;
+    height: 15px;
     max-width: none;
     padding: 0 5px;
     white-space: pre;
-    width: 10px;
+    width: 20px;
     cursor: pointer;
     font-size: 0.6em;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
 }
 .reply-indent {
     padding-right: 5px;
@@ -312,6 +312,13 @@ body {
 .graph-label {
     position: relative;
     z-index: 3;
+    display: inline-block;
+    max-width: 500px;
+    overflow: hidden;
+    padding: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
 }
 
 #collapse-button-id {
@@ -394,8 +401,19 @@ body {
 }
 .unread {
     font-weight: bold;
-    background-color: rgba(164, 95, 84, 0.1);
+    background-color: rgba(164, 95, 84, 0.1) !important;
     position: relative;
+}
+.unread-new::after {
+    content: "new";
+    background-color: rgba(164, 95, 84, 0.64);
+    color: white;
+    font-size: 0.6em;
+    padding: 1px 3px;
+    position: absolute;
+    right: 5px;
+    text-transform: uppercase;
+    top: 4px;
 }
 .new-label {
     position: absolute;
@@ -405,4 +423,20 @@ body {
 .add-new-comment-form {
     width: 800px;
     padding: 10px;
+}
+.pseudo-img {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+}
+#mark-all-read-id {
+    position: absolute;
+    right: 11px;
+    top: 1px;
+}
+.pagination A {
+    padding: 5px;
+}
+#list-of-repositories {
+    overflow-y: auto;
 }

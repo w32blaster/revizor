@@ -34,6 +34,11 @@ class CommentController {
                 list = Comment.findAll { replyTo.author == me }
                 break;
 
+            case CommentsFilter.BY_AUTHOR:
+                def author = params.author ? User.get(params.author as Long) : session.user
+                list = Comment.findAllByAuthor(author, [sort: "id", order: "desc"])
+                break;
+
             default:
                 list = Comment.list(params);
                 break;                
@@ -188,6 +193,7 @@ class CommentController {
 public enum CommentsFilter {
     ALL("comments.all"),
     ONLY_MINE("comments.mine"),
+    BY_AUTHOR("comments.by.author"),
     REPLIES_TO_ME("comments.replies");
 
     CommentsFilter(String val) { this.value = val; }
@@ -206,6 +212,9 @@ public enum CommentsFilter {
 
             case CommentsFilter.REPLIES_TO_ME.name():
                 return CommentsFilter.REPLIES_TO_ME.value;
+
+            case CommentsFilter.BY_AUTHOR.name():
+                return CommentsFilter.BY_AUTHOR.value;
 
             default:
                 return ""

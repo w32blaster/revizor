@@ -17,7 +17,7 @@
                     <div class="panel panel-default full-height">
 
                         <div class="panel-heading">
-                            <h3 class="panel-title"><g:message code="reviews.active.reviews" /></h3>
+                            <g:message code="reviews.active.reviews" />
                         </div>
 
                         <table class="table">
@@ -35,7 +35,13 @@
                     <div class="panel panel-default full-height">
 
                         <div class="panel-heading">
-                            <h3 class="panel-title"><g:message code="what.is.new" /></h3>
+                            <g:message code="what.is.new" />
+
+                            <button id="mark-all-read-id" class="btn btn-link">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                <g:message code="mark.all.read" />
+                            </button>
+
                         </div>
 
                         <g:set var="notificationContainerID" value="notification-feed-container" />
@@ -55,19 +61,21 @@
                     <div class="panel panel-default full-height">
 
                         <div class="panel-heading">
-                            <h3 class="panel-title"><g:message code="repository.header" /></h3>
+                            <g:message code="repository.header" />
                         </div>
 
-                        <g:each in="${com.revizor.Repository.list(sort: 'id', order: 'desc')}" var="repository">
-                            <g:set var="isUnread" value="${repository.ident() in unreadRepos}" />
+                        <div id="list-of-repositories" class="pre-scrollable">
+                            <g:each in="${com.revizor.Repository.list(sort: 'id', order: 'desc')}" var="repository">
+                                <g:set var="isUnread" value="${repository.ident() in unreadRepos}" />
 
-                            <div class="hp-row <% if (isUnread) {%> unread<%} %>">
-                                <g:render template="repositoryHeader" model="[
-                                        size: 32,
-                                        repo: repository,
-                                        isUnread: isUnread]" />
-                            </div>
-                        </g:each>
+                                <div class="hp-row <% if (isUnread) {%> unread unread-new<%} %>">
+                                    <g:render template="repositoryHeader" model="[
+                                            size: 32,
+                                            repo: repository,
+                                            isUnread: isUnread]" />
+                                </div>
+                            </g:each>
+                        </div>
                      </div>
                 </div>
 
@@ -75,7 +83,7 @@
                     <div class="panel panel-default full-height">
 
                         <div class="panel-heading">
-                            <h3 class="panel-title"><g:message code="users.header" /></h3>
+                            <g:message code="users.header" />
                         </div>
 
 
@@ -91,5 +99,31 @@
         </div>
     </div>
 
+    <r:script>
+
+        var ReadAllModule = (function($) {
+
+            var init = function() {
+                $("#mark-all-read-id").click(function() {
+                    $.get("${createLink(controller: 'notification', action: 'markAllReadEvents')}")
+                            .done(function() {
+                                $("#notification-feed-container .unread").removeClass( "unread" );
+                                toastr.success("All new events are marked as 'read'");
+                            })
+                            .fail(function(err) {
+                                toastr.error('Error occurs while attempt to mark all the events as read. Error: ' + err.statusText)
+                            });
+                });
+            };
+
+            return {
+                init : init
+            };
+
+        })(jQuery);
+
+        ReadAllModule.init();
+
+    </r:script>
 </body>
 </html>

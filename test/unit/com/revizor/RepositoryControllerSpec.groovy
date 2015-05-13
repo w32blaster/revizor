@@ -10,7 +10,6 @@ import spock.lang.*
 @Mock(Repository)
 class RepositoryControllerSpec extends Specification {
 
- 
     def populateValidParams(params) {
         assert params != null
 
@@ -19,7 +18,25 @@ class RepositoryControllerSpec extends Specification {
         params["folderName"] = 'repo'
         params["type"] = RepositoryType.GIT
     }
+/*
+    def "validator checks valid URL for a repo"() {
 
+        when:
+            def result = Repository.isURLvalid(valueToBeTested)
+
+        then:
+            result == expected
+
+        where:
+            valueToBeTested                                                  | expected
+            "/home/git/my-repo.git"                                          | true
+            "https://github.com/w32blaster/revizor.git"                      | true
+            "ssh://username@10.10.10.10/home/git/my-repo.git"                | true
+            "ssh://username:password@10.10.10.10/home/git/my-repo.git"       | true
+            "ssh://10.10.10.10:opt/my-repo.git"                              | false
+
+    }
+*/
     def "When an user navigates to the root app, it is asked to create a new repo"() {
 
         when:"User goes to the inder (website root)"

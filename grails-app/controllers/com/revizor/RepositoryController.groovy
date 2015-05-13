@@ -55,7 +55,7 @@ class RepositoryController {
         def id = params.id.toInteger()
         session.activeRepository = id
 
-        // mark "unread" the event about this review for current user
+        // mark "unread" the event about this repo for current user
         notificationService.markReadEvent(ObjectType.REPO, session.user)
 
         def repos = Repository.list()
@@ -193,10 +193,8 @@ class RepositoryController {
         repositoryInstance.delete flush:true
 
         // remove the directory, where old repository was hosted
-        def isSuccess = new File(directoryPath).deleteDir()
-        if (!isSuccess) {
-            throw new RuntimeException("Cant delete directory ${directoryPath}")
-        }
+        def targetDir = new File(directoryPath)
+        if (targetDir.exists()) FileUtils.deleteDirectory(targetDir)
 
         request.withFormat {
             form multipartForm {
