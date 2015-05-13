@@ -19,6 +19,7 @@
 				<g:form url="[resource:userInstance, action:'save']"  class="form-horizontal" >
 					<fieldset class="form">
                         <g:hiddenField name="hasImage" value="false"/>
+						<g:hiddenField name="type" value="${com.revizor.UserType.INNER}" />
 
 						<g:render template="form"/>
 					</fieldset>

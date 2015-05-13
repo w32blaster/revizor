@@ -1,5 +1,6 @@
 import com.revizor.Role
 import com.revizor.User
+import com.revizor.UserType
 import com.revizor.security.BCrypt
 import com.revizor.utils.Constants
 
@@ -21,6 +22,7 @@ class BootStrap {
                     email: 'admin@admin.com',
                     username: 'admin',
                     position: 'Administrator',
+                    type: UserType.INNER,
                     password: BCrypt.hashpw('admin123', BCrypt.gensalt()),
                     role: Role.ADMIN
             ).save(failOnError: true)

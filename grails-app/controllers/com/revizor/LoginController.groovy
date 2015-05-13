@@ -11,12 +11,12 @@ class LoginController {
 	}
 
 	def doLogin = {LoginCommand cmd ->
-		
+
 		if (cmd.hasErrors()) {
 			render view: 'login', model: [loginCmd: cmd]
 		}
 		else {
-			session.user = cmd.getUser()
+			session.user = cmd.getLoggedUser()
 			def pathContext = webRequest.currentRequest.contextPath
 			def fullUrl = request.getRequestURL()
 			session.baseUrl = fullUrl.substring(0, fullUrl.indexOf(pathContext) + pathContext.length())

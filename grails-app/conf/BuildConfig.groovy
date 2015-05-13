@@ -72,6 +72,7 @@ grails.project.dependency.resolution = {
         compile ":cache:1.1.8"
         compile ":mail:1.0.7"
         compile ':asset-pipeline:1.8.3'
+        compile ":ldap:0.8.2"
 
         // to prepare self extracted executable JAR file. To run: grails prod build-standalone revizor.jar
         // docs: http://grails-plugins.github.io/grails-standalone/docs/manual/guide/running.html

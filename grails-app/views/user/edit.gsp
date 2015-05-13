@@ -20,6 +20,7 @@
 				<div class="form-container">
 					<g:form url="[resource:userInstance, action:'update']" method="PUT" class="form-horizontal">
 						<g:hiddenField name="version" value="${userInstance?.version}" />
+						<g:hiddenField name="type" value="${userInstance.getType()}" />
 
 						<fieldset class="form">
 							<g:render template="form"/>

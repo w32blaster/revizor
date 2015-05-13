@@ -1,3 +1,5 @@
+import com.revizor.LDAPUser
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -146,3 +148,23 @@ grails.allowed.email.notifications=false
 
 // how often Revizor should check new commits in a repositories (in ms)
 grails.job.pull.period.time=10 * 60 * 1000 // 10 min
+
+ldap {
+    filter{
+        email = "mail"
+    }
+    directories {
+        directory1 {
+            url = "ldap://ldap.server.com:389"
+            base = ""
+            userDn = ""
+            password = "secret"
+            searchControls {
+                countLimit = 40
+                timeLimit = 600
+                searchScope = "subtree"
+            }
+        }
+    }
+    schemas: [LDAPUser]
+}

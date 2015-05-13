@@ -31,6 +31,8 @@
 							</tr>
 						</thead>
 						<tbody>
+
+                        <h3><g:message code="registered.in.revizor" /></h3>
 						<g:each in="${userInstanceList}" status="i" var="userInstance">
 							<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
@@ -42,6 +44,20 @@
 
 							</tr>
 						</g:each>
+
+                        <h3><g:message code="ldap.users" /></h3>
+                        <g:each in="${userInstanceList}" status="i" var="userInstance">
+                            <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+
+                                <td><g:link action="show" id="${userInstance.id}">${fieldValue(bean: userInstance, field: "email")}</g:link></td>
+
+                                <td>${fieldValue(bean: userInstance, field: "username")}</td>
+
+                                <td>${fieldValue(bean: userInstance, field: "role")}</td>
+
+                            </tr>
+                        </g:each>
+
 						</tbody>
 					</table>
 					<div class="pagination">
