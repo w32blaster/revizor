@@ -50,7 +50,7 @@
 			  <ul class="dropdown-menu" role="menu">
 			  	<g:each var="repo" in="${repos}">
 			    	<li><a href="${createLink(controller: 'review', action: 'create', id: repo.ident())}">
-						<g:render template="/repository/repositoryLogo" />
+						<g:render template="/repository/repositoryLogo" model="['repo': repo]" />
 						${repo.title}
 					</a></li>
 			    </g:each>
