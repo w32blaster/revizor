@@ -1,4 +1,8 @@
 
+// change to your server actual URL. This setting will be used in redirection and link making
+// grails.serverURL = "http://change-to-your-hostname-in-file-revizor-config:8080"
+grails.serverURL = "http://localhost:8080/revizor"
+
 // how often Revizor should check for new commits in a repositories (in ms)
 grails.job.pull.period.time=10 * 60 * 1000 // 10 min
 
@@ -20,8 +24,29 @@ grails {
 }
 */
 
-// change to your server actual URL. This setting will be used in redirection and link making
-// grails.serverURL = "http://change-to-your-hostname-in-file-revizor-config:8080"
-grails.serverURL = "http://localhost:8080/revizor"
-
+// is LDAP authentication enabled?
 ldap.enabled = true
+/*
+ldap {
+
+    filter{
+        email = "mail" // field name, that holds user email
+        defaultFilter = "(objectClass=person)"
+    }
+
+    // please fill the properties for your LDAP server
+    directories {
+        directory1 {
+            url = "ldap://ldap.server.com:389"
+            base = ""
+            userDn = ""
+            password = ""
+            searchControls {
+                countLimit = 40
+                timeLimit = 600
+                searchScope = "subtree"
+            }
+        }
+    }
+}
+*/

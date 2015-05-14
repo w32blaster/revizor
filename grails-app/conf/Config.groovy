@@ -149,24 +149,4 @@ grails.allowed.email.notifications=false
 // how often Revizor should check new commits in a repositories (in ms)
 grails.job.pull.period.time=10 * 60 * 1000 // 10 min
 
-ldap {
-    enabled = true
-    filter{
-        email = "mail"
-        defaultFilter = "(objectClass=person)"
-    }
-    directories {
-        directory1 {
-            url = "ldap://ldap.server.com:389"
-            base = ""
-            userDn = ""
-            password = "secret"
-            searchControls {
-                countLimit = 40
-                timeLimit = 600
-                searchScope = "subtree"
-            }
-        }
-    }
-    schemas: [ LDAPUser ]
-}
+ldap.schemas = [ LDAPUser ]
