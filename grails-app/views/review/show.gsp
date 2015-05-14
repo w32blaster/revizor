@@ -65,7 +65,8 @@
                         <div class="row"> 
                             <div class="col-md-1">
 
-                                <g:render template="/user/userAvatar" model="['user' : reviewInstance?.author]" />
+                                <g:render template="/user/userAvatar" model="['user' : reviewInstance?.author]" /><br />
+                                <strong>${reviewInstance?.author.username}</strong>
 
                             </div>   
 
@@ -146,7 +147,7 @@
                                 <g:render template="issueTickets" model="['issueTickets': reviewInstance.issueTickets, 'isEdit': false]" />
                             </g:if>
 
-                        <!-- Review description: -->
+                            <!-- Review description: -->
                             <h3><g:message code="review.description.label" default="Description" /></h3>
 
                             <emoji:toHtml size="22">

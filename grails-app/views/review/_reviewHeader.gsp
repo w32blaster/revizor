@@ -1,16 +1,4 @@
-
-<h2>${reviewInstance?.title}</h2>
-
-<div class="row">
-
-    <g:if test="${reviewInstance?.author}">
-
-        <g:render template="/user/userAvatar" model="['user' : reviewInstance?.author, 'size': 32]" />
-        ${reviewInstance?.author?.username.encodeAsHTML()}
-
-    </g:if>
-
-</div>
+<h4>${message(code: "review.with.title", args: [reviewInstance.title])}</h4>
 
 <%-- The button "Expand/collapse comments" --%>
 <button id="collapse-extend-btn-id" type="button" class="btn btn-default btn-xs pull-right" title="<g:message code="button.collapse.expand.comments" />">
