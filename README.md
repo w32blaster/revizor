@@ -41,6 +41,9 @@ The project is still under construction, thus here are some screenshots.
 **3. Review details view**
 ![Review details view](http://w32blaster.github.io/revizor/images/screenshots/screenshot2.jpeg)
 
+**4. Home page**
+![Revizor code review home page](http://w32blaster.github.io/revizor/images/screenshots/screenshot4.jpeg)
+
 Any feedback or contribution is highly appreciated!
 Thank you.
 
