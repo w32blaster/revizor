@@ -133,7 +133,7 @@ log4j = {
 // external links
 links {
     wiki {
-        clone = "https://github.com/w32blaster/revizor/wiki/Add-new-repository-to-Revizor"
+        clone = "https://github.com/w32blaster/revizor/wiki/Clone-a-repository"
         issueTracker = "https://github.com/w32blaster/revizor/wiki/Issue-tracker-support"
         chats = "https://github.com/w32blaster/revizor/wiki/Integrations-with-chats"
     }
@@ -150,8 +150,10 @@ grails.allowed.email.notifications=false
 grails.job.pull.period.time=10 * 60 * 1000 // 10 min
 
 ldap {
+    enabled = true
     filter{
         email = "mail"
+        defaultFilter = "(objectClass=person)"
     }
     directories {
         directory1 {
@@ -166,5 +168,5 @@ ldap {
             }
         }
     }
-    schemas: [LDAPUser]
+    schemas: [ LDAPUser ]
 }

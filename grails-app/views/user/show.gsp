@@ -44,6 +44,15 @@
             </li>
         </g:if>
 
+        <g:if test="${userInstance?.type}">
+            <li class="form-group">
+                <span id="type-label" class="property-label"><g:message code="user.type.label" default="type" /></span>
+
+                <span class="property-value" aria-labelledby="type-label"><g:fieldValue bean="${userInstance}" field="type"/></span>
+
+            </li>
+        </g:if>
+
         <g:if test="${userInstance?.position}">
             <li class="form-group">
                 <span id="position-label" class="property-label"><g:message code="user.position" default="Position" /></span>
@@ -122,8 +131,10 @@
                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                 <g:message code="default.button.edit.label" default="Edit" />
             </g:link>
-
+            <%--
+            Is it allowed to delete users?
             <g:actionSubmit class="btn btn-default" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+            --%>
         </fieldset>
     </g:form>
 

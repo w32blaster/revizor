@@ -72,7 +72,12 @@
 		<span class="required-indicator">*</span>
 	</label>
 	<div class="col-lg-9">
-		<g:select  class="form-control selectpicker" data-style="btn-primary" name="role" from="${com.revizor.Role?.values()}" keys="${com.revizor.Role.values()*.name()}" required="" value="${userInstance?.role?.name()}" />
+		<g:if test="${session.user.role == com.revizor.Role.ADMIN}">
+			<g:select  class="form-control selectpicker" data-style="btn-primary" name="role" from="${com.revizor.Role?.values()}" keys="${com.revizor.Role.values()*.name()}" required="" value="${userInstance?.role?.name()}" />
+		</g:if>
+		<g:else>
+			<span class="label label-primary">${userInstance?.role?.name()}</span>
+		</g:else>
 	</div>
 </div>
 

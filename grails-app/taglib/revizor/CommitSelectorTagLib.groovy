@@ -79,7 +79,7 @@ class CommitSelectorTagLib {
         def graphHtml = "<div id='history-graph' style='position: absolute; top: 3px'>" +
                 "<svg height='${list.size() * Constants.ROW_HEIGHT}' width='${CURVE_WIDTH * maxLaneIdx + 15}' overflow='hidden'><g>${arrCommits[0]}</g></svg></div>"
 
-        def outHtml = "<table class='table table-condensed'>"
+        def outHtml = "<table class='table table-condensed table-hover'>"
         list.each { Commit rev ->
             def urlToObserveChangeset = g.createLink(controller: "observe", action: "show") + "/${attrs.repo.ident()}/${rev.id}/"
             outHtml <<= """

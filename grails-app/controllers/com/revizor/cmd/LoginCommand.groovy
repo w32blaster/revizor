@@ -35,7 +35,9 @@ class LoginCommand {
      * @return
      */
     LDAPUser getLdapUser() {
-        if (!ldapUser && email) {
+        def isLdapEnabled = grailsApplication.config.ldap.enabled;
+
+        if (isLdapEnabled && !ldapUser && email) {
             def emailField = grailsApplication.config.ldap.filter.email
             ldapUser = LDAPUser.find(
                     filter: "($emailField=$email)"
@@ -59,8 +61,8 @@ class LoginCommand {
                 user = userService.fromLdap(ldapUser)
                 user.save failOnError: true
             }
+            u = user
             return user
-
         }
     }
 

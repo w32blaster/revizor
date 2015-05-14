@@ -440,3 +440,7 @@ body {
 #list-of-repositories {
     overflow-y: auto;
 }
+
+.inactive {
+    color: #939393;
+}

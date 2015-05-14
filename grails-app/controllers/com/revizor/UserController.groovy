@@ -1,6 +1,7 @@
 package com.revizor
 
 import com.revizor.security.BCrypt
+import revizor.HelpTagLib
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -11,10 +12,45 @@ class UserController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def uploadService
+    def grailsApplication
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond User.list(params), model:[userInstanceCount: User.count()], view: "index"
+
+        if(session.user.role == Role.ADMIN) {
+
+            def innerUsers = User.findAllByType(UserType.INNER)
+
+            def mapUsersByEmail
+            def ldapUsers
+            def isLdapUsed = grailsApplication.config.ldap.enabled;
+
+            if (isLdapUsed) {
+                mapUsersByEmail = User.findAllByType(UserType.LDAP).collectEntries {
+                    [ (it.email) : it]
+                }
+
+                // list all the LDAP users, sorted by availability in Revizor db
+                ldapUsers = LDAPUser.findAll (
+                        filter: grailsApplication.config.ldap.filter.defaultFilter
+                ).sort { !mapUsersByEmail.containsKey(it.email) }
+            }
+
+            respond innerUsers, model:[
+                    userInstanceCount: User.count(),
+                    isLdapUsed: isLdapUsed,
+                    ldapUsers: ldapUsers,
+                    mapUsersByEmail: mapUsersByEmail
+            ], view: "index"
+
+        }
+        else {
+            def users = [session.user]
+            respond users, model:[
+                    userInstanceCount: 1,
+                    isLdapUsed: false
+            ], view: "index"
+        }
     }
 
     def list(Integer max) {
@@ -143,7 +179,33 @@ class UserController {
 		flash.message = "Avatar (${user.imageType}, ${user.image.size()} bytes) uploaded."
 		redirect(action:'show', id: user.getId())
 	}
-	
+
+    /**
+     * Sends the invitation to a selected user by email
+     *
+     * @return
+     */
+    def send_invite() {
+
+        def email = "${URLDecoder.decode(params.email, 'UTF-8')}"
+        if (!email) render status: BAD_REQUEST
+
+        def header = message(code: 'email.invite.title')
+
+        sendMail {
+            async true
+            from "no-reply@revizor.com"
+            to email
+            subject header
+            html g.render(template: "/email", model: [
+                    header: header,
+                    message: message(code: 'email.invite.ldap.body', args: [ createLink(absolute: true) ])
+            ])
+        }
+
+        render status: OK
+    }
+
 	/**
 	 * Get user avatar
 	 * @return

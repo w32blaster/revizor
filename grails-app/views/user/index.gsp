@@ -17,60 +17,81 @@
 			<g:render template="/layouts/actionButton" />
 
 
+                    <h3><g:message code="registered.in.revizor" /></h3>
 
 					<table class="table">
-					<thead>
+					    <thead>
 							<tr>
-
-                                <td width="20"> </td>
-
-								<g:sortableColumn property="email" title="${message(code: 'user.email.label', default: 'Email')}" />
-
-								<g:sortableColumn property="username" title="${message(code: 'user.username.label', default: 'username')}" />
-
-								<g:sortableColumn property="role" title="${message(code: 'user.role.label', default: 'Role')}" />
-
+                                <th class="col-md-1"> </th>
+                                <th class="col-md-3">${message(code: 'user.email.label', default: 'Email')} </th>
+                                <th class="col-md-3">${message(code: 'user.username.label', default: 'username')}</th>
+                                <th class="col-md-3">${message(code: 'user.role.label', default: 'Role')}</th>
+                                <th class="col-md-2"> </th>
 							</tr>
 						</thead>
 						<tbody>
 
-                        <h3><g:message code="registered.in.revizor" /></h3>
 						<g:each in="${userInstanceList}" status="i" var="userInstance">
 							<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-
-                                <td width="20">
-                                    <g:if test="${userInstance?.image}">
-                                        <img class="avatar" width="16" height="16" src="${createLink(controller: 'repository', action: 'logo_image', id: userInstance?.ident())}" />
-                                    </g:if>
-                                </td>
-
-								<td><g:link action="show" id="${userInstance.id}">${fieldValue(bean: userInstance, field: "email")}</g:link></td>
-
-								<td>${fieldValue(bean: userInstance, field: "username")}</td>
-
-								<td>${fieldValue(bean: userInstance, field: "role")}</td>
-
+                                <g:render template="userTableRow" model="[userInstance: userInstance]" />
 							</tr>
 						</g:each>
 
-                        <h3><g:message code="ldap.users" /></h3>
-                        <g:each in="${userInstanceList}" status="i" var="userInstance">
-                            <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-                                <td><g:link action="show" id="${userInstance.id}">${fieldValue(bean: userInstance, field: "email")}</g:link></td>
+						<g:if test="${isLdapUsed}">
 
-                                <td>${fieldValue(bean: userInstance, field: "username")}</td>
-
-                                <td>${fieldValue(bean: userInstance, field: "role")}</td>
-
+                            <tr>
+                                <td colspan="5">
+                                    <h3><g:message code="ldap.users" /></h3>
+                                </td>
                             </tr>
-                        </g:each>
+
+                            <g:each in="${ldapUsers}" status="i" var="ldapUser">
+                                <g:set var="isActivated" value="${mapUsersByEmail.containsKey(ldapUser.email)}" />
+
+                                <tr class="${(i % 2) == 0 ? 'even' : 'odd'} ${(isActivated) ? '' : 'inactive'}">
+
+                                    <g:if test="${isActivated}">
+                                        <g:render template="userTableRow" model="[userInstance: mapUsersByEmail.get(ldapUser.email)]" />
+                                    </g:if>
+                                    <g:else>
+
+                                        <td> </td>
+                                        <td>${ldapUser.email}</td>
+                                        <td>${ldapUser.sn}</td>
+                                        <td> </td>
+                                        <td>
+                                            <a href="#" class="btn btn-link" title="${message(code: 'invite.user', args: [ ldapUser.email ])}"
+                                                onclick="sendInvite('${URLEncoder.encode(ldapUser.email, 'UTF-8')}'); return false;">
+                                                <span class="glyphicon glyphicon-send"></span>
+                                                <g:message code="invite.label" />
+                                            </a>
+                                        </td>
+
+                                    </g:else>
+
+                                </tr>
+                            </g:each>
+						</g:if>
 
 						</tbody>
 					</table>
-					<div class="pagination">
-						<g:paginate total="${userInstanceCount ?: 0}" />
-					</div>
+
+<g:if test="${isLdapUsed}">
+    <r:script>
+
+        function sendInvite(email) {
+            $.get("${g.createLink(controller: 'user', action: 'send_invite')}?email=" + email)
+                .done(function() {
+                    toastr.success("<g:message code="invitation.was.sent" />")
+                })
+                .fail(function() {
+                    toastr.error('<g:message code="invitation.was.not.sent.error" />')
+                });
+        };
+
+   </r:script>
+</g:if>
 
 	</body>
 </html>
