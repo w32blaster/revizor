@@ -27,3 +27,9 @@ Revieving of a code
 ![Revizor code reviwing](../images/screenshots/screenshot3.jpeg)
 [Full size](../images/screenshots/screenshot3.jpeg)
 
+Home Page
+-------------
+
+![Revizor home page](../images/screenshots/screenshot4.jpeg)
+[Full size](../images/screenshots/screenshot4.jpeg)
+
