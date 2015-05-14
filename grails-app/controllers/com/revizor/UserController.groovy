@@ -1,7 +1,6 @@
 package com.revizor
 
 import com.revizor.security.BCrypt
-import revizor.HelpTagLib
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -23,6 +22,7 @@ class UserController {
 
             def mapUsersByEmail
             def ldapUsers
+            def ldapError
             def isLdapUsed = grailsApplication.config.ldap.enabled;
 
             if (isLdapUsed) {
@@ -31,16 +31,23 @@ class UserController {
                 }
 
                 // list all the LDAP users, sorted by availability in Revizor db
-                ldapUsers = LDAPUser.findAll (
-                        filter: grailsApplication.config.ldap.filter.defaultFilter
-                ).sort { !mapUsersByEmail.containsKey(it.email) }
+                try {
+                    ldapUsers = LDAPUser.findAll (
+                            filter: grailsApplication.config.ldap.filter.defaultFilter
+                    ).sort { !mapUsersByEmail.containsKey(it.email) }
+                }
+                catch (Exception ex) {
+                    ldapError = "Can not connect to LDAP server. Please check the config file. Exception: </br> <code>${ex.getMessage()}</code>"
+                }
             }
 
             respond innerUsers, model:[
                     userInstanceCount: User.count(),
                     isLdapUsed: isLdapUsed,
                     ldapUsers: ldapUsers,
-                    mapUsersByEmail: mapUsersByEmail
+                    ldapError: ldapError,
+                    mapUsersByEmail: mapUsersByEmail,
+                    sendInvites: grailsApplication.config.grails.allowed.email.notifications.asBoolean()
             ], view: "index"
 
         }
@@ -48,7 +55,8 @@ class UserController {
             def users = [session.user]
             respond users, model:[
                     userInstanceCount: 1,
-                    isLdapUsed: false
+                    isLdapUsed: false,
+                    sendInvites: false
             ], view: "index"
         }
     }
@@ -187,23 +195,29 @@ class UserController {
      */
     def send_invite() {
 
-        def email = "${URLDecoder.decode(params.email, 'UTF-8')}"
-        if (!email) render status: BAD_REQUEST
+        if (grailsApplication.config.grails.allowed.email.notifications.asBoolean()) {
 
-        def header = message(code: 'email.invite.title')
+            def email = "${URLDecoder.decode(params.email, 'UTF-8')}"
+            if (!email) render status: BAD_REQUEST
 
-        sendMail {
-            async true
-            from "no-reply@revizor.com"
-            to email
-            subject header
-            html g.render(template: "/email", model: [
-                    header: header,
-                    message: message(code: 'email.invite.ldap.body', args: [ createLink(absolute: true) ])
-            ])
+            def header = message(code: 'email.invite.title')
+
+            sendMail {
+                async true
+                from "no-reply@revizor.com"
+                to email
+                subject header
+                html g.render(template: "/email", model: [
+                        header : header,
+                        message: message(code: 'email.invite.ldap.body', args: [createLink(absolute: true)])
+                ])
+            }
+
+            render status: OK
         }
-
-        render status: OK
+        else {
+            render status: BAD_REQUEST
+        }
     }
 
 	/**

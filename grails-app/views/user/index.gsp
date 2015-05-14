@@ -16,6 +16,11 @@
 
 			<g:render template="/layouts/actionButton" />
 
+                    <g:if test="${ldapError}">
+                        <div class="alert alert-danger">
+                            <strong>Error</strong> ${raw(ldapError)}
+                        </div>
+                    </g:if>
 
                     <h3><g:message code="registered.in.revizor" /></h3>
 
@@ -61,11 +66,13 @@
                                         <td>${ldapUser.sn}</td>
                                         <td> </td>
                                         <td>
-                                            <a href="#" class="btn btn-link" title="${message(code: 'invite.user', args: [ ldapUser.email ])}"
-                                                onclick="sendInvite('${URLEncoder.encode(ldapUser.email, 'UTF-8')}'); return false;">
-                                                <span class="glyphicon glyphicon-send"></span>
-                                                <g:message code="invite.label" />
-                                            </a>
+                                            <g:if test="${sendInvites}">
+                                                <a href="#" class="btn btn-link" title="${message(code: 'invite.user', args: [ ldapUser.email ])}"
+                                                    onclick="sendInvite('${URLEncoder.encode(ldapUser.email, 'UTF-8')}'); return false;">
+                                                    <span class="glyphicon glyphicon-send"></span>
+                                                    <g:message code="invite.label" />
+                                                </a>
+                                            </g:if>
                                         </td>
 
                                     </g:else>
@@ -77,7 +84,7 @@
 						</tbody>
 					</table>
 
-<g:if test="${isLdapUsed}">
+<g:if test="${sendInvites}">
     <r:script>
 
         function sendInvite(email) {
