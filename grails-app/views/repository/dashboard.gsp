@@ -28,24 +28,11 @@
 
                             <!-- "Switch to..." button -->
                             <div class="btn-group">
-                              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                <g:message code="dashboard.switch.to" default="Switch to..." />
-                                <span class="caret"></span>
-                              </button>
-                              <ul class="dropdown-menu" role="menu">
-                                <g:each var="repo" in="${repos}">
-                                    <g:if test="${repo.ident() == session.activeRepository}" >
-                                        <li class="dropdown-header">${repo.title}</li>
-                                    </g:if>
-                                    <g:else>
-                                        <li><a href="${createLink(controller: 'repository', action: 'dashboard', id: repo.ident())}">${repo.title}</a></li>
-                                    </g:else>
-                                </g:each>
-
-                                <li role="presentation" class="divider"></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="${createLink(controller: 'repository', action: 'create')}">
-                                    <span class="glyphicon glyphicon-plus"></span> <g:message code="repository.create.new" />...</a></li>
-                              </ul>
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                    <g:message code="dashboard.switch.to" default="Switch to..." />
+                                    <span class="caret"></span>
+                                </button>
+                                <g:render template="/repository/repositoryDropDown" />
                             </div>
 
                             <g:render template="buttonUpdateRepository" model="['repoId': selectedRepo.ident() ]" />

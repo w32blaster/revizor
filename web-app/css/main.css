@@ -444,3 +444,7 @@ body {
 .inactive {
     color: #939393;
 }
+
+#change-image-id {
+    margin: 15px;
+}

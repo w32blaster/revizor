@@ -50,13 +50,7 @@
 			  <ul class="dropdown-menu" role="menu">
 			  	<g:each var="repo" in="${repos}">
 			    	<li><a href="${createLink(controller: 'review', action: 'create', id: repo.ident())}">
-                        <g:if test="${repo.hasImage}">
-                            <img height="16" width="16" class="avatar img-rounded" src="${createLink(controller:'repository', action: 'logo_image', id: repo.ident())}" />
-                        </g:if>
-                        <g:else>
-                            <span class="pseudo-img">&nbsp;</span>
-                        </g:else>
-
+						<g:render template="/repository/repositoryLogo" />
 						${repo.title}
 					</a></li>
 			    </g:each>

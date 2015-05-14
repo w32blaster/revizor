@@ -25,7 +25,7 @@ grails {
 */
 
 // is LDAP authentication enabled?
-ldap.enabled = true
+ldap.enabled = false
 /*
 ldap {
 
