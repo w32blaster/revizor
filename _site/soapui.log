@@ -1,7 +1,0 @@
-2014-10-28 08:49:28,242 WARN  [DefaultSoapUICore] Missing folder [/home/ilja/ext] for external libraries
-2014-10-28 08:49:30,338 INFO  [DefaultSoapUICore] initialized soapui-settings from [/home/ilja/soapui-settings.xml]
-2014-10-28 08:49:32,575 INFO  [WorkspaceImpl] Loading workspace from [/home/ilja/intellij-soapui-workspace.xml]
-2014-10-28 11:10:07,213 INFO  [WorkspaceImpl] Saved workspace to [/home/ilja/intellij-soapui-workspace.xml]
-2014-10-28 11:10:07,220 INFO  [DefaultSoapUICore] Settings saved to [/home/ilja/soapui-settings.xml]
-2014-10-28 11:10:07,542 INFO  [WorkspaceImpl] Saved workspace to [/home/ilja/intellij-soapui-workspace.xml]
-2014-10-28 11:10:07,547 INFO  [DefaultSoapUICore] Settings saved to [/home/ilja/soapui-settings.xml]
