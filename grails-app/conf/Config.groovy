@@ -7,8 +7,8 @@ import com.revizor.LDAPUser
 grails.config.locations = [
                              "classpath:${appName}-config.groovy",
                              "file:./${appName}-config.groovy",
-                             "file:${userHome}/.grails/${appName}-config.properties",
-                             "file:${userHome}/.grails/${appName}-config.groovy"
+                             "file:${userHome}/.revizor/${appName}-config.properties",
+                             "file:${userHome}/.revizor/${appName}-config.groovy"
 ]
 
 if (System.properties["${appName}.config.location"]) {
