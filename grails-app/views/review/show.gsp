@@ -160,6 +160,9 @@
             </div>
             
             <div class="row">
+                <!-- Comments: -->
+                <h3><g:message code="review.comments.header" /></h3>
+
                 <g:render template="/comment/commentsScript" model="['commentType': CommentType.REVIEW.name(),
                                                                'review': reviewInstance]" />
 

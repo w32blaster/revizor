@@ -26,7 +26,7 @@
 		<g:message code="user.password.label" default="Password" />
 	</label>
 	<div class="col-lg-9">
-		<g:passwordField class="form-control" name="password" value="" />
+		<g:passwordField class="form-control" name="password" value="" autocomplete="off" />
 	</div>
 </div>
 

@@ -2,15 +2,15 @@ package com.revizor.repos.git;
 
 
 import com.revizor.repos.BranchColor;
-import static com.revizor.utils.Constants.ROW_HEIGHT;
-import static com.revizor.utils.Constants.SPACE;
-
 import com.revizor.repos.Commit;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.revplot.AbstractPlotRenderer;
 import org.eclipse.jgit.revplot.PlotLane;
 
 import java.io.Serializable;
+
+import static com.revizor.utils.Constants.ROW_HEIGHT;
+import static com.revizor.utils.Constants.SPACE;
 
 /**
  *
@@ -23,7 +23,7 @@ public class GitGraphRenderer extends AbstractPlotRenderer<PlotLane, BranchColor
     private StringBuffer sb = new StringBuffer();
     private int topPadding = 0;
     private Commit commit = new Commit();
-    public static final int LANE_WIDTH = 14; // re-think this: AbstractPlotRenderer.LANE_WIDTH is private
+    public static final int LANE_WIDTH = 14; // TODO: re-think this: AbstractPlotRenderer.LANE_WIDTH is private
 
     public Commit getRenderedCommit(){
         this.commit.setSvg(sb.toString());

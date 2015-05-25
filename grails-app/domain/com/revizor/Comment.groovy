@@ -16,6 +16,7 @@ class Comment implements INotifiable {
     int lineOfCode
 	LineType typeOfLine
     CommentType type
+    Date date = new Date()
 
     def grailsLinkGenerator
     static transients = [ "grailsLinkGenerator" ]

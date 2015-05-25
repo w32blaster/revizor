@@ -1,5 +1,5 @@
 
-<%@ page import="com.revizor.User; com.revizor.Comment" %>
+<%@ page import="java.text.SimpleDateFormat; java.text.DateFormat; com.revizor.User; com.revizor.Comment" %>
 <%@ page import="com.revizor.CommentsFilter" %>
 <!DOCTYPE html>
 <html>
@@ -82,9 +82,17 @@
 
                 <g:each var="comment" status="i"  in="${commentInstanceList}">
                     <div class="row ${(i % 2) == 0 ? 'even' : 'odd'}">
+
+                        <div class="col-lg-9">
+                            <g:render template="/comment/comment" model="['comment' : comment, 'isReplyButtonHidden': true, 'indent': 0, 'isUnread': (comment.ident() in unreadComments) ]" />
+                        </div>
+
                         <div class="col-lg-3">
 
                             <dl>
+                                <dt><g:message code="commit.date" /></dt>
+                                <dd>${comment.date.format('dd-MMM-yyyy')}</dd>
+
                                 <dt><g:message code="Review.label" /></dt>
                                 <dd>
                                     <g:link controller="review" action="show" id="${comment.review.id}">
@@ -97,16 +105,23 @@
                                         <a href="${comment.getLinkHref()}">
                                             <sc:fileNameWithoutPackage>
                                                 ${comment.fileName}
+                                                <g:if test="${comment.lineOfCode > 0}">
+                                                    (${comment.lineOfCode})
+                                                </g:if>
                                             </sc:fileNameWithoutPackage>
                                         </a>
+                                    </dd>
+                                </g:if>
+                                <g:if test="${comment.replyTo}">
+                                    <dt><g:message code="review.comments.form.reply" /></dt>
+                                    <dd>
+                                        <g:render template="/comment/mention" model="['user': comment.replyTo.author]" />
                                     </dd>
                                 </g:if>
                             </dl>
 
                         </div>
-                        <div class="col-lg-9">
-                            <g:render template="/comment/comment" model="['comment' : comment, 'isReplyButtonHidden': true, 'indent': 0, 'isUnread': (comment.ident() in unreadComments) ]" />
-                        </div>
+
                     </div>
                 </g:each>
 
@@ -118,4 +133,12 @@
 		    </div>
         </div>
 	</body>
+
+    <r:script>
+
+        (function($) {
+            $('.mention-popover').popover();
+        })(jQuery);
+
+    </r:script>
 </html>

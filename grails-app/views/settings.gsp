@@ -12,7 +12,8 @@
             <div class="panel-heading">Application Status</div>
 
             <table class="table table-striped">
-                <tr><td>App version:</td><td> <g:meta name="app.version"/></td></tr>
+                <tr><td>Revizor version:</td><td> <g:meta name="app.version"/></td></tr>
+                <tr><td>Working folder:</td><td> <samp>${com.revizor.utils.Constants.LOCAL_REPO_PATH + File.separator}</samp> </td></tr>
                 <tr><td>Grails version:</td><td> <g:meta name="app.grails.version"/></td></tr>
                 <tr><td>Groovy version:</td><td> ${GroovySystem.getVersion()}</td></tr>
                 <tr><td>JVM version:</td><td> ${System.getProperty('java.version')}</td></tr>

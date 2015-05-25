@@ -107,35 +107,6 @@
         $('.selectpicker').selectpicker();
         $('#url-help').popover();
 
-        <g:if test="${actionName == "create"}">
-            var $folderNameField = $('#folderName');
-            $folderNameField.keyup(function() {
-
-                var $folderNameValue = $(this).val();
-                if($folderNameValue) {
-                    $.get("${createLink(controller: 'repository', action: 'checkFolderExistence')}/" + encodeURIComponent( $folderNameValue ) )
-                        .done(function(isExisting) {
-                            if (isExisting === "1") {
-                                $('#folderNameWrapperID').addClass("has-error");
-
-                                $folderNameField.attr("data-content", "${message(code: 'folder.exists.explanation')}"
-                                        .replace("{0}", "${com.revizor.utils.Constants.LOCAL_REPO_PATH + File.separator}" + $folderNameValue));
-                                $folderNameField.popover('show');
-
-                                $('#clone-repo-btn').attr('disabled','disabled');
-                            }
-                            else {
-                                $('#folderNameWrapperID').removeClass("has-error");
-                                $folderNameField.popover('hide');
-                                $('#clone-repo-btn').attr('disabled',false);
-                            }
-                        })
-                        .fail(function() {
-                            toastr.error('Error occures while the request to check the folder existence.')
-                        });
-                    }
-                });
-        </g:if>
 
 	})(jQuery);
 
