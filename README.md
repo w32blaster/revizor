@@ -11,7 +11,8 @@ Revizor
 
 **Revizor** — is a code review tool written using Groovy on [Grails](https://grails.org/).
 
-Official homepage: [revizor.reviews](http://revizor.reviews/)
+* Official homepage: [revizor.reviews](http://revizor.reviews/)
+* Twitter: [revizor_tool](https://twitter.com/revizor_tool)
 
 [Downloads](https://github.com/w32blaster/revizor/releases)
 
