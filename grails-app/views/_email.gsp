@@ -10,9 +10,9 @@
     <meta name="format-detection" content="telephone=no" /> <!-- disable auto telephone linking in iOS -->
     <title>Revizor: ${header}</title>
 </head>
-<body bgcolor="#E1E1E1" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+<body bgcolor="#e7e7ef" leftmargin="10" marginwidth="10" topmargin="10" marginheight="10" offset="10" style="color: #36353a; font-family: Arial, sans-serif;">
 
-        <h2>${header}</h2>
+        <h2 style="color: #445372;">${header}</h2>
 
         ${raw(message)}
 
