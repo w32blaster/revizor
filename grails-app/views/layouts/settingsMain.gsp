@@ -34,7 +34,13 @@
     <div id="header" class="row" role="header">
 
         <div id="permanent-menu" class="top-block">
-            <b class="menu-link">${message(code: "settings.label")}</b>
+
+            <!-- Home page -->
+            <g:link controller="repository" action="homePage" class="menu-link">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <g:message code="default.home.label" />
+            </g:link>
+
         </div>
 
         <g:if test="${session.user}">

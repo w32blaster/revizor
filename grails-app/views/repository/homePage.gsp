@@ -20,14 +20,16 @@
                             <g:message code="reviews.active.reviews" />
                         </div>
 
-                        <table class="table">
-                            <g:each in="${activeReviews}" var="reviewInstance">
-                                <g:render template="/review/rowReviewInTable" model="[
-                                        review: reviewInstance,
-                                        commentsByReview: commentsGroupedByReview,
-                                        isUnread: (reviewInstance.ident() in unreadReviews)]" />
-                            </g:each>
-                        </table>
+                        <div class="panel-body hp-scrollable">
+                            <table class="table">
+                                <g:each in="${activeReviews}" var="reviewInstance">
+                                    <g:render template="/review/rowReviewInTable" model="[
+                                            review: reviewInstance,
+                                            commentsByReview: commentsGroupedByReview,
+                                            isUnread: (reviewInstance.ident() in unreadReviews)]" />
+                                </g:each>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -44,11 +46,12 @@
 
                         </div>
 
-                        <g:set var="notificationContainerID" value="notification-feed-container" />
-                        <div id="${notificationContainerID}" class="pre-scrollable">
-                            <g:render template="/notification/notificationFeed" />
+                        <div class="panel-body hp-scrollable">
+                            <g:set var="notificationContainerID" value="notification-feed-container" />
+                            <div id="${notificationContainerID}">
+                                <g:render template="/notification/notificationFeed" />
+                            </div>
                         </div>
-
                     </div>
 
                 </div>
@@ -64,17 +67,19 @@
                             <g:message code="repository.header" />
                         </div>
 
-                        <div id="list-of-repositories" class="pre-scrollable">
-                            <g:each in="${com.revizor.Repository.list(sort: 'id', order: 'desc')}" var="repository">
-                                <g:set var="isUnread" value="${repository.ident() in unreadRepos}" />
+                        <div class="panel-body hp-scrollable">
+                            <div id="list-of-repositories">
+                                <g:each in="${com.revizor.Repository.list(sort: 'id', order: 'desc')}" var="repository">
+                                    <g:set var="isUnread" value="${repository.ident() in unreadRepos}" />
 
-                                <div class="hp-row <% if (isUnread) {%> unread unread-new<%} %>">
-                                    <g:render template="repositoryHeader" model="[
-                                            size: 32,
-                                            repo: repository,
-                                            isUnread: isUnread]" />
-                                </div>
-                            </g:each>
+                                    <div class="hp-row <% if (isUnread) {%> unread unread-new<%} %>">
+                                        <g:render template="repositoryHeader" model="[
+                                                size: 32,
+                                                repo: repository,
+                                                isUnread: isUnread]" />
+                                    </div>
+                                </g:each>
+                            </div>
                         </div>
                      </div>
                 </div>
@@ -86,12 +91,13 @@
                             <g:message code="users.header" />
                         </div>
 
-
-                        <g:each in="${com.revizor.User.list()}" var="user">
-                            <div class="hp-row">
-                                <g:render template="/review/userWithAvatar" model="[user: user]" />
-                            </div>
-                        </g:each>
+                        <div class="panel-body hp-scrollable">
+                            <g:each in="${com.revizor.User.list()}" var="user">
+                                <div class="hp-row">
+                                    <g:render template="/review/userWithAvatar" model="[user: user]" />
+                                </div>
+                            </g:each>
+                        </div>
                     </div>
                 </div>
             </div>

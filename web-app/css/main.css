@@ -448,3 +448,10 @@ body {
 #change-image-id {
     margin: 15px;
 }
+#settings-nav-panel {
+    margin-top: 20px;
+}
+.hp-scrollable {
+    overflow: auto;
+    max-height: 350px;
+}
