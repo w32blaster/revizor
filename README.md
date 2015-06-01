@@ -14,7 +14,9 @@ Revizor
 * Official homepage: [revizor.reviews](http://revizor.reviews/)
 * Twitter: [revizor_tool](https://twitter.com/revizor_tool)
 
-[Downloads](https://github.com/w32blaster/revizor/releases)
+[Downloads](https://github.com/w32blaster/revizor/releases). 
+
+_Subscribe to release updates [via RSS](https://github.com/w32blaster/revizor/releases.atom)._
 
 Features
 ---------
