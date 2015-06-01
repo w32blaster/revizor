@@ -268,7 +268,7 @@ body {
 }
 .reply-indent {
     padding-right: 5px;
-    padding-top: 30px;
+    padding-top: 50px;
 }
 .reply-indent SPAN {
     padding: 1px;
@@ -323,8 +323,8 @@ body {
 
 #collapse-button-id {
     position: absolute;
-    left: 4px;
-    top: 86px;
+    left: 5px;
+    top: 95px;
     z-index: 1;
 }
 

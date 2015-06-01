@@ -13,7 +13,10 @@
     </div>
 </g:if>
 
-<div id="${com.revizor.utils.Constants.CONTAINER_ID_PREFIX}${comment.ident()}" class="media comment-container well <% if (isUnread) {%> unread unread-new<%} %>" style="width: ${800 - indentPx}px;">
+<div id="${com.revizor.utils.Constants.CONTAINER_ID_PREFIX}${comment.ident()}"
+     class="media comment-container well <% if(indent > 0) { %> pull-right <% } %> <% if (isUnread) {%> unread unread-new<%} %>"
+     style="width: ${800 - indentPx}px;">
+
     <a class="pull-left" href="${createLink(controller:'user', action:'show', id:comment.author?.ident())}">
         <g:render template="/user/userAvatar" model="['user' : comment.author, 'cssClass': 'avatar img-rounded media-object']" />
     </a>

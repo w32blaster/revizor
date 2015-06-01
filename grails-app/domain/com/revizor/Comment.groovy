@@ -76,12 +76,21 @@ class Comment implements INotifiable {
                     The 'comment-id' is build of three parts: prefix, line of code and type. It is done to
                     correctly display comments tree in HTML using JS. Please refer to the DiffTagLib.renderRowForSingleView function
 
+                    Pattern of a root comment:
+                        {prefix}-{lineOfCode}-{typeOfLine}
+
+                    Pattern of a reply:
+                        {prefix}-{id}
+
                     URL example:
                         http://localhost:8080/revizor/review/show/1/single?fileName=src/main/java/org/jbake/launcher/LaunchOptions.java#comment-container-24-UNMODIFIED
 
                  */
                 def linkToReview = grailsLinkGenerator.link(controller: 'review', action: 'show', id: this.getReview().ident(), absolute: true);
-                def commentAnchorId = Constants.CONTAINER_ID_PREFIX + this.lineOfCode + "-" + this.typeOfLine
+
+                def commentAnchorId = this.replyTo ?
+                        Constants.CONTAINER_ID_PREFIX + this.ident() :
+                        Constants.CONTAINER_ID_PREFIX + this.lineOfCode + "-" + this.typeOfLine;
 
                 return "${linkToReview}/${Constants.REVIEW_SINGLE_VIEW}?${Constants.PARAM_FILE_NAME}=${this.fileName.toString()}#${commentAnchorId}"
 
