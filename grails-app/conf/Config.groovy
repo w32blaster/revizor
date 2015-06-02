@@ -150,3 +150,6 @@ grails.allowed.email.notifications=false
 grails.job.pull.period.time=10 * 60 * 1000 // 10 min
 
 ldap.schemas = [ LDAPUser ]
+
+// update the database schema on the application start
+grails.plugin.databasemigration.updateOnStart = true

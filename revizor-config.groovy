@@ -4,7 +4,7 @@
 grails.server.port = 8080
 grails.serverURL = "http://localhost:8080/revizor"
 
-// how often Revizor should check for new commits in a repositories (in ms)
+// how often Revizor should check for new commits in repositories (in ms)
 grails.job.pull.period.time=10 * 60 * 1000 // 10 min
 
 
@@ -42,7 +42,7 @@ grails {
 
 dataSource {
     pooled = true
-    dbCreate = "update"
+    dbCreate = "none"
     url = "jdbc:mysql://localhost:3306/my_database"
     driverClassName = "com.mysql.jdbc.Driver"
     dialect = org.hibernate.dialect.MySQL5InnoDBDialect
