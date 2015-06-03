@@ -223,7 +223,7 @@
 		.icon-git-hub:before              { content: "\f09b"; }
 		.icon-unlock:before               { content: "\f09c"; }
 		.icon-credit-card:before          { content: "\f09d"; }
-		.icon-rss:before                  { content: "\f09e"; }
+		.icon-rss-feed:before             { content: "\f09e"; }
 
 		.icon-hdd:before                  { content: "\f0a0"; }
 		.icon-bullhorn:before             { content: "\f0a1"; }
