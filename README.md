@@ -1,10 +1,8 @@
-## The next release is expected at the beginning of June 2015. ##
-
 [![Stories in Ready](https://badge.waffle.io/w32blaster/revizor.png?label=ready&title=Ready)](https://waffle.io/w32blaster/revizor)
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/w32blaster/revizor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[![Version](http://img.shields.io/badge/version-0.2.0-blue.svg?style=flat)](https://github.com/w32blaster/revizor/releases)
+[![Version](http://img.shields.io/badge/version-1.0.0-blue.svg?style=flat)](https://github.com/w32blaster/revizor/releases/latest)
 
 Revizor
 =======
