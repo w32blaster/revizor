@@ -37,7 +37,8 @@
 
 					var fnCheckFolder = function() {
 
-						var $folderNameValue = $('#folderName').val();
+						var $folderNameField = $('#folderName');
+						var $folderNameValue = $folderNameField.val();
 						if($folderNameValue) {
 							$.get("${createLink(controller: 'repository', action: 'checkFolderExistence')}/" + encodeURIComponent( $folderNameValue ) )
 							.done(function(isExisting) {
