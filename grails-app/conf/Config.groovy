@@ -153,3 +153,4 @@ ldap.schemas = [ LDAPUser ]
 
 // update the database schema on the application start
 grails.plugin.databasemigration.updateOnStart = true
+grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']

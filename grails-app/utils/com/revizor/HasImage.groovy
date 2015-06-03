@@ -14,5 +14,6 @@ abstract class HasImage {
     static mapping = {
         tablePerHierarchy false
         hasImage defaultValue: false
+        image type: "text"
     }
 }
