@@ -63,7 +63,7 @@ class GitRepository implements IRepository {
             final SshSessionFactory sshSessionFactory = new JschConfigSessionFactory() {
                 @Override
                 protected void configure( OpenSshConfig.Host host, Session session ) {
-                    if (password) session.setPassword(password);
+                    // do nothing
                 }
 
             };
@@ -78,9 +78,6 @@ class GitRepository implements IRepository {
         }
 
         Git git = command.call()
-
-        //def localRepo = new FileRepository(this.repoPath);
-        //Git git = new Git(localRepo)
         git.pull().call();
 
     }
