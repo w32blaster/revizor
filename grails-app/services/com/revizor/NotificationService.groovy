@@ -141,6 +141,7 @@ class NotificationService {
     def sendNotificationViaEmail(Notification notification, header, toAddress) {
 
         if (grailsApplication.config.grails.allowed.email.notifications.asBoolean()) {
+            def session = RequestContextHolder.currentRequestAttributes().getSession()
 
             def ntl = grailsApplication.mainContext.getBean(NotificationTagLib.class.getName());
             def unreadAllItems = getAllNewUnreadItemsForMe(session.user);
@@ -151,7 +152,6 @@ class NotificationService {
                 this.sendEmail(header, toAddress, HelpTagLib.toSingleLine(emailHtml))
             } else {
                 // send this notification to all actors (except currently logged user)
-                def session = RequestContextHolder.currentRequestAttributes().getSession()
                 notification
                         .actors
                         .findAll { NotificationObject no ->

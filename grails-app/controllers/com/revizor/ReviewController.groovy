@@ -106,6 +106,7 @@ class ReviewController {
                 unreadReviews: unreadReviewIds]
     }
 
+    @Transactional
     def show(Review reviewInstance) {
         def view;
 

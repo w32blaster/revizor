@@ -41,4 +41,13 @@ class HideSecretTagLibSpec extends Specification {
         then:
             output.equals("ssh://username:****@10.10.10.10/home/git/some-repo.git")
     }
+
+    void "taglib hides password from ssh url with host"() {
+        given:
+            def url = "ssh://username:1]:G@'1:6~j@~[dY@git.myhostname.com/home/git/some-repo.git"
+        when:
+            def output = tagLib.maskPassword() { url }
+        then:
+            output.equals("ssh://username:****@git.myhostname.com/home/git/some-repo.git")
+    }
 }
