@@ -67,7 +67,7 @@
                 <g:message code="repository.username.label" default="User name" />
             </label>
             <div class="col-lg-9">
-                <g:textField class="form-control" name="username" pattern="${repositoryInstance.constraints.folderName.matches}" value="${repositoryInstance?.username}"/>
+                <g:textField class="form-control" name="username" pattern="${repositoryInstance.constraints.folderName.matches}" value="${repositoryInstance?.username}" autocorrect="off" autocapitalize="off" autocomplete="off" />
             </div>
         </div>
 
@@ -80,7 +80,7 @@
                       title="<g:message code="password.stored.as.plain.text"/>" ></span>
             </label>
             <div class="col-lg-9">
-                <g:passwordField class="form-control" name="password" pattern="${repositoryInstance.constraints.password.matches}" value="${repositoryInstance?.password}"/>
+                <g:passwordField class="form-control" name="password" pattern="${repositoryInstance.constraints.password.matches}" value="${repositoryInstance?.password}" autocorrect="off" autocapitalize="off" autocomplete="off" />
             </div>
         </div>
 
@@ -107,8 +107,14 @@
         $('.selectpicker').selectpicker();
         $('#url-help').popover();
 
+        setTimeout(function() {
+            <g:if test="${!repositoryInstance?.username}">
+                $('#username').val('');
+            </g:if>
+            $('#password').val('');
+        }, 2000);
 
-	})(jQuery);
+})(jQuery);
 
 
 

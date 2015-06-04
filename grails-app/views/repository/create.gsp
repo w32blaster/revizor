@@ -17,7 +17,7 @@
 
 
 			<div class="form-container">
-				<g:form url="[resource:repositoryInstance, action:'save']" class="form-horizontal" >
+				<g:form url="[resource:repositoryInstance, action:'save']" class="form-horizontal" autocomplete="off" >
 					<fieldset class="form">
                         <g:hiddenField name="hasImage" value="false"/>
 						<g:render template="form"/>

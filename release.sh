@@ -19,7 +19,7 @@ tar cvfz "$RELEASE_DIR"/revizor-jar-"$APP_VERSION".tar.gz revizor-config.groovy 
 
 # build WAR release
 echo -e "\n\n2) Let's create a deployable WAR file\n"
-grails war
+grails prod war
 
 echo -e "\n\n2.1) Let's create the archieve revizor-jar.tar.gz\n"
 mv target/revizor-*.war ./revizor.war

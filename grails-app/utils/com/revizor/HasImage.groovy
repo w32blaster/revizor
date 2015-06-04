@@ -7,13 +7,13 @@ abstract class HasImage {
 	String imageType // <-- MIME type of uploaded image
 
     static constraints = {
-		image(nullable:true, maxSize: 16384 /* 16K */)
+		image(nullable:true, maxSize: 20 * 1024 * 1024)
 		imageType(nullable:true)
     }
 
     static mapping = {
         tablePerHierarchy false
         hasImage defaultValue: false
-        image type: "text"
+        image sqlType: "blob"
     }
 }

@@ -151,6 +151,16 @@ grails.job.pull.period.time=10 * 60 * 1000 // 10 min
 
 ldap.schemas = [ LDAPUser ]
 
-// update the database schema on the application start
-grails.plugin.databasemigration.updateOnStart = true
-grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
+environments {
+    development {
+        grails.plugin.databasemigration.updateOnStart = false
+    }
+    test {
+        grails.plugin.databasemigration.updateOnStart = false
+    }
+    production {
+        // update the database schema on the application start
+        grails.plugin.databasemigration.updateOnStart = true
+        grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
+    }
+}

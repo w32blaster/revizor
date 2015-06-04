@@ -47,6 +47,7 @@ class RepositoryController {
                 commentsGroupedByReview: mapOfComments]
     }
 
+    @Transactional
     def dashboard() {
         if (!params.id) {
             _notFound()
@@ -135,10 +136,11 @@ class RepositoryController {
         def targetDir =  new File(directoryPath)
         if (targetDir.exists()) FileUtils.deleteDirectory(targetDir)
 
-        Repository repo = repositoryInstance.save flush:true
-
         def impl = repositoryInstance.initImplementation();
         impl.cloneRepository(repositoryInstance.url, repositoryInstance.username, repositoryInstance.password);
+
+        Repository repo = repositoryInstance.save flush:true
+        session.activeRepository = repo.ident()
 
         // create new notification about that event...
         def n = notificationService.create(session.user, Action.CREATE_REPOSITORY, [session.user, repo])
