@@ -1,6 +1,5 @@
 
 // change to your server actual URL. This setting will be used in redirection and link making
-// grails.serverURL = "http://change-to-your-hostname-in-file-revizor-config:8080"
 grails.server.port = 8080
 grails.serverURL = "http://localhost:8080/revizor"
 
