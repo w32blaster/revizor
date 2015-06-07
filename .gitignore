@@ -5,11 +5,11 @@
 
 # default HSQL database files for production mode
 /prodDb.*
+*.db
 
 # general HSQL database files
 *Db.properties
 *Db.script
-*.db
 
 # logs
 /stacktrace.log
@@ -52,4 +52,5 @@ target/
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
-
+# releases
+release/
