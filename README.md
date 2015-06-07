@@ -2,7 +2,7 @@
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/w32blaster/revizor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[![Version](http://img.shields.io/badge/version-1.0.0-blue.svg?style=flat)](https://github.com/w32blaster/revizor/releases/latest)
+[![Version](http://img.shields.io/badge/version-1.0.1-blue.svg?style=flat)](https://github.com/w32blaster/revizor/releases/latest)
 
 Revizor
 =======
